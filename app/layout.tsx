@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Emoji Tool - Generate Custom Emoji Images",
-  description: "Create and download custom emoji images from text. A simple tool to generate emoji art.",
+  title: "AI Image Generator - Create Custom Images from Text",
+  description: "Transform your text into beautiful AI-generated images. Choose from emoji, sticker, or icon styles and download instantly.",
 };
 
 export default function RootLayout({

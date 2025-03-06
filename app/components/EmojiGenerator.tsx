@@ -3,15 +3,19 @@
 import { useState, useRef } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 
+// 图像样式类型
+type StyleType = "emoji" | "sticker" | "icon";
+
 export default function EmojiGenerator() {
   const { t } = useLanguage();
   const [text, setText] = useState('');
+  const [style, setStyle] = useState<StyleType>("emoji");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [emojiResult, setEmojiResult] = useState<{ 
     imageUrl: string; 
     text: string;
-    emoji?: string;
+    prompt?: string;
   } | null>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
@@ -32,7 +36,7 @@ export default function EmojiGenerator() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text: text.trim() }),
+        body: JSON.stringify({ text: text.trim(), style }),
       });
       
       if (!response.ok) {
@@ -54,7 +58,7 @@ export default function EmojiGenerator() {
     if (!emojiResult) return;
     
     try {
-      // 直接从Data URL创建Blob
+      // 获取图片数据
       const response = await fetch(emojiResult.imageUrl);
       const blob = await response.blob();
       
@@ -65,8 +69,9 @@ export default function EmojiGenerator() {
       const link = document.createElement('a');
       link.href = url;
       
-      // 设置文件扩展名为SVG
-      link.download = `emoji-${emojiResult.text.replace(/\s+/g, '-')}.svg`;
+      // 根据图片类型设置文件扩展名
+      const extension = blob.type.includes('svg') ? 'svg' : 'png';
+      link.download = `ai-${style}-${emojiResult.text.replace(/\s+/g, '-')}.${extension}`;
       
       // 触发下载
       document.body.appendChild(link);
@@ -76,7 +81,7 @@ export default function EmojiGenerator() {
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
     } catch (error) {
-      console.error('下载emoji时出错:', error);
+      console.error('下载图像时出错:', error);
       setError(t.generator.errorDownload);
     }
   };
@@ -114,6 +119,47 @@ export default function EmojiGenerator() {
             </p>
           )}
         </div>
+        
+        <div className="mb-6">
+          <label className="block mb-2 text-sm font-medium">
+            {t.generator.styleLabel}
+          </label>
+          <div className="grid grid-cols-3 gap-3">
+            <button
+              type="button"
+              onClick={() => setStyle("emoji")}
+              className={`px-4 py-2 text-center rounded-lg transition-colors ${
+                style === "emoji" 
+                  ? "bg-blue-600 text-white" 
+                  : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+              }`}
+            >
+              {t.generator.styleEmoji}
+            </button>
+            <button
+              type="button"
+              onClick={() => setStyle("sticker")}
+              className={`px-4 py-2 text-center rounded-lg transition-colors ${
+                style === "sticker" 
+                  ? "bg-blue-600 text-white" 
+                  : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+              }`}
+            >
+              {t.generator.styleSticker}
+            </button>
+            <button
+              type="button"
+              onClick={() => setStyle("icon")}
+              className={`px-4 py-2 text-center rounded-lg transition-colors ${
+                style === "icon" 
+                  ? "bg-blue-600 text-white" 
+                  : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+              }`}
+            >
+              {t.generator.styleIcon}
+            </button>
+          </div>
+        </div>
 
         <button
           type="submit"
@@ -134,24 +180,22 @@ export default function EmojiGenerator() {
         <div className="text-center bg-gray-100 dark:bg-gray-800 p-6 rounded-xl">
           <h2 className="text-xl font-semibold mb-4">{t.generator.resultTitle}</h2>
           
-          {emojiResult.emoji && (
-            <div className="text-7xl mb-4">
-              {emojiResult.emoji}
-            </div>
-          )}
-          
-          <div className="relative w-40 h-40 mx-auto mb-4 bg-white dark:bg-gray-700 rounded-lg p-2 flex items-center justify-center">
+          <div className="mx-auto mb-6 rounded-lg overflow-hidden shadow-lg" style={{ maxWidth: '100%', height: 'auto' }}>
             <img
               ref={imageRef}
               src={emojiResult.imageUrl}
-              alt={`Emoji for ${emojiResult.text}`}
-              className="max-w-full max-h-full object-contain"
-              style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '100%' }}
+              alt={`AI generated image of ${emojiResult.text}`}
+              className="w-full h-auto object-contain"
+              style={{ maxHeight: '400px' }}
             />
           </div>
-          <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-            {emojiResult.text}
-          </div>
+          
+          {emojiResult.prompt && (
+            <div className="mb-4 text-sm text-gray-600 dark:text-gray-400 bg-gray-200 dark:bg-gray-700 p-3 rounded text-left">
+              <strong>{t.generator.promptLabel}:</strong> {emojiResult.prompt}
+            </div>
+          )}
+          
           <button
             onClick={handleDownload}
             className="py-2 px-4 bg-blue-600 text-white font-medium rounded-lg 

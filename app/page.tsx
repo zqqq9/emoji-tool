@@ -31,6 +31,9 @@ export default function Home() {
           <p className="mt-2">
             {t.footer.createdWith}
           </p>
+          <p className="mt-2 text-xs">
+            Powered by <a href="https://openrouter.ai" target="_blank" rel="noopener noreferrer" className="underline">OpenRouter AI</a>
+          </p>
         </footer>
       </div>
     </div>

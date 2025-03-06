@@ -1,47 +1,66 @@
-// API endpoint for generating emoji images
+// API endpoint for generating AI images
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 
 // OpenRouter API配置
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || "";
 const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
+const OPENROUTER_IMAGE_API_URL = "https://openrouter.ai/api/v1/images/generations";
 const SITE_URL = process.env.SITE_URL || "https://emoji-tool.vercel.app";
 
 // 错误消息的多语言支持
 const errorMessages = {
   en: {
     textRequired: "Text input is required",
-    failedGenerate: "Failed to generate emoji",
+    failedGenerate: "Failed to generate image",
     modelError: "Error with AI model response"
   },
   zh: {
     textRequired: "需要输入文字",
-    failedGenerate: "生成emoji失败",
+    failedGenerate: "生成图像失败",
     modelError: "AI模型响应出错"
   }
 };
 
-// 获取基于主题的emoji描述
-async function getEmojiDescription(text: string, language: string = "en") {
+// 样式类型
+type StyleType = "emoji" | "sticker" | "icon";
+type LanguageType = "en" | "zh";
+
+// 为不同的场景定义prompt模板
+const promptTemplates = {
+  en: {
+    emoji: "Create a cute cartoon emoji style image of {description}. Make it simple, colorful, and expressive.",
+    sticker: "Create a cute sticker design of {description}. Make it vibrant, with simple background.",
+    icon: "Create a minimalist icon representing {description}. Use simple shapes and colors."
+  },
+  zh: {
+    emoji: "创建一个可爱的卡通emoji风格图像，表现{description}。让它简单、多彩且富有表现力。",
+    sticker: "创建一个可爱的{description}贴纸设计。让它色彩鲜艳，背景简单。",
+    icon: "创建一个代表{description}的极简主义图标。使用简单的形状和颜色。"
+  }
+};
+
+// 生成图像
+async function generateImage(text: string, language: LanguageType = "en", style: string = "emoji") {
   try {
+    // 确保style是有效的
+    const validStyle = (style === "emoji" || style === "sticker" || style === "icon") ? style : "emoji";
+    
+    // 获取对应样式的prompt模板
+    const promptTemplate = promptTemplates[language][validStyle as StyleType];
+    
+    // 替换描述
+    const prompt = promptTemplate.replace("{description}", text);
+    
+    // 调用图像生成API
     const response = await axios.post(
-      OPENROUTER_API_URL,
+      OPENROUTER_IMAGE_API_URL,
       {
-        model: "openai/gpt-3.5-turbo", // 使用更经济的模型以降低成本
-        messages: [
-          {
-            role: "system", 
-            content: language === "zh" 
-              ? "你是一个emoji专家。根据用户的输入，生成一个emoji表情符号（只需返回一个emoji）。不要包含任何其他文本。"
-              : "You are an emoji expert. Based on the user's input, generate a single emoji character (just the emoji). Do not include any other text."
-          },
-          {
-            role: "user",
-            content: text
-          }
-        ],
-        max_tokens: 10,
-        temperature: 0.7
+        model: "stability/sdxl-turbo", // 使用稳定的图像生成模型
+        prompt: prompt,
+        n: 1, // 生成一张图片
+        size: "512x512",
+        response_format: "url"
       },
       {
         headers: {
@@ -53,28 +72,22 @@ async function getEmojiDescription(text: string, language: string = "en") {
       }
     );
 
-    // 提取AI返回的emoji
-    const emoji = response.data.choices[0]?.message?.content?.trim() || "😊";
-    
-    // 生成base64编码的SVG图像
-    const svgContent = `
-      <svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
-        <rect width="100%" height="100%" fill="white"/>
-        <text x="50%" y="50%" font-family="Arial" font-size="200" text-anchor="middle" dominant-baseline="middle">${emoji}</text>
-        <text x="50%" y="85%" font-family="Arial" font-size="40" text-anchor="middle" dominant-baseline="middle">${text}</text>
-      </svg>
-    `;
-    
-    // 转换为base64
-    const base64Svg = Buffer.from(svgContent).toString('base64');
-    const dataUrl = `data:image/svg+xml;base64,${base64Svg}`;
-    
-    return {
-      emoji,
-      imageUrl: dataUrl
-    };
+    // 检查响应格式
+    if (response.data && response.data.data && response.data.data.length > 0) {
+      // 返回生成的图像URL
+      return {
+        imageUrl: response.data.data[0].url,
+        prompt: prompt
+      };
+    } else {
+      console.error("Unexpected API response structure:", response.data);
+      throw new Error("Unexpected API response structure");
+    }
   } catch (error) {
-    console.error("Error calling OpenRouter API:", error);
+    console.error("Error calling OpenRouter Image API:", error);
+    if (axios.isAxiosError(error) && error.response) {
+      console.error("API Error Response:", error.response.data);
+    }
     throw error;
   }
 }
@@ -83,11 +96,11 @@ export async function POST(request: NextRequest) {
   // 尝试从请求头中获取语言
   const acceptLanguage = request.headers.get('Accept-Language') || '';
   const lang = acceptLanguage.includes('zh') ? 'zh' : 'en';
-  const errors = errorMessages[lang];
+  const errors = errorMessages[lang as LanguageType];
 
   try {
     // Parse the request body
-    const { text } = await request.json();
+    const { text, style = "emoji" } = await request.json();
     
     if (!text || typeof text !== 'string') {
       return NextResponse.json(
@@ -96,18 +109,18 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // 使用OpenRouter API生成emoji
-    const emojiResult = await getEmojiDescription(text, lang);
+    // 使用OpenRouter API生成图像
+    const imageResult = await generateImage(text, lang as LanguageType, style);
     
-    // 返回emoji和图片URL
+    // 返回图像URL和提示词
     return NextResponse.json({
       success: true,
-      imageUrl: emojiResult.imageUrl,
-      emoji: emojiResult.emoji,
+      imageUrl: imageResult.imageUrl,
+      prompt: imageResult.prompt,
       text
     });
   } catch (error) {
-    console.error("Error generating emoji:", error);
+    console.error("Error generating image:", error);
     return NextResponse.json(
       { error: errors.failedGenerate },
       { status: 500 }

@@ -1,8 +1,8 @@
 // English translations
 const enTranslations = {
   // Main page
-  title: 'Emoji Tool',
-  subtitle: 'Create custom emoji images from text. Enter your text, generate an emoji, and download it!',
+  title: 'AI Image Generator',
+  subtitle: 'Transform your text descriptions into beautiful AI-generated images. Choose emoji, sticker, or icon styles and download instantly!',
   footer: {
     copyright: 'All rights reserved',
     createdWith: 'Created with Next.js and TailwindCSS'
@@ -10,18 +10,23 @@ const enTranslations = {
   
   // Emoji generator component
   generator: {
-    title: 'Emoji Generator',
-    subtitle: 'Enter your text and AI will create emoji images that match the meaning!',
+    title: 'AI Image Generator',
+    subtitle: 'Enter your text and AI will create images that match the meaning!',
     inputLabel: 'Enter Text',
-    inputPlaceholder: 'Type something...',
+    inputPlaceholder: 'E.g., happy cat, birthday cake, summer beach...',
     charactersCount: 'characters',
+    styleLabel: 'Choose Style',
+    styleEmoji: 'Emoji',
+    styleSticker: 'Sticker',
+    styleIcon: 'Icon',
     buttonCreating: 'Creating...',
-    buttonCreate: 'Create Emoji',
+    buttonCreate: 'Create Image',
     errorEmpty: 'Please enter some text',
     errorGeneral: 'Something went wrong',
-    errorDownload: 'Failed to download the emoji image',
-    resultTitle: 'Your AI Generated Emoji',
-    buttonDownload: 'Download Emoji'
+    errorDownload: 'Failed to download the image',
+    resultTitle: 'Your AI Generated Image',
+    promptLabel: 'Prompt',
+    buttonDownload: 'Download Image'
   },
   
   // Language selector
