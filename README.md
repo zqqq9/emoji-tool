@@ -1,63 +1,62 @@
-# AI 图像生成器 (AI Image Generator)
+# AI Sticker Generator
 
-一个基于文字生成自定义AI图像的Web应用。
+使用 Replicate 的 sticker-maker 模型生成自定义贴纸和表情符号。
 
 ## 功能特点
 
-- 输入任意文字描述，生成相关的AI图像
-- 支持多种图像风格：Emoji表情、贴纸、图标
-- 使用先进的AI模型生成高质量图像
-- 支持下载生成的图像
-- 简洁美观的用户界面
-- 支持中英文
-- 响应式设计，适配各种设备
+- 基于文本描述生成高质量的贴纸和表情符号
+- 支持中英文双语界面
+- 多种风格选项：表情符号、贴纸和图标
+- 现代化、响应式的用户界面
+- 复制和下载生成的图像
+- 暗色/亮色主题支持
 
 ## 技术栈
 
-- Next.js 15+
-- React 19
-- TypeScript
-- TailwindCSS 4
-- OpenRouter AI API
+- **前端框架**: Next.js 14 (App Router)
+- **样式**: Styled Components + Tailwind CSS
+- **API集成**: Replicate API (sticker-maker 模型)
+- **国际化**: next-intl
+- **主题**: next-themes
 
-## 如何使用
+## 开始使用
 
-1. 在输入框中输入文字描述
-2. 选择想要的图像风格（Emoji、贴纸或图标）
-3. 点击"创建图像"按钮
-4. AI会分析你的描述并生成相应图像
-5. 点击"下载图像"按钮可以保存图片到本地
+### 环境变量设置
 
-## 如何运行
+创建一个 `.env.local` 文件，并设置以下变量：
+
+```
+REPLICATE_API_TOKEN=your_replicate_api_token_here
+SITE_URL=http://localhost:3000
+```
+
+### 安装
 
 ```bash
-# 安装依赖
 npm install
+```
 
-# 启动开发服务器
+### 开发
+
+```bash
 npm run dev
+```
 
-# 构建生产版本
+### 构建
+
+```bash
 npm run build
+npm start
 ```
 
-## 环境变量
+## API 端点
 
-创建一个`.env.local`文件并添加：
+- `/api/generate-emoji` - 使用 Replicate API 生成图像
 
-```
-OPENROUTER_API_KEY=your_openrouter_api_key
-SITE_URL=your_site_url
-```
+## 贡献
 
-## 在线预览
-
-访问 [https://ai-image-generator.vercel.app](https://ai-image-generator.vercel.app) 体验在线版本
+欢迎提交 Pull Requests 和 Issues。
 
 ## 许可证
 
 MIT
-
-## 致谢
-
-本项目使用了[OpenRouter](https://openrouter.ai)提供的AI API服务。
