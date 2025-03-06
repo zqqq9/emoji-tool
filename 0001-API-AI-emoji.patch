@@ -1,0 +1,3443 @@
+From d0a6bd582acdcb3e228cb85a06bddcc9885ec50b Mon Sep 17 00:00:00 2001
+From: zqqq9 <zq911217@hotmail.com>
+Date: Thu, 6 Mar 2025 20:56:03 +0800
+Subject: [PATCH] =?UTF-8?q?=E4=BD=BF=E7=94=A8API=E5=AE=9E=E7=8E=B0AI?=
+ =?UTF-8?q?=E7=94=9F=E6=88=90emoji=E5=8A=9F=E8=83=BD?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ README.md                                  |  73 +-
+ app/[locale]/components/EmojiGenerator.tsx | 526 ++++++++++++
+ app/[locale]/layout.tsx                    |  40 +
+ app/[locale]/page.tsx                      | 368 ++++++++
+ app/api/generate-emoji/route.ts            | 156 ++--
+ app/api/proxy-image/route.ts               |  39 +
+ app/components/EmojiGenerator.tsx          | 211 -----
+ app/components/ThemeProviderClient.tsx     |  35 +
+ app/contexts/SiteContext.tsx               |  43 +
+ app/globals.css                            |  13 +-
+ app/i18n.ts                                |  81 ++
+ app/i18n/en.ts                             |  39 -
+ app/i18n/index.ts                          |  15 -
+ app/i18n/zh.ts                             |  39 -
+ app/layout.tsx                             |  34 +-
+ app/page.tsx                               |  42 +-
+ i18n/request.js                            |  17 +
+ middleware.ts                              |  16 +
+ next.config.js                             |  14 +
+ next.config.ts                             |   7 -
+ package-lock.json                          | 954 +++++++++------------
+ package.json                               |  13 +-
+ tailwind.config.js                         |  13 +
+ tailwind.config.ts                         |  43 -
+ 24 files changed, 1740 insertions(+), 1091 deletions(-)
+ create mode 100644 app/[locale]/components/EmojiGenerator.tsx
+ create mode 100644 app/[locale]/layout.tsx
+ create mode 100644 app/[locale]/page.tsx
+ create mode 100644 app/api/proxy-image/route.ts
+ delete mode 100644 app/components/EmojiGenerator.tsx
+ create mode 100644 app/components/ThemeProviderClient.tsx
+ create mode 100644 app/contexts/SiteContext.tsx
+ create mode 100644 app/i18n.ts
+ delete mode 100644 app/i18n/en.ts
+ delete mode 100644 app/i18n/index.ts
+ delete mode 100644 app/i18n/zh.ts
+ create mode 100644 i18n/request.js
+ create mode 100644 middleware.ts
+ create mode 100644 next.config.js
+ delete mode 100644 next.config.ts
+ create mode 100644 tailwind.config.js
+ delete mode 100644 tailwind.config.ts
+
+diff --git a/README.md b/README.md
+index 5c08000..17e294c 100644
+--- a/README.md
++++ b/README.md
+@@ -1,63 +1,62 @@
+-# AI 图像生成器 (AI Image Generator)
++# AI Sticker Generator
+ 
+-一个基于文字生成自定义AI图像的Web应用。
++使用 Replicate 的 sticker-maker 模型生成自定义贴纸和表情符号。
+ 
+ ## 功能特点
+ 
+-- 输入任意文字描述，生成相关的AI图像
+-- 支持多种图像风格：Emoji表情、贴纸、图标
+-- 使用先进的AI模型生成高质量图像
+-- 支持下载生成的图像
+-- 简洁美观的用户界面
+-- 支持中英文
+-- 响应式设计，适配各种设备
++- 基于文本描述生成高质量的贴纸和表情符号
++- 支持中英文双语界面
++- 多种风格选项：表情符号、贴纸和图标
++- 现代化、响应式的用户界面
++- 复制和下载生成的图像
++- 暗色/亮色主题支持
+ 
+ ## 技术栈
+ 
+-- Next.js 15+
+-- React 19
+-- TypeScript
+-- TailwindCSS 4
+-- OpenRouter AI API
++- **前端框架**: Next.js 14 (App Router)
++- **样式**: Styled Components + Tailwind CSS
++- **API集成**: Replicate API (sticker-maker 模型)
++- **国际化**: next-intl
++- **主题**: next-themes
+ 
+-## 如何使用
++## 开始使用
+ 
+-1. 在输入框中输入文字描述
+-2. 选择想要的图像风格（Emoji、贴纸或图标）
+-3. 点击"创建图像"按钮
+-4. AI会分析你的描述并生成相应图像
+-5. 点击"下载图像"按钮可以保存图片到本地
++### 环境变量设置
+ 
+-## 如何运行
++创建一个 `.env.local` 文件，并设置以下变量：
++
++```
++REPLICATE_API_TOKEN=your_replicate_api_token_here
++SITE_URL=http://localhost:3000
++```
++
++### 安装
+ 
+ ```bash
+-# 安装依赖
+ npm install
++```
++
++### 开发
+ 
+-# 启动开发服务器
++```bash
+ npm run dev
++```
+ 
+-# 构建生产版本
++### 构建
++
++```bash
+ npm run build
++npm start
+ ```
+ 
+-## 环境变量
++## API 端点
+ 
+-创建一个`.env.local`文件并添加：
++- `/api/generate-emoji` - 使用 Replicate API 生成图像
+ 
+-```
+-OPENROUTER_API_KEY=your_openrouter_api_key
+-SITE_URL=your_site_url
+-```
++## 贡献
+ 
+-## 在线预览
+-
+-访问 [https://ai-image-generator.vercel.app](https://ai-image-generator.vercel.app) 体验在线版本
++欢迎提交 Pull Requests 和 Issues。
+ 
+ ## 许可证
+ 
+ MIT
+-
+-## 致谢
+-
+-本项目使用了[OpenRouter](https://openrouter.ai)提供的AI API服务。
+diff --git a/app/[locale]/components/EmojiGenerator.tsx b/app/[locale]/components/EmojiGenerator.tsx
+new file mode 100644
+index 0000000..c41db3c
+--- /dev/null
++++ b/app/[locale]/components/EmojiGenerator.tsx
+@@ -0,0 +1,526 @@
++// 表情符号生成器组件
++'use client';
++
++import { useState, forwardRef, useImperativeHandle } from 'react';
++import { useTranslations } from 'next-intl';
++import styled from 'styled-components';
++
++// 样式定义
++const Container = styled.div`
++  max-width: 800px;
++  margin: 0 auto;
++  padding: 2rem;
++  display: flex;
++  flex-direction: column;
++  gap: 1.5rem;
++  border-radius: 16px;
++  box-shadow: 0 10px 40px rgba(0,0,0,0.08);
++  background: white;
++  position: relative;
++  overflow: hidden;
++  box-sizing: border-box;
++  
++  @media (max-width: 768px) {
++    padding: 1.5rem;
++    border-radius: 12px;
++  }
++  
++  @media (max-width: 480px) {
++    padding: 1.25rem;
++    gap: 1.25rem;
++  }
++  
++  &::after {
++    content: '';
++    position: absolute;
++    top: 0;
++    right: 0;
++    height: 8px;
++    width: 100%;
++    background: linear-gradient(90deg, #6e8efb, #a777e3);
++  }
++`;
++
++const Title = styled.h2`
++  font-size: 1.8rem;
++  font-weight: 700;
++  margin-bottom: 1.5rem;
++  text-align: center;
++  color: #333;
++  
++  @media (max-width: 480px) {
++    font-size: 1.5rem;
++    margin-bottom: 1rem;
++  }
++  
++  span {
++    background: linear-gradient(90deg, #6e8efb, #a777e3);
++    -webkit-background-clip: text;
++    -webkit-text-fill-color: transparent;
++  }
++`;
++
++const StyleSelector = styled.div`
++  display: flex;
++  justify-content: center;
++  gap: 1rem;
++  margin-bottom: 1.5rem;
++  flex-wrap: wrap;
++`;
++
++const StyleButton = styled.button<{ active: boolean }>`
++  padding: 0.5rem 1.2rem;
++  border-radius: 2rem;
++  border: none;
++  font-size: 0.9rem;
++  font-weight: 500;
++  cursor: pointer;
++  transition: all 0.2s ease;
++  background: ${props => props.active ? 'linear-gradient(90deg, #6e8efb, #a777e3)' : '#f5f7fa'};
++  color: ${props => props.active ? 'white' : '#333'};
++  box-shadow: ${props => props.active ? '0 4px 12px rgba(167, 119, 227, 0.3)' : 'none'};
++  
++  &:hover {
++    transform: translateY(-2px);
++    box-shadow: 0 4px 12px rgba(167, 119, 227, 0.2);
++  }
++`;
++
++const InputContainer = styled.div`
++  position: relative;
++  margin-bottom: 1rem;
++  width: 100%;
++  max-width: 100%;
++`;
++
++const Input = styled.input`
++  width: 100%;
++  padding: 1rem 1.2rem;
++  border: 2px solid #eaecef;
++  border-radius: 12px;
++  font-size: 1rem;
++  transition: all 0.2s ease;
++  box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
++  box-sizing: border-box;
++  
++  &:focus {
++    border-color: #a777e3;
++    outline: none;
++    box-shadow: 0 0 0 3px rgba(167, 119, 227, 0.1);
++  }
++  
++  &::placeholder {
++    color: #c0c4cc;
++  }
++  
++  &:disabled {
++    background-color: #f5f7fa;
++    cursor: not-allowed;
++  }
++`;
++
++const ButtonGroup = styled.div`
++  display: flex;
++  gap: 1rem;
++  width: 100%;
++`;
++
++const Button = styled.button`
++  flex: 1;
++  padding: 1rem 1.5rem;
++  background: linear-gradient(90deg, #6e8efb, #a777e3);
++  color: white;
++  border: none;
++  border-radius: 12px;
++  font-weight: 600;
++  font-size: 1rem;
++  cursor: pointer;
++  transition: all 0.3s ease;
++  box-shadow: 0 4px 12px rgba(167, 119, 227, 0.3);
++  
++  &:hover {
++    transform: translateY(-2px);
++    box-shadow: 0 6px 16px rgba(167, 119, 227, 0.4);
++  }
++  
++  &:active {
++    transform: translateY(0);
++    box-shadow: 0 2px 8px rgba(167, 119, 227, 0.25);
++  }
++  
++  &:disabled {
++    opacity: 0.6;
++    cursor: not-allowed;
++    transform: none;
++    box-shadow: none;
++  }
++`;
++
++const ExamplesSection = styled.div`
++  margin-top: 1.5rem;
++`;
++
++const ExamplesTitle = styled.h3`
++  font-size: 1rem;
++  font-weight: 500;
++  color: #666;
++  margin-bottom: 0.75rem;
++  text-align: center;
++`;
++
++const ExampleTags = styled.div`
++  display: flex;
++  flex-wrap: wrap;
++  gap: 0.5rem;
++  justify-content: center;
++  width: 100%;
++`;
++
++const ExampleTag = styled.button`
++  padding: 0.4rem 0.8rem;
++  background: #f0f2ff;
++  border: 1px solid #e0e4ff;
++  color: #5367e0;
++  border-radius: 2rem;
++  font-size: 0.85rem;
++  cursor: pointer;
++  transition: all 0.2s ease;
++  margin: 0.25rem;
++  
++  &:hover {
++    background: #e0e4ff;
++    transform: translateY(-1px);
++  }
++  
++  @media (max-width: 480px) {
++    font-size: 0.8rem;
++    padding: 0.3rem 0.6rem;
++  }
++`;
++
++const ResultSection = styled.div`
++  margin-top: 2.5rem;
++  display: flex;
++  flex-direction: column;
++  align-items: center;
++`;
++
++const ImageContainer = styled.div`
++  width: 250px;
++  height: 250px;
++  border-radius: 16px;
++  overflow: hidden;
++  position: relative;
++  border: 1px solid #eee;
++  background-color: #f9f9f9;
++  display: flex;
++  align-items: center;
++  justify-content: center;
++  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
++  
++  @media (max-width: 480px) {
++    width: 200px;
++    height: 200px;
++    border-radius: 12px;
++  }
++`;
++
++const GeneratedImage = styled.img`
++  max-width: 100%;
++  max-height: 100%;
++  object-fit: contain;
++`;
++
++const LoadingIndicator = styled.div`
++  display: flex;
++  flex-direction: column;
++  align-items: center;
++  gap: 1rem;
++`;
++
++const Spinner = styled.div`
++  width: 50px;
++  height: 50px;
++  border: 3px solid rgba(167, 119, 227, 0.1);
++  border-radius: 50%;
++  border-top-color: #a777e3;
++  animation: spin 1s ease-in-out infinite;
++  
++  @keyframes spin {
++    to { transform: rotate(360deg); }
++  }
++`;
++
++const LoadingText = styled.p`
++  color: #666;
++  font-size: 1rem;
++  font-weight: 500;
++`;
++
++const ActionButtons = styled.div`
++  display: flex;
++  gap: 1rem;
++  margin-top: 1.5rem;
++  flex-wrap: wrap;
++  justify-content: center;
++`;
++
++const ActionButton = styled.button`
++  padding: 0.8rem 1.5rem;
++  background-color: white;
++  border: 1px solid #eaecef;
++  border-radius: 12px;
++  color: #333;
++  font-size: 0.9rem;
++  font-weight: 500;
++  cursor: pointer;
++  transition: all 0.2s ease;
++  display: flex;
++  align-items: center;
++  gap: 0.5rem;
++  margin: 0.25rem;
++  
++  &:hover {
++    background-color: #f5f7fa;
++    transform: translateY(-2px);
++    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
++  }
++  
++  svg {
++    width: 18px;
++    height: 18px;
++  }
++  
++  @media (max-width: 480px) {
++    flex: 1;
++    justify-content: center;
++    min-width: 140px;
++  }
++`;
++
++const ErrorMessage = styled.div`
++  margin-top: 1rem;
++  padding: 1rem 1.2rem;
++  background-color: #fff2f2;
++  color: #e53935;
++  border-radius: 12px;
++  font-size: 0.9rem;
++  border-left: 4px solid #e53935;
++`;
++
++// 导出接口定义，用于ref
++export interface EmojiGeneratorRef {
++  setInputText: (text: string) => void;
++}
++
++const EmojiGenerator = forwardRef<EmojiGeneratorRef>((props, ref) => {
++  // 使用英语翻译
++  const t = useTranslations('EmojiGenerator');
++  const [inputText, setInputText] = useState('');
++  const [isLoading, setIsLoading] = useState(false);
++  const [generatedImage, setGeneratedImage] = useState<string | null>(null);
++  const [error, setError] = useState<string | null>(null);
++  const [style, setStyle] = useState<'emoji' | 'sticker' | 'icon'>('emoji');
++  
++  // 导出方法给父组件使用
++  useImperativeHandle(ref, () => ({
++    setInputText: (text: string) => {
++      setInputText(text);
++    }
++  }));
++  
++  const handleGenerate = async () => {
++    if (!inputText.trim()) return;
++    
++    setIsLoading(true);
++    setError(null);
++    setGeneratedImage(null);
++    
++    try {
++      // 调用API生成图像
++      const response = await fetch('/api/generate-emoji', {
++        method: 'POST',
++        headers: {
++          'Content-Type': 'application/json',
++        },
++        body: JSON.stringify({
++          text: inputText,
++          style: style
++        }),
++      });
++      
++      const data = await response.json();
++      
++      if (!response.ok) {
++        throw new Error(data.error || t('errorGenerating'));
++      }
++      
++      // 设置生成的图像URL
++      setGeneratedImage(data.imageUrl);
++    } catch (err) {
++      console.error('Error generating image:', err);
++      setError(typeof err === 'string' ? err : (err instanceof Error ? err.message : t('errorGenerating')));
++    } finally {
++      setIsLoading(false);
++    }
++  };
++  
++  const handleDownload = () => {
++    if (!generatedImage) return;
++    
++    // 为URL格式的图像创建下载链接
++    fetch(generatedImage)
++      .then(response => response.blob())
++      .then(blob => {
++        const blobUrl = URL.createObjectURL(blob);
++        const link = document.createElement('a');
++        link.href = blobUrl;
++        link.download = `ai-emoji-${Date.now()}.png`;
++        document.body.appendChild(link);
++        link.click();
++        document.body.removeChild(link);
++        URL.revokeObjectURL(blobUrl);
++      })
++      .catch(err => {
++        console.error('Error downloading image:', err);
++        alert(t('errorCopying'));
++      });
++  };
++  
++  const handleCopy = async () => {
++    if (!generatedImage) return;
++    
++    try {
++      // 获取图像的blob数据
++      const response = await fetch(generatedImage);
++      const blob = await response.blob();
++      
++      // 使用Clipboard API复制图像
++      await navigator.clipboard.write([
++        new ClipboardItem({
++          [blob.type]: blob
++        })
++      ]);
++      
++      alert(t('copiedToClipboard'));
++    } catch (err) {
++      console.error('Failed to copy image:', err);
++      alert(t('failedToCopy'));
++    }
++  };
++  
++  const examples = {
++    emoji: [t('exampleEmoji1'), t('exampleEmoji2'), t('exampleEmoji3')],
++    sticker: [t('exampleSticker1'), t('exampleSticker2'), t('exampleSticker3')],
++    icon: [t('exampleIcon1'), t('exampleIcon2'), t('exampleIcon3')]
++  };
++  
++  const handleExampleClick = (example: string) => {
++    setInputText(example);
++  };
++  
++  return (
++    <Container>
++      <Title>
++        <span>AI</span> {t('title')}
++      </Title>
++      
++      <StyleSelector>
++        <StyleButton 
++          active={style === 'emoji'} 
++          onClick={() => setStyle('emoji')}
++        >
++          {t('categoryEmoji')}
++        </StyleButton>
++        <StyleButton 
++          active={style === 'sticker'} 
++          onClick={() => setStyle('sticker')}
++        >
++          {t('categorySticker')}
++        </StyleButton>
++        <StyleButton 
++          active={style === 'icon'} 
++          onClick={() => setStyle('icon')}
++        >
++          {t('categoryIcon')}
++        </StyleButton>
++      </StyleSelector>
++      
++      <InputContainer>
++        <Input 
++          type="text" 
++          value={inputText}
++          onChange={(e) => setInputText(e.target.value)}
++          placeholder={t('inputPlaceholder')}
++          disabled={isLoading}
++        />
++      </InputContainer>
++      
++      <ButtonGroup>
++        <Button 
++          onClick={handleGenerate} 
++          disabled={isLoading || !inputText.trim()}
++        >
++          {isLoading ? t('generating') : t('generateButton')}
++        </Button>
++      </ButtonGroup>
++      
++      <ExamplesSection>
++        <ExamplesTitle>{t('tryExample')}</ExamplesTitle>
++        <ExampleTags>
++          {examples[style].map((example, index) => (
++            <ExampleTag 
++              key={index} 
++              onClick={() => handleExampleClick(example)}
++            >
++              {example}
++            </ExampleTag>
++          ))}
++        </ExampleTags>
++      </ExamplesSection>
++      
++      {error && (
++        <ErrorMessage>
++          {error}
++        </ErrorMessage>
++      )}
++      
++      {(isLoading || generatedImage) && (
++        <ResultSection>
++          <ImageContainer>
++            {isLoading ? (
++              <LoadingIndicator>
++                <Spinner />
++                <LoadingText>{t('loadingMessage')}</LoadingText>
++              </LoadingIndicator>
++            ) : generatedImage ? (
++              <GeneratedImage src={generatedImage} alt="Generated emoji" />
++            ) : null}
++          </ImageContainer>
++          
++          {generatedImage && (
++            <ActionButtons>
++              <ActionButton onClick={handleCopy}>
++                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
++                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
++                </svg>
++                {t('copyButton')}
++              </ActionButton>
++              <ActionButton onClick={handleDownload}>
++                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
++                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
++                </svg>
++                {t('downloadButton')}
++              </ActionButton>
++            </ActionButtons>
++          )}
++        </ResultSection>
++      )}
++    </Container>
++  );
++});
++
++// 添加组件名称，方便调试
++EmojiGenerator.displayName = 'EmojiGenerator';
++
++export default EmojiGenerator; 
+\ No newline at end of file
+diff --git a/app/[locale]/layout.tsx b/app/[locale]/layout.tsx
+new file mode 100644
+index 0000000..7e10f88
+--- /dev/null
++++ b/app/[locale]/layout.tsx
+@@ -0,0 +1,40 @@
++// 国际化路由布局
++import { NextIntlClientProvider } from 'next-intl';
++import { getMessages } from '../i18n';
++import { SiteProvider } from '../contexts/SiteContext';
++import ThemeProviderClient from '../components/ThemeProviderClient';
++import '../globals.css';
++
++// 元数据
++export const metadata = {
++  title: 'AI Sticker Generator - Create Custom Stickers with AI',
++  description: 'Create custom stickers and emojis with AI. Generate unique stickers for chat, social media, and more!',
++};
++
++// 国际化路由布局
++export default async function LocaleLayout({
++  children,
++}: {
++  children: React.ReactNode;
++  params: { locale: string };
++}) {
++  // 固定使用英语
++  const locale = 'en';
++  
++  // 获取翻译消息
++  const messages = await getMessages();
++
++  return (
++    <html lang={locale} suppressHydrationWarning>
++      <body>
++        <NextIntlClientProvider locale={locale} messages={messages}>
++          <ThemeProviderClient>
++            <SiteProvider>
++              {children}
++            </SiteProvider>
++          </ThemeProviderClient>
++        </NextIntlClientProvider>
++      </body>
++    </html>
++  );
++} 
+\ No newline at end of file
+diff --git a/app/[locale]/page.tsx b/app/[locale]/page.tsx
+new file mode 100644
+index 0000000..58a4b18
+--- /dev/null
++++ b/app/[locale]/page.tsx
+@@ -0,0 +1,368 @@
++'use client';
++
++import { useTranslations } from 'next-intl';
++import { useState, useRef } from 'react';
++import EmojiGenerator, { EmojiGeneratorRef } from './components/EmojiGenerator';
++import styled from 'styled-components';
++
++// 样式定义
++const Hero = styled.div`
++  background: linear-gradient(135deg, #6e8efb, #a777e3);
++  padding: 4rem 2rem;
++  border-radius: 0 0 2rem 2rem;
++  margin-bottom: 3rem;
++  text-align: center;
++  color: white;
++  position: relative;
++  overflow: hidden;
++
++  &:before {
++    content: '';
++    position: absolute;
++    top: -10%;
++    left: -10%;
++    width: 120%;
++    height: 120%;
++    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
++    opacity: 0.5;
++    z-index: 0;
++  }
++`;
++
++const HeroContent = styled.div`
++  position: relative;
++  z-index: 1;
++`;
++
++const HeroTitle = styled.h1`
++  font-size: 3.5rem;
++  font-weight: 800;
++  margin-bottom: 1rem;
++  background: linear-gradient(90deg, #fff, #f0f0f0);
++  -webkit-background-clip: text;
++  -webkit-text-fill-color: transparent;
++  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
++`;
++
++const HeroSubtitle = styled.p`
++  font-size: 1.5rem;
++  max-width: 700px;
++  margin: 0 auto 2rem auto;
++  opacity: 0.9;
++`;
++
++const FeatureSection = styled.section`
++  margin: 4rem 0;
++`;
++
++const FeatureTitle = styled.h2`
++  font-size: 2rem;
++  font-weight: 700;
++  text-align: center;
++  margin-bottom: 2rem;
++  color: #333;
++  
++  span {
++    background: linear-gradient(90deg, #6e8efb, #a777e3);
++    -webkit-background-clip: text;
++    -webkit-text-fill-color: transparent;
++  }
++`;
++
++const FeatureGrid = styled.div`
++  display: grid;
++  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
++  gap: 2rem;
++  margin: 0 auto;
++  max-width: 1200px;
++  padding: 0 1rem;
++`;
++
++const FeatureCard = styled.div`
++  background: white;
++  border-radius: 1rem;
++  padding: 2rem;
++  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
++  transition: transform 0.3s ease;
++  
++  &:hover {
++    transform: translateY(-5px);
++  }
++`;
++
++const FeatureIcon = styled.div`
++  width: 60px;
++  height: 60px;
++  background: linear-gradient(135deg, #6e8efb, #a777e3);
++  border-radius: 50%;
++  display: flex;
++  align-items: center;
++  justify-content: center;
++  margin-bottom: 1.5rem;
++  
++  svg {
++    width: 30px;
++    height: 30px;
++    color: white;
++  }
++`;
++
++const FeatureCardTitle = styled.h3`
++  font-size: 1.25rem;
++  font-weight: 600;
++  margin-bottom: 1rem;
++  color: #333;
++`;
++
++const FeatureCardText = styled.p`
++  color: #666;
++  line-height: 1.5;
++`;
++
++const HowSection = styled.section`
++  background: #f8f9fa;
++  padding: 4rem 2rem;
++  border-radius: 2rem;
++  margin: 4rem auto;
++  max-width: 1200px;
++`;
++
++const StepGrid = styled.div`
++  display: grid;
++  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
++  gap: 2rem;
++  margin-top: 2rem;
++`;
++
++const StepCard = styled.div`
++  display: flex;
++  flex-direction: column;
++  align-items: center;
++  text-align: center;
++`;
++
++const StepNumber = styled.div`
++  width: 40px;
++  height: 40px;
++  background: linear-gradient(135deg, #6e8efb, #a777e3);
++  border-radius: 50%;
++  display: flex;
++  align-items: center;
++  justify-content: center;
++  color: white;
++  font-weight: bold;
++  margin-bottom: 1rem;
++`;
++
++const StepTitle = styled.h3`
++  font-size: 1.25rem;
++  font-weight: 600;
++  margin-bottom: 0.5rem;
++  color: #333;
++`;
++
++const StepText = styled.p`
++  color: #666;
++  line-height: 1.5;
++`;
++
++const ExampleSection = styled.section`
++  margin: 4rem auto;
++  max-width: 1200px;
++  padding: 0 1rem;
++  
++  @media (max-width: 768px) {
++    margin: 3rem auto;
++  }
++  
++  @media (max-width: 480px) {
++    margin: 2rem auto;
++  }
++`;
++
++const ExampleGrid = styled.div`
++  display: flex;
++  flex-wrap: wrap;
++  gap: 0.75rem;
++  justify-content: center;
++  margin-top: 2rem;
++  
++  @media (max-width: 768px) {
++    gap: 0.5rem;
++    margin-top: 1.5rem;
++  }
++`;
++
++const ExampleTag = styled.button`
++  background: #f0f2ff;
++  border: 1px solid #e0e4ff;
++  color: #5367e0;
++  padding: 0.5rem 1rem;
++  border-radius: 2rem;
++  font-size: 0.9rem;
++  cursor: pointer;
++  transition: all 0.2s ease;
++  margin: 0.25rem;
++  
++  &:hover {
++    background: #e0e4ff;
++    transform: translateY(-1px);
++    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
++  }
++  
++  @media (max-width: 480px) {
++    font-size: 0.8rem;
++    padding: 0.4rem 0.8rem;
++  }
++`;
++
++const Footer = styled.footer`
++  text-align: center;
++  padding: 2rem;
++  border-top: 1px solid #eee;
++  margin-top: 4rem;
++  color: #888;
++`;
++
++export default function Home() {
++  const t = useTranslations('Home');
++  const generatorRef = useRef<EmojiGeneratorRef>(null);
++  
++  const examplePrompts = [
++    'Happy cat ',
++    'Dancing Pizza ',
++    'Angry Crocodile ',
++    'Rainbow Unicorn ',
++    'Crying clouds',
++    'Dinosaur Astronaut ',
++    'Cactus with sunglasses',
++    'Sneezing Volcano'
++  ];
++  
++  const handleExampleClick = (example: string) => {
++    // 平滑滚动到生成器
++    const generator = document.getElementById('emoji-generator');
++    if (generator) {
++      generator.scrollIntoView({ behavior: 'smooth' });
++    }
++    
++    // 设置输入文本
++    setTimeout(() => {
++      if (generatorRef.current) {
++        generatorRef.current.setInputText(example);
++      }
++    }, 500);
++  };
++  
++  return (
++    <main className="min-h-screen bg-white dark:bg-gray-950">
++      <Hero>
++        <HeroContent>
++          <HeroTitle>{t('title')}</HeroTitle>
++          <HeroSubtitle>{t('subtitle')}</HeroSubtitle>
++        </HeroContent>
++      </Hero>
++
++      <div className="container mx-auto px-4">
++        <div id="emoji-generator">
++          <EmojiGenerator ref={generatorRef} />
++        </div>
++        
++        <FeatureSection>
++          <FeatureTitle>
++            <span>{t('features.title').split(' ')[0]}</span> {t('features.title').split(' ').slice(1).join(' ')}
++          </FeatureTitle>
++          <FeatureGrid>
++            <FeatureCard>
++              <FeatureIcon>
++                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
++                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
++                </svg>
++              </FeatureIcon>
++              <FeatureCardTitle>{t('features.instant.title')}</FeatureCardTitle>
++              <FeatureCardText>
++                {t('features.instant.description')}
++              </FeatureCardText>
++            </FeatureCard>
++            
++            <FeatureCard>
++              <FeatureIcon>
++                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
++                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
++                </svg>
++              </FeatureIcon>
++              <FeatureCardTitle>{t('features.quality.title')}</FeatureCardTitle>
++              <FeatureCardText>
++                {t('features.quality.description')}
++              </FeatureCardText>
++            </FeatureCard>
++            
++            <FeatureCard>
++              <FeatureIcon>
++                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
++                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
++                </svg>
++              </FeatureIcon>
++              <FeatureCardTitle>{t('features.limitless.title')}</FeatureCardTitle>
++              <FeatureCardText>
++                {t('features.limitless.description')}
++              </FeatureCardText>
++            </FeatureCard>
++          </FeatureGrid>
++        </FeatureSection>
++        
++        <HowSection>
++          <FeatureTitle>
++            <span>{t('howToUse.title').split(' ')[0]}</span> {t('howToUse.title').split(' ').slice(1).join(' ')}
++          </FeatureTitle>
++          <StepGrid>
++            <StepCard>
++              <StepNumber>1</StepNumber>
++              <StepTitle>{t('howToUse.step1.title')}</StepTitle>
++              <StepText>
++                {t('howToUse.step1.description')}
++              </StepText>
++            </StepCard>
++            
++            <StepCard>
++              <StepNumber>2</StepNumber>
++              <StepTitle>{t('howToUse.step2.title')}</StepTitle>
++              <StepText>
++                {t('howToUse.step2.description')}
++              </StepText>
++            </StepCard>
++            
++            <StepCard>
++              <StepNumber>3</StepNumber>
++              <StepTitle>{t('howToUse.step3.title')}</StepTitle>
++              <StepText>
++                {t('howToUse.step3.description')}
++              </StepText>
++            </StepCard>
++          </StepGrid>
++        </HowSection>
++        
++        <ExampleSection>
++          <FeatureTitle>
++            <span>{t('examples.title').split(' ')[0]}</span> {t('examples.title').split(' ').slice(1).join(' ')}
++          </FeatureTitle>
++          <ExampleGrid>
++            {examplePrompts.map((prompt, index) => (
++              <ExampleTag 
++                key={index} 
++                onClick={() => handleExampleClick(prompt)}
++              >
++                {prompt}
++              </ExampleTag>
++            ))}
++          </ExampleGrid>
++        </ExampleSection>
++        
++        <Footer>
++          <p>© {new Date().getFullYear()} AI Emoji Generator | Powered by AI</p>
++          <p className="mt-2 text-sm">Using advanced intelligent spectrum AI technology to create</p>
++        </Footer>
++      </div>
++    </main>
++  );
++} 
+\ No newline at end of file
+diff --git a/app/api/generate-emoji/route.ts b/app/api/generate-emoji/route.ts
+index 04aa78a..f848073 100644
+--- a/app/api/generate-emoji/route.ts
++++ b/app/api/generate-emoji/route.ts
+@@ -1,128 +1,128 @@
+ // API endpoint for generating AI images
+ import { NextRequest, NextResponse } from "next/server";
+-import axios from "axios";
++import crypto from 'crypto';
+ 
+-// OpenRouter API配置
+-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || "";
+-const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
+-const OPENROUTER_IMAGE_API_URL = "https://openrouter.ai/api/v1/images/generations";
+-const SITE_URL = process.env.SITE_URL || "https://emoji-tool.vercel.app";
+-
+-// 错误消息的多语言支持
++// 错误消息
+ const errorMessages = {
+-  en: {
+-    textRequired: "Text input is required",
+-    failedGenerate: "Failed to generate image",
+-    modelError: "Error with AI model response"
+-  },
+-  zh: {
+-    textRequired: "需要输入文字",
+-    failedGenerate: "生成图像失败",
+-    modelError: "AI模型响应出错"
+-  }
++  textRequired: "Text input is required",
++  failedToGenerate: "Failed to generate image. Please try again later.",
++  modelError: "An error occurred with the AI model. Please try again."
+ };
+ 
+-// 样式类型
++// 图像样式类型
+ type StyleType = "emoji" | "sticker" | "icon";
+-type LanguageType = "en" | "zh";
+ 
+-// 为不同的场景定义prompt模板
++// 不同样式的提示词模板（英文）
+ const promptTemplates = {
+-  en: {
+-    emoji: "Create a cute cartoon emoji style image of {description}. Make it simple, colorful, and expressive.",
+-    sticker: "Create a cute sticker design of {description}. Make it vibrant, with simple background.",
+-    icon: "Create a minimalist icon representing {description}. Use simple shapes and colors."
+-  },
+-  zh: {
+-    emoji: "创建一个可爱的卡通emoji风格图像，表现{description}。让它简单、多彩且富有表现力。",
+-    sticker: "创建一个可爱的{description}贴纸设计。让它色彩鲜艳，背景简单。",
+-    icon: "创建一个代表{description}的极简主义图标。使用简单的形状和颜色。"
+-  }
++  emoji: "An emoji-style icon of {text}. Bright colors, simple shapes, cute style",
++  sticker: "A sticker-style image of {text}. Vibrant, cute, cartoonish, with transparent background",
++  icon: "A minimalist icon of {text}. Clean lines, flat design, suitable for UI"
+ };
+ 
+-// 生成图像
+-async function generateImage(text: string, language: LanguageType = "en", style: string = "emoji") {
++/**
++ * 使用智谱AI的Cogview API生成图像
++ */
++async function generateImage(text: string, style: string = "emoji") {
+   try {
+-    // 确保style是有效的
+-    const validStyle = (style === "emoji" || style === "sticker" || style === "icon") ? style : "emoji";
+-    
+-    // 获取对应样式的prompt模板
+-    const promptTemplate = promptTemplates[language][validStyle as StyleType];
++    // 选择提示词模板
++    const templateKey = style as StyleType;
++    const template = promptTemplates[templateKey] || promptTemplates.emoji;
++    const prompt = template.replace('{text}', text);
++
++    console.log("Generating image with prompt:", prompt);
++
++    // 智谱AI Cogview API 配置
++    const apiKey = "3a959996b699416d9d2b3699bc7c22e5.nGahnDA9PZc3JMrq";
++    const apiUrl = "https://open.bigmodel.cn/api/paas/v4/images/generations";
+     
+-    // 替换描述
+-    const prompt = promptTemplate.replace("{description}", text);
++    // 生成请求ID
++    const requestId = crypto.randomUUID();
+     
+-    // 调用图像生成API
+-    const response = await axios.post(
+-      OPENROUTER_IMAGE_API_URL,
+-      {
+-        model: "stability/sdxl-turbo", // 使用稳定的图像生成模型
+-        prompt: prompt,
+-        n: 1, // 生成一张图片
+-        size: "512x512",
+-        response_format: "url"
++    // 构建API请求
++    const response = await fetch(apiUrl, {
++      method: 'POST',
++      headers: {
++        'Content-Type': 'application/json',
++        'Authorization': `Bearer ${apiKey}`
+       },
+-      {
+-        headers: {
+-          "Content-Type": "application/json",
+-          "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
+-          "HTTP-Referer": SITE_URL,
+-          "X-Title": "Emoji Tool"
+-        }
+-      }
+-    );
++      body: JSON.stringify({
++        model: 'cogview-3-flash', // 使用Cogview模型
++        prompt: prompt,    // 提示词
++        request_id: requestId,
++        n: 1,              // 生成1张图片
++        width: 512,        // 图片宽度
++        height: 512        // 图片高度
++      })
++    });
+ 
+-    // 检查响应格式
+-    if (response.data && response.data.data && response.data.data.length > 0) {
+-      // 返回生成的图像URL
++    if (!response.ok) {
++      console.error("Cogview API error:", response.status, await response.text());
++      throw new Error(`API responded with status: ${response.status}`);
++    }
++
++    const result = await response.json();
++    console.log("Cogview API Response:", result);
++
++    // 解析响应 - 提取图像URL
++    if (result && result.data && Array.isArray(result.data) && result.data.length > 0 && result.data[0].url) {
++      const originalImageUrl = result.data[0].url;
++      
++      // 创建代理URL，通过我们的API代理访问图像
++      const proxyImageUrl = `/api/proxy-image?url=${encodeURIComponent(originalImageUrl)}`;
++      
+       return {
+-        imageUrl: response.data.data[0].url,
++        imageUrl: proxyImageUrl,
+         prompt: prompt
+       };
+     } else {
+-      console.error("Unexpected API response structure:", response.data);
+-      throw new Error("Unexpected API response structure");
++      console.error("Unexpected Cogview API response format:", result);
++      throw new Error("Unexpected API response format");
+     }
+   } catch (error) {
+-    console.error("Error calling OpenRouter Image API:", error);
+-    if (axios.isAxiosError(error) && error.response) {
+-      console.error("API Error Response:", error.response.data);
+-    }
++    console.error("Error calling Cogview API:", error);
+     throw error;
+   }
+ }
+ 
+ export async function POST(request: NextRequest) {
+-  // 尝试从请求头中获取语言
+-  const acceptLanguage = request.headers.get('Accept-Language') || '';
+-  const lang = acceptLanguage.includes('zh') ? 'zh' : 'en';
+-  const errors = errorMessages[lang as LanguageType];
+-
+   try {
+     // Parse the request body
+     const { text, style = "emoji" } = await request.json();
+     
+     if (!text || typeof text !== 'string') {
+       return NextResponse.json(
+-        { error: errors.textRequired },
++        { error: errorMessages.textRequired },
+         { status: 400 }
+       );
+     }
+     
+-    // 使用OpenRouter API生成图像
+-    const imageResult = await generateImage(text, lang as LanguageType, style);
++    // 使用智谱AI Cogview API生成图像
++    const imageResult = await generateImage(text, style);
+     
+     // 返回图像URL和提示词
+     return NextResponse.json({
+       success: true,
+       imageUrl: imageResult.imageUrl,
+       prompt: imageResult.prompt,
+-      text
++    }, {
++      headers: {
++        // 添加CORS头，允许前端请求资源
++        'Access-Control-Allow-Origin': '*',
++        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
++        'Access-Control-Allow-Headers': 'Content-Type, Authorization'
++      }
+     });
+   } catch (error) {
+     console.error("Error generating image:", error);
++    
++    // 处理错误信息
++    let errorMessage = errorMessages.failedToGenerate;
++    if (error instanceof Error) {
++      errorMessage = error.message || errorMessages.modelError;
++    }
++    
+     return NextResponse.json(
+-      { error: errors.failedGenerate },
++      { error: errorMessage },
+       { status: 500 }
+     );
+   }
+diff --git a/app/api/proxy-image/route.ts b/app/api/proxy-image/route.ts
+new file mode 100644
+index 0000000..c203f3a
+--- /dev/null
++++ b/app/api/proxy-image/route.ts
+@@ -0,0 +1,39 @@
++import { NextRequest, NextResponse } from 'next/server';
++
++/**
++ * 代理图像内容，解决跨域问题
++ */
++export async function GET(request: NextRequest) {
++  // 从URL参数中获取图像URL
++  const url = request.nextUrl.searchParams.get('url');
++  
++  if (!url) {
++    return NextResponse.json({ error: 'Image URL is required' }, { status: 400 });
++  }
++  
++  try {
++    // 获取图像内容
++    const response = await fetch(url);
++    
++    if (!response.ok) {
++      throw new Error(`Failed to fetch image: ${response.status}`);
++    }
++    
++    // 获取图像的二进制数据
++    const imageData = await response.arrayBuffer();
++    
++    // 获取内容类型
++    const contentType = response.headers.get('content-type') || 'image/png';
++    
++    // 返回图像数据，设置适当的内容类型
++    return new NextResponse(imageData, {
++      headers: {
++        'Content-Type': contentType,
++        'Cache-Control': 'public, max-age=86400',
++      },
++    });
++  } catch (error) {
++    console.error('Error proxying image:', error);
++    return NextResponse.json({ error: 'Failed to proxy image' }, { status: 500 });
++  }
++} 
+\ No newline at end of file
+diff --git a/app/components/EmojiGenerator.tsx b/app/components/EmojiGenerator.tsx
+deleted file mode 100644
+index a5f840a..0000000
+--- a/app/components/EmojiGenerator.tsx
++++ /dev/null
+@@ -1,211 +0,0 @@
+-'use client';
+-
+-import { useState, useRef } from 'react';
+-import { useLanguage } from '../contexts/LanguageContext';
+-
+-// 图像样式类型
+-type StyleType = "emoji" | "sticker" | "icon";
+-
+-export default function EmojiGenerator() {
+-  const { t } = useLanguage();
+-  const [text, setText] = useState('');
+-  const [style, setStyle] = useState<StyleType>("emoji");
+-  const [isLoading, setIsLoading] = useState(false);
+-  const [error, setError] = useState('');
+-  const [emojiResult, setEmojiResult] = useState<{ 
+-    imageUrl: string; 
+-    text: string;
+-    prompt?: string;
+-  } | null>(null);
+-  const imageRef = useRef<HTMLImageElement>(null);
+-
+-  const handleSubmit = async (e: React.FormEvent) => {
+-    e.preventDefault();
+-    
+-    if (!text.trim()) {
+-      setError(t.generator.errorEmpty);
+-      return;
+-    }
+-    
+-    try {
+-      setIsLoading(true);
+-      setError('');
+-      
+-      const response = await fetch('/api/generate-emoji', {
+-        method: 'POST',
+-        headers: {
+-          'Content-Type': 'application/json',
+-        },
+-        body: JSON.stringify({ text: text.trim(), style }),
+-      });
+-      
+-      if (!response.ok) {
+-        const errorData = await response.json();
+-        throw new Error(errorData.error || t.generator.errorGeneral);
+-      }
+-      
+-      const data = await response.json();
+-      setEmojiResult(data);
+-    } catch (error) {
+-      console.error('Error:', error);
+-      setError(error instanceof Error ? error.message : t.generator.errorGeneral);
+-    } finally {
+-      setIsLoading(false);
+-    }
+-  };
+-
+-  const handleDownload = async () => {
+-    if (!emojiResult) return;
+-    
+-    try {
+-      // 获取图片数据
+-      const response = await fetch(emojiResult.imageUrl);
+-      const blob = await response.blob();
+-      
+-      // 创建URL供下载
+-      const url = URL.createObjectURL(blob);
+-      
+-      // 创建临时锚点元素
+-      const link = document.createElement('a');
+-      link.href = url;
+-      
+-      // 根据图片类型设置文件扩展名
+-      const extension = blob.type.includes('svg') ? 'svg' : 'png';
+-      link.download = `ai-${style}-${emojiResult.text.replace(/\s+/g, '-')}.${extension}`;
+-      
+-      // 触发下载
+-      document.body.appendChild(link);
+-      link.click();
+-      
+-      // 清理
+-      document.body.removeChild(link);
+-      URL.revokeObjectURL(url);
+-    } catch (error) {
+-      console.error('下载图像时出错:', error);
+-      setError(t.generator.errorDownload);
+-    }
+-  };
+-
+-  return (
+-    <div className="max-w-2xl mx-auto p-4 bg-white dark:bg-black rounded-xl shadow-md">
+-      <div className="mb-8 text-center">
+-        <h1 className="text-4xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500">
+-          {t.generator.title}
+-        </h1>
+-        <p className="text-gray-600 dark:text-gray-400">
+-          {t.generator.subtitle}
+-        </p>
+-      </div>
+-
+-      <form onSubmit={handleSubmit} className="mb-8">
+-        <div className="mb-4">
+-          <label htmlFor="text-input" className="block mb-2 text-sm font-medium">
+-            {t.generator.inputLabel}
+-          </label>
+-          <input
+-            id="text-input"
+-            type="text"
+-            value={text}
+-            onChange={(e) => setText(e.target.value)}
+-            placeholder={t.generator.inputPlaceholder}
+-            className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 
+-                     bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 
+-                     focus:ring-blue-500 focus:border-transparent transition-all"
+-            maxLength={50}
+-          />
+-          {text.length > 0 && (
+-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+-              {text.length}/50 {t.generator.charactersCount}
+-            </p>
+-          )}
+-        </div>
+-        
+-        <div className="mb-6">
+-          <label className="block mb-2 text-sm font-medium">
+-            {t.generator.styleLabel}
+-          </label>
+-          <div className="grid grid-cols-3 gap-3">
+-            <button
+-              type="button"
+-              onClick={() => setStyle("emoji")}
+-              className={`px-4 py-2 text-center rounded-lg transition-colors ${
+-                style === "emoji" 
+-                  ? "bg-blue-600 text-white" 
+-                  : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+-              }`}
+-            >
+-              {t.generator.styleEmoji}
+-            </button>
+-            <button
+-              type="button"
+-              onClick={() => setStyle("sticker")}
+-              className={`px-4 py-2 text-center rounded-lg transition-colors ${
+-                style === "sticker" 
+-                  ? "bg-blue-600 text-white" 
+-                  : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+-              }`}
+-            >
+-              {t.generator.styleSticker}
+-            </button>
+-            <button
+-              type="button"
+-              onClick={() => setStyle("icon")}
+-              className={`px-4 py-2 text-center rounded-lg transition-colors ${
+-                style === "icon" 
+-                  ? "bg-blue-600 text-white" 
+-                  : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+-              }`}
+-            >
+-              {t.generator.styleIcon}
+-            </button>
+-          </div>
+-        </div>
+-
+-        <button
+-          type="submit"
+-          disabled={isLoading}
+-          className="w-full py-3 px-4 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 
+-                   text-white font-medium rounded-lg hover:opacity-90 transition-opacity 
+-                   focus:ring-4 focus:outline-none focus:ring-blue-300 disabled:opacity-70"
+-        >
+-          {isLoading ? t.generator.buttonCreating : t.generator.buttonCreate}
+-        </button>
+-
+-        {error && (
+-          <p className="mt-2 text-red-500 text-sm">{error}</p>
+-        )}
+-      </form>
+-
+-      {emojiResult && (
+-        <div className="text-center bg-gray-100 dark:bg-gray-800 p-6 rounded-xl">
+-          <h2 className="text-xl font-semibold mb-4">{t.generator.resultTitle}</h2>
+-          
+-          <div className="mx-auto mb-6 rounded-lg overflow-hidden shadow-lg" style={{ maxWidth: '100%', height: 'auto' }}>
+-            <img
+-              ref={imageRef}
+-              src={emojiResult.imageUrl}
+-              alt={`AI generated image of ${emojiResult.text}`}
+-              className="w-full h-auto object-contain"
+-              style={{ maxHeight: '400px' }}
+-            />
+-          </div>
+-          
+-          {emojiResult.prompt && (
+-            <div className="mb-4 text-sm text-gray-600 dark:text-gray-400 bg-gray-200 dark:bg-gray-700 p-3 rounded text-left">
+-              <strong>{t.generator.promptLabel}:</strong> {emojiResult.prompt}
+-            </div>
+-          )}
+-          
+-          <button
+-            onClick={handleDownload}
+-            className="py-2 px-4 bg-blue-600 text-white font-medium rounded-lg 
+-                     hover:bg-blue-700 transition-colors focus:ring-4 
+-                     focus:outline-none focus:ring-blue-300"
+-          >
+-            {t.generator.buttonDownload}
+-          </button>
+-        </div>
+-      )}
+-    </div>
+-  );
+-} 
+\ No newline at end of file
+diff --git a/app/components/ThemeProviderClient.tsx b/app/components/ThemeProviderClient.tsx
+new file mode 100644
+index 0000000..61e5ccb
+--- /dev/null
++++ b/app/components/ThemeProviderClient.tsx
+@@ -0,0 +1,35 @@
++'use client';
++
++import { ThemeProvider } from 'next-themes';
++import { ReactNode, useEffect, useState } from 'react';
++
++export default function ThemeProviderClient({ 
++  children 
++}: { 
++  children: ReactNode 
++}) {
++  const [mounted, setMounted] = useState(false);
++
++  // useEffect只在客户端执行
++  useEffect(() => {
++    setMounted(true);
++  }, []);
++
++  // 避免在服务器端渲染主题相关内容
++  if (!mounted) {
++    return <>{children}</>;
++  }
++
++  return (
++    <ThemeProvider
++      attribute="class"
++      defaultTheme="system"
++      enableSystem
++      enableColorScheme={false}
++      storageKey="theme"
++      disableTransitionOnChange
++    >
++      {children}
++    </ThemeProvider>
++  );
++} 
+\ No newline at end of file
+diff --git a/app/contexts/SiteContext.tsx b/app/contexts/SiteContext.tsx
+new file mode 100644
+index 0000000..5c27c04
+--- /dev/null
++++ b/app/contexts/SiteContext.tsx
+@@ -0,0 +1,43 @@
++'use client';
++
++import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
++
++// 定义上下文类型
++type SiteContextType = {
++  loadedEmoji: string | null;
++  setLoadedEmoji: (emoji: string | null) => void;
++};
++
++// 创建上下文
++const SiteContext = createContext<SiteContextType | undefined>(undefined);
++
++// 上下文提供者组件
++export function SiteProvider({ children }: { children: ReactNode }) {
++  const [loadedEmoji, setLoadedEmoji] = useState<string | null>(null);
++  const [hasMounted, setHasMounted] = useState(false);
++
++  // 仅在客户端加载后渲染
++  useEffect(() => {
++    setHasMounted(true);
++  }, []);
++
++  // 避免服务器端渲染与客户端渲染不匹配
++  if (!hasMounted) {
++    return <>{children}</>;
++  }
++
++  return (
++    <SiteContext.Provider value={{ loadedEmoji, setLoadedEmoji }}>
++      {children}
++    </SiteContext.Provider>
++  );
++}
++
++// 使用上下文的钩子
++export function useSiteContext() {
++  const context = useContext(SiteContext);
++  if (context === undefined) {
++    throw new Error('useSiteContext must be used within a SiteProvider');
++  }
++  return context;
++} 
+\ No newline at end of file
+diff --git a/app/globals.css b/app/globals.css
+index 25d5b38..4879d32 100644
+--- a/app/globals.css
++++ b/app/globals.css
+@@ -1,16 +1,15 @@
+-@import "tailwindcss";
++@tailwind base;
++@tailwind components;
++@tailwind utilities;
+ 
+ :root {
+   --background: #ffffff;
+   --foreground: #171717;
+   --primary-gradient: linear-gradient(to right, #f472b6, #a855f7, #3b82f6);
+-}
+-
+-@theme inline {
+   --color-background: var(--background);
+   --color-foreground: var(--foreground);
+-  --font-sans: var(--font-geist-sans);
+-  --font-mono: var(--font-geist-mono);
++  --font-sans: system-ui, sans-serif;
++  --font-mono: ui-monospace, monospace;
+ }
+ 
+ @media (prefers-color-scheme: dark) {
+@@ -23,7 +22,7 @@
+ body {
+   background: var(--background);
+   color: var(--foreground);
+-  font-family: var(--font-sans, Arial, Helvetica, sans-serif);
++  font-family: system-ui, sans-serif;
+ }
+ 
+ /* Custom scrollbar for the whole app */
+diff --git a/app/i18n.ts b/app/i18n.ts
+new file mode 100644
+index 0000000..4e3e97f
+--- /dev/null
++++ b/app/i18n.ts
+@@ -0,0 +1,81 @@
++// 国际化配置 - 仅支持英语
++import { createTranslator } from 'next-intl';
++
++// 英文翻译
++const enMessages = {
++  EmojiGenerator: {
++    title: 'Emoji Generator',
++    description: 'Create custom emojis with AI. Type your idea and generate unique images.',
++    categoryEmoji: 'Emoji',
++    categorySticker: 'Sticker',
++    categoryIcon: 'Icon',
++    inputPlaceholder: 'Describe your emoji idea...',
++    generateButton: 'Generate',
++    generating: 'Generating...',
++    loadingMessage: 'Creating your emoji...',
++    copyButton: 'Copy',
++    downloadButton: 'Download',
++    tryExample: 'Try an Example',
++    errorGenerating: 'Error generating the image. Please try again.',
++    copiedToClipboard: 'Copied to clipboard!',
++    errorCopying: 'Error copying the image. Please try the download button instead.',
++    failedToCopy: 'Failed to copy image. Please try the download button instead.',
++    exampleEmoji1: 'happy cat',
++    exampleEmoji2: 'surprised panda',
++    exampleEmoji3: 'laughing pizza',
++    exampleSticker1: 'cute dog with sunglasses',
++    exampleSticker2: 'rainbow unicorn',
++    exampleSticker3: 'excited robot',
++    exampleIcon1: 'email icon',
++    exampleIcon2: 'settings gear',
++    exampleIcon3: 'chat bubble',
++  },
++  Home: {
++    title: 'AI Emoji Generator',
++    subtitle: 'Create unique emojis with the power of artificial intelligence',
++    getStarted: 'Get Started',
++    features: {
++      title: 'AI Magic for Emoji Creation',
++      instant: {
++        title: 'Instant Creation',
++        description: 'Using advanced AI technology, turn your text descriptions into vibrant emoji images in seconds. No design experience needed.',
++      },
++      quality: {
++        title: 'High Quality',
++        description: 'Generated emojis are high-definition with transparent backgrounds, perfect for chat apps and social platforms. Copy or download with one click.',
++      },
++      limitless: {
++        title: 'Limitless Creativity',
++        description: 'Your imagination is the only limit. From cute animals to abstract concepts, the AI can bring any idea to life as an emoji.',
++      },
++    },
++    howToUse: {
++      title: 'How to Use',
++      step1: {
++        title: 'Enter Description',
++        description: 'Describe the emoji you want in the input field. Try "happy cat", "surprised panda" or any creative idea. More detail yields better results.',
++      },
++      step2: {
++        title: 'Generate Image',
++        description: 'Click the "Generate" button and let the AI process your description. The creation takes just a few seconds, please be patient.',
++      },
++      step3: {
++        title: 'Save and Share',
++        description: 'Once generated, you can copy the emoji for immediate use in chat applications or download it to keep permanently.',
++      },
++    },
++    examples: {
++      title: 'Try These Examples'
++    }
++  }
++};
++
++// 获取翻译消息 - 简化版本，只支持英语
++export async function getMessages() {
++  return enMessages;
++}
++
++// 创建翻译器 - 仅支持英语
++export function getTranslator(namespace?: string) {
++  return createTranslator({ locale: 'en', messages: enMessages, namespace });
++} 
+\ No newline at end of file
+diff --git a/app/i18n/en.ts b/app/i18n/en.ts
+deleted file mode 100644
+index 9eb77a8..0000000
+--- a/app/i18n/en.ts
++++ /dev/null
+@@ -1,39 +0,0 @@
+-// English translations
+-const enTranslations = {
+-  // Main page
+-  title: 'AI Image Generator',
+-  subtitle: 'Transform your text descriptions into beautiful AI-generated images. Choose emoji, sticker, or icon styles and download instantly!',
+-  footer: {
+-    copyright: 'All rights reserved',
+-    createdWith: 'Created with Next.js and TailwindCSS'
+-  },
+-  
+-  // Emoji generator component
+-  generator: {
+-    title: 'AI Image Generator',
+-    subtitle: 'Enter your text and AI will create images that match the meaning!',
+-    inputLabel: 'Enter Text',
+-    inputPlaceholder: 'E.g., happy cat, birthday cake, summer beach...',
+-    charactersCount: 'characters',
+-    styleLabel: 'Choose Style',
+-    styleEmoji: 'Emoji',
+-    styleSticker: 'Sticker',
+-    styleIcon: 'Icon',
+-    buttonCreating: 'Creating...',
+-    buttonCreate: 'Create Image',
+-    errorEmpty: 'Please enter some text',
+-    errorGeneral: 'Something went wrong',
+-    errorDownload: 'Failed to download the image',
+-    resultTitle: 'Your AI Generated Image',
+-    promptLabel: 'Prompt',
+-    buttonDownload: 'Download Image'
+-  },
+-  
+-  // Language selector
+-  language: {
+-    zh: 'Chinese',
+-    en: 'English'
+-  }
+-};
+-
+-export default enTranslations; 
+\ No newline at end of file
+diff --git a/app/i18n/index.ts b/app/i18n/index.ts
+deleted file mode 100644
+index e4174cb..0000000
+--- a/app/i18n/index.ts
++++ /dev/null
+@@ -1,15 +0,0 @@
+-import enTranslations from './en';
+-import zhTranslations from './zh';
+-
+-export type Translation = typeof enTranslations;
+-export type LanguageCode = 'en' | 'zh';
+-
+-export const translations: Record<LanguageCode, Translation> = {
+-  en: enTranslations,
+-  zh: zhTranslations
+-};
+-
+-export const languageNames: Record<LanguageCode, string> = {
+-  en: 'English',
+-  zh: '中文'
+-}; 
+\ No newline at end of file
+diff --git a/app/i18n/zh.ts b/app/i18n/zh.ts
+deleted file mode 100644
+index a10b383..0000000
+--- a/app/i18n/zh.ts
++++ /dev/null
+@@ -1,39 +0,0 @@
+-// 中文翻译
+-const zhTranslations = {
+-  // 主页
+-  title: 'AI 图像生成器',
+-  subtitle: '将你的文字描述转换为精美的AI生成图像。选择表情、贴纸或图标风格，立即下载！',
+-  footer: {
+-    copyright: '保留所有权利',
+-    createdWith: '使用 Next.js 和 TailwindCSS 创建'
+-  },
+-  
+-  // Emoji生成器组件
+-  generator: {
+-    title: 'AI 图像生成器',
+-    subtitle: '输入文字，AI将创建与文字含义相匹配的图像！',
+-    inputLabel: '输入文字',
+-    inputPlaceholder: '例如：开心的猫咪、生日蛋糕、夏日海滩...',
+-    charactersCount: '字符',
+-    styleLabel: '选择风格',
+-    styleEmoji: 'Emoji表情',
+-    styleSticker: '贴纸',
+-    styleIcon: '图标',
+-    buttonCreating: '创建中...',
+-    buttonCreate: '创建图像',
+-    errorEmpty: '请输入一些文字',
+-    errorGeneral: '出现错误',
+-    errorDownload: '下载图像失败',
+-    resultTitle: '你的 AI 生成的图像',
+-    promptLabel: '提示词',
+-    buttonDownload: '下载图像'
+-  },
+-  
+-  // 语言选择器
+-  language: {
+-    zh: '中文',
+-    en: '英文'
+-  }
+-};
+-
+-export default zhTranslations; 
+\ No newline at end of file
+diff --git a/app/layout.tsx b/app/layout.tsx
+index dc38a4d..1536a51 100644
+--- a/app/layout.tsx
++++ b/app/layout.tsx
+@@ -1,36 +1,14 @@
+-import { Metadata } from "next";
+-import { Geist, Geist_Mono } from "next/font/google";
+-import "./globals.css";
+-import { LanguageProvider } from "./contexts/LanguageContext";
+-
+-const geistSans = Geist({
+-  variable: "--font-geist-sans",
+-  subsets: ["latin"],
+-});
+-
+-const geistMono = Geist_Mono({
+-  variable: "--font-geist-mono",
+-  subsets: ["latin"],
+-});
+-
+-export const metadata: Metadata = {
+-  title: "AI Image Generator - Create Custom Images from Text",
+-  description: "Transform your text into beautiful AI-generated images. Choose from emoji, sticker, or icon styles and download instantly.",
+-};
++import './globals.css';
+ 
+ export default function RootLayout({
+   children,
+-}: Readonly<{
++}: {
+   children: React.ReactNode;
+-}>) {
++}) {
+   return (
+-    <html lang="en">
+-      <body
+-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+-      >
+-        <LanguageProvider>
+-          {children}
+-        </LanguageProvider>
++    <html lang="en" suppressHydrationWarning>
++      <body>
++        {children}
+       </body>
+     </html>
+   );
+diff --git a/app/page.tsx b/app/page.tsx
+index 4c0ce01..7e4aa6e 100644
+--- a/app/page.tsx
++++ b/app/page.tsx
+@@ -1,41 +1,9 @@
+-'use client';
+-
+-import EmojiGenerator from "./components/EmojiGenerator";
+-import { useLanguage, LanguageSwitcher } from "./contexts/LanguageContext";
+-
+-export default function Home() {
+-  const { t } = useLanguage();
+-  
++// 简单的根路由页面
++// 这个页面不会被访问到，因为中间件会自动重定向到语言前缀路径
++export default function RootPage() {
+   return (
+-    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-black py-12 px-4 sm:px-6 lg:px-8">
+-      <div className="max-w-4xl mx-auto">
+-        <header className="text-center mb-12 relative">
+-          <div className="absolute right-0 top-0">
+-            <LanguageSwitcher />
+-          </div>
+-          
+-          <h1 className="text-5xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500">
+-            {t.title}
+-          </h1>
+-          <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
+-            {t.subtitle}
+-          </p>
+-        </header>
+-        
+-        <main>
+-          <EmojiGenerator />
+-        </main>
+-        
+-        <footer className="mt-16 text-center text-sm text-gray-600 dark:text-gray-400">
+-          <p>© {new Date().getFullYear()} {t.title}. {t.footer.copyright}</p>
+-          <p className="mt-2">
+-            {t.footer.createdWith}
+-          </p>
+-          <p className="mt-2 text-xs">
+-            Powered by <a href="https://openrouter.ai" target="_blank" rel="noopener noreferrer" className="underline">OpenRouter AI</a>
+-          </p>
+-        </footer>
+-      </div>
++    <div>
++      <h1>Redirecting...</h1>
+     </div>
+   );
+ }
+diff --git a/i18n/request.js b/i18n/request.js
+new file mode 100644
+index 0000000..1cdd3b9
+--- /dev/null
++++ b/i18n/request.js
+@@ -0,0 +1,17 @@
++import {getRequestConfig} from 'next-intl/server';
++import {getMessages} from '../app/i18n';
++
++// 设置支持的语言
++const locales = ['en'];
++
++export default getRequestConfig(async () => {
++  // 获取消息，只有英语
++  const messages = await getMessages();
++  
++  return {
++    locale: 'en',
++    messages: messages,
++    timeZone: 'Asia/Shanghai'
++  };
++});
++ 
+\ No newline at end of file
+diff --git a/middleware.ts b/middleware.ts
+new file mode 100644
+index 0000000..7677ea3
+--- /dev/null
++++ b/middleware.ts
+@@ -0,0 +1,16 @@
++import createMiddleware from 'next-intl/middleware';
++
++// 配置国际化，只支持英语
++export default createMiddleware({
++  // 仅支持英语
++  locales: ['en'],
++  // 默认语言是英语
++  defaultLocale: 'en',
++  // 总是在URL中显示语言前缀
++  localePrefix: 'always'
++});
++
++export const config = {
++  // 匹配除静态资源和API路由外的所有路由
++  matcher: ['/((?!api|_next|.*\\..*).*)']
++}; 
+\ No newline at end of file
+diff --git a/next.config.js b/next.config.js
+new file mode 100644
+index 0000000..248238e
+--- /dev/null
++++ b/next.config.js
+@@ -0,0 +1,14 @@
++/** @type {import('next').NextConfig} */
++const createNextIntlPlugin = require('next-intl/plugin');
++
++// 使用默认配置，无需指定路径
++const withNextIntl = createNextIntlPlugin();
++
++const nextConfig = {
++  reactStrictMode: true,
++  compiler: {
++    styledComponents: true,
++  }
++};
++
++module.exports = withNextIntl(nextConfig); 
+\ No newline at end of file
+diff --git a/next.config.ts b/next.config.ts
+deleted file mode 100644
+index e9ffa30..0000000
+--- a/next.config.ts
++++ /dev/null
+@@ -1,7 +0,0 @@
+-import type { NextConfig } from "next";
+-
+-const nextConfig: NextConfig = {
+-  /* config options here */
+-};
+-
+-export default nextConfig;
+diff --git a/package-lock.json b/package-lock.json
+index f773bd3..908eac8 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -9,15 +9,20 @@
+       "version": "0.1.0",
+       "dependencies": {
+         "axios": "^1.8.1",
+-        "next": "15.2.1",
+-        "react": "^19.0.0",
+-        "react-dom": "^19.0.0"
++        "next": "14.2.24",
++        "next-intl": "^3.26.5",
++        "next-themes": "^0.4.4",
++        "react": "18.2.0",
++        "react-dom": "18.2.0",
++        "react-spinners": "^0.15.0",
++        "styled-components": "^6.1.15"
+       },
+       "devDependencies": {
+         "@tailwindcss/postcss": "^4",
+         "@types/node": "^20",
+         "@types/react": "^19",
+         "@types/react-dom": "^19",
++        "@types/styled-components": "^5.1.34",
+         "tailwindcss": "^4",
+         "typescript": "^5"
+       }
+@@ -35,387 +40,97 @@
+         "url": "https://github.com/sponsors/sindresorhus"
+       }
+     },
+-    "node_modules/@emnapi/runtime": {
+-      "version": "1.3.1",
+-      "resolved": "https://registry.npmjs.org/@emnapi/runtime/-/runtime-1.3.1.tgz",
+-      "integrity": "sha512-kEBmG8KyqtxJZv+ygbEim+KCGtIq1fC22Ms3S4ziXmYKm8uyoLX0MHONVKwp+9opg390VaKRNt4a7A9NwmpNhw==",
++    "node_modules/@emotion/is-prop-valid": {
++      "version": "1.2.2",
++      "resolved": "https://registry.npmmirror.com/@emotion/is-prop-valid/-/is-prop-valid-1.2.2.tgz",
++      "integrity": "sha512-uNsoYd37AFmaCdXlg6EYD1KaPOaRWRByMCYzbKUX4+hhMfrxdVSelShywL4JVaAeM/eHUOSprYBQls+/neX3pw==",
+       "license": "MIT",
+-      "optional": true,
+       "dependencies": {
+-        "tslib": "^2.4.0"
+-      }
+-    },
+-    "node_modules/@img/sharp-darwin-arm64": {
+-      "version": "0.33.5",
+-      "resolved": "https://registry.npmjs.org/@img/sharp-darwin-arm64/-/sharp-darwin-arm64-0.33.5.tgz",
+-      "integrity": "sha512-UT4p+iz/2H4twwAoLCqfA9UH5pI6DggwKEGuaPy7nCVQ8ZsiY5PIcrRvD1DzuY3qYL07NtIQcWnBSY/heikIFQ==",
+-      "cpu": [
+-        "arm64"
+-      ],
+-      "license": "Apache-2.0",
+-      "optional": true,
+-      "os": [
+-        "darwin"
+-      ],
+-      "engines": {
+-        "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
+-      },
+-      "funding": {
+-        "url": "https://opencollective.com/libvips"
+-      },
+-      "optionalDependencies": {
+-        "@img/sharp-libvips-darwin-arm64": "1.0.4"
+-      }
+-    },
+-    "node_modules/@img/sharp-darwin-x64": {
+-      "version": "0.33.5",
+-      "resolved": "https://registry.npmjs.org/@img/sharp-darwin-x64/-/sharp-darwin-x64-0.33.5.tgz",
+-      "integrity": "sha512-fyHac4jIc1ANYGRDxtiqelIbdWkIuQaI84Mv45KvGRRxSAa7o7d1ZKAOBaYbnepLC1WqxfpimdeWfvqqSGwR2Q==",
+-      "cpu": [
+-        "x64"
+-      ],
+-      "license": "Apache-2.0",
+-      "optional": true,
+-      "os": [
+-        "darwin"
+-      ],
+-      "engines": {
+-        "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
+-      },
+-      "funding": {
+-        "url": "https://opencollective.com/libvips"
+-      },
+-      "optionalDependencies": {
+-        "@img/sharp-libvips-darwin-x64": "1.0.4"
+-      }
+-    },
+-    "node_modules/@img/sharp-libvips-darwin-arm64": {
+-      "version": "1.0.4",
+-      "resolved": "https://registry.npmjs.org/@img/sharp-libvips-darwin-arm64/-/sharp-libvips-darwin-arm64-1.0.4.tgz",
+-      "integrity": "sha512-XblONe153h0O2zuFfTAbQYAX2JhYmDHeWikp1LM9Hul9gVPjFY427k6dFEcOL72O01QxQsWi761svJ/ev9xEDg==",
+-      "cpu": [
+-        "arm64"
+-      ],
+-      "license": "LGPL-3.0-or-later",
+-      "optional": true,
+-      "os": [
+-        "darwin"
+-      ],
+-      "funding": {
+-        "url": "https://opencollective.com/libvips"
+-      }
+-    },
+-    "node_modules/@img/sharp-libvips-darwin-x64": {
+-      "version": "1.0.4",
+-      "resolved": "https://registry.npmjs.org/@img/sharp-libvips-darwin-x64/-/sharp-libvips-darwin-x64-1.0.4.tgz",
+-      "integrity": "sha512-xnGR8YuZYfJGmWPvmlunFaWJsb9T/AO2ykoP3Fz/0X5XV2aoYBPkX6xqCQvUTKKiLddarLaxpzNe+b1hjeWHAQ==",
+-      "cpu": [
+-        "x64"
+-      ],
+-      "license": "LGPL-3.0-or-later",
+-      "optional": true,
+-      "os": [
+-        "darwin"
+-      ],
+-      "funding": {
+-        "url": "https://opencollective.com/libvips"
++        "@emotion/memoize": "^0.8.1"
+       }
+     },
+-    "node_modules/@img/sharp-libvips-linux-arm": {
+-      "version": "1.0.5",
+-      "resolved": "https://registry.npmjs.org/@img/sharp-libvips-linux-arm/-/sharp-libvips-linux-arm-1.0.5.tgz",
+-      "integrity": "sha512-gvcC4ACAOPRNATg/ov8/MnbxFDJqf/pDePbBnuBDcjsI8PssmjoKMAz4LtLaVi+OnSb5FK/yIOamqDwGmXW32g==",
+-      "cpu": [
+-        "arm"
+-      ],
+-      "license": "LGPL-3.0-or-later",
+-      "optional": true,
+-      "os": [
+-        "linux"
+-      ],
+-      "funding": {
+-        "url": "https://opencollective.com/libvips"
+-      }
+-    },
+-    "node_modules/@img/sharp-libvips-linux-arm64": {
+-      "version": "1.0.4",
+-      "resolved": "https://registry.npmjs.org/@img/sharp-libvips-linux-arm64/-/sharp-libvips-linux-arm64-1.0.4.tgz",
+-      "integrity": "sha512-9B+taZ8DlyyqzZQnoeIvDVR/2F4EbMepXMc/NdVbkzsJbzkUjhXv/70GQJ7tdLA4YJgNP25zukcxpX2/SueNrA==",
+-      "cpu": [
+-        "arm64"
+-      ],
+-      "license": "LGPL-3.0-or-later",
+-      "optional": true,
+-      "os": [
+-        "linux"
+-      ],
+-      "funding": {
+-        "url": "https://opencollective.com/libvips"
+-      }
+-    },
+-    "node_modules/@img/sharp-libvips-linux-s390x": {
+-      "version": "1.0.4",
+-      "resolved": "https://registry.npmjs.org/@img/sharp-libvips-linux-s390x/-/sharp-libvips-linux-s390x-1.0.4.tgz",
+-      "integrity": "sha512-u7Wz6ntiSSgGSGcjZ55im6uvTrOxSIS8/dgoVMoiGE9I6JAfU50yH5BoDlYA1tcuGS7g/QNtetJnxA6QEsCVTA==",
+-      "cpu": [
+-        "s390x"
+-      ],
+-      "license": "LGPL-3.0-or-later",
+-      "optional": true,
+-      "os": [
+-        "linux"
+-      ],
+-      "funding": {
+-        "url": "https://opencollective.com/libvips"
+-      }
+-    },
+-    "node_modules/@img/sharp-libvips-linux-x64": {
+-      "version": "1.0.4",
+-      "resolved": "https://registry.npmjs.org/@img/sharp-libvips-linux-x64/-/sharp-libvips-linux-x64-1.0.4.tgz",
+-      "integrity": "sha512-MmWmQ3iPFZr0Iev+BAgVMb3ZyC4KeFc3jFxnNbEPas60e1cIfevbtuyf9nDGIzOaW9PdnDciJm+wFFaTlj5xYw==",
+-      "cpu": [
+-        "x64"
+-      ],
+-      "license": "LGPL-3.0-or-later",
+-      "optional": true,
+-      "os": [
+-        "linux"
+-      ],
+-      "funding": {
+-        "url": "https://opencollective.com/libvips"
+-      }
+-    },
+-    "node_modules/@img/sharp-libvips-linuxmusl-arm64": {
+-      "version": "1.0.4",
+-      "resolved": "https://registry.npmjs.org/@img/sharp-libvips-linuxmusl-arm64/-/sharp-libvips-linuxmusl-arm64-1.0.4.tgz",
+-      "integrity": "sha512-9Ti+BbTYDcsbp4wfYib8Ctm1ilkugkA/uscUn6UXK1ldpC1JjiXbLfFZtRlBhjPZ5o1NCLiDbg8fhUPKStHoTA==",
+-      "cpu": [
+-        "arm64"
+-      ],
+-      "license": "LGPL-3.0-or-later",
+-      "optional": true,
+-      "os": [
+-        "linux"
+-      ],
+-      "funding": {
+-        "url": "https://opencollective.com/libvips"
+-      }
+-    },
+-    "node_modules/@img/sharp-libvips-linuxmusl-x64": {
+-      "version": "1.0.4",
+-      "resolved": "https://registry.npmjs.org/@img/sharp-libvips-linuxmusl-x64/-/sharp-libvips-linuxmusl-x64-1.0.4.tgz",
+-      "integrity": "sha512-viYN1KX9m+/hGkJtvYYp+CCLgnJXwiQB39damAO7WMdKWlIhmYTfHjwSbQeUK/20vY154mwezd9HflVFM1wVSw==",
+-      "cpu": [
+-        "x64"
+-      ],
+-      "license": "LGPL-3.0-or-later",
+-      "optional": true,
+-      "os": [
+-        "linux"
+-      ],
+-      "funding": {
+-        "url": "https://opencollective.com/libvips"
+-      }
+-    },
+-    "node_modules/@img/sharp-linux-arm": {
+-      "version": "0.33.5",
+-      "resolved": "https://registry.npmjs.org/@img/sharp-linux-arm/-/sharp-linux-arm-0.33.5.tgz",
+-      "integrity": "sha512-JTS1eldqZbJxjvKaAkxhZmBqPRGmxgu+qFKSInv8moZ2AmT5Yib3EQ1c6gp493HvrvV8QgdOXdyaIBrhvFhBMQ==",
+-      "cpu": [
+-        "arm"
+-      ],
+-      "license": "Apache-2.0",
+-      "optional": true,
+-      "os": [
+-        "linux"
+-      ],
+-      "engines": {
+-        "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
+-      },
+-      "funding": {
+-        "url": "https://opencollective.com/libvips"
+-      },
+-      "optionalDependencies": {
+-        "@img/sharp-libvips-linux-arm": "1.0.5"
+-      }
+-    },
+-    "node_modules/@img/sharp-linux-arm64": {
+-      "version": "0.33.5",
+-      "resolved": "https://registry.npmjs.org/@img/sharp-linux-arm64/-/sharp-linux-arm64-0.33.5.tgz",
+-      "integrity": "sha512-JMVv+AMRyGOHtO1RFBiJy/MBsgz0x4AWrT6QoEVVTyh1E39TrCUpTRI7mx9VksGX4awWASxqCYLCV4wBZHAYxA==",
+-      "cpu": [
+-        "arm64"
+-      ],
+-      "license": "Apache-2.0",
+-      "optional": true,
+-      "os": [
+-        "linux"
+-      ],
+-      "engines": {
+-        "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
+-      },
+-      "funding": {
+-        "url": "https://opencollective.com/libvips"
+-      },
+-      "optionalDependencies": {
+-        "@img/sharp-libvips-linux-arm64": "1.0.4"
+-      }
++    "node_modules/@emotion/memoize": {
++      "version": "0.8.1",
++      "resolved": "https://registry.npmmirror.com/@emotion/memoize/-/memoize-0.8.1.tgz",
++      "integrity": "sha512-W2P2c/VRW1/1tLox0mVUalvnWXxavmv/Oum2aPsRcoDJuob75FC3Y8FbpfLwUegRcxINtGUMPq0tFCvYNTBXNA==",
++      "license": "MIT"
+     },
+-    "node_modules/@img/sharp-linux-s390x": {
+-      "version": "0.33.5",
+-      "resolved": "https://registry.npmjs.org/@img/sharp-linux-s390x/-/sharp-linux-s390x-0.33.5.tgz",
+-      "integrity": "sha512-y/5PCd+mP4CA/sPDKl2961b+C9d+vPAveS33s6Z3zfASk2j5upL6fXVPZi7ztePZ5CuH+1kW8JtvxgbuXHRa4Q==",
+-      "cpu": [
+-        "s390x"
+-      ],
+-      "license": "Apache-2.0",
+-      "optional": true,
+-      "os": [
+-        "linux"
+-      ],
+-      "engines": {
+-        "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
+-      },
+-      "funding": {
+-        "url": "https://opencollective.com/libvips"
+-      },
+-      "optionalDependencies": {
+-        "@img/sharp-libvips-linux-s390x": "1.0.4"
+-      }
++    "node_modules/@emotion/unitless": {
++      "version": "0.8.1",
++      "resolved": "https://registry.npmmirror.com/@emotion/unitless/-/unitless-0.8.1.tgz",
++      "integrity": "sha512-KOEGMu6dmJZtpadb476IsZBclKvILjopjUii3V+7MnXIQCYh8W3NgNcgwo21n9LXZX6EDIKvqfjYxXebDwxKmQ==",
++      "license": "MIT"
+     },
+-    "node_modules/@img/sharp-linux-x64": {
+-      "version": "0.33.5",
+-      "resolved": "https://registry.npmjs.org/@img/sharp-linux-x64/-/sharp-linux-x64-0.33.5.tgz",
+-      "integrity": "sha512-opC+Ok5pRNAzuvq1AG0ar+1owsu842/Ab+4qvU879ippJBHvyY5n2mxF1izXqkPYlGuP/M556uh53jRLJmzTWA==",
+-      "cpu": [
+-        "x64"
+-      ],
+-      "license": "Apache-2.0",
+-      "optional": true,
+-      "os": [
+-        "linux"
+-      ],
+-      "engines": {
+-        "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
+-      },
+-      "funding": {
+-        "url": "https://opencollective.com/libvips"
+-      },
+-      "optionalDependencies": {
+-        "@img/sharp-libvips-linux-x64": "1.0.4"
++    "node_modules/@formatjs/ecma402-abstract": {
++      "version": "2.3.3",
++      "resolved": "https://registry.npmmirror.com/@formatjs/ecma402-abstract/-/ecma402-abstract-2.3.3.tgz",
++      "integrity": "sha512-pJT1OkhplSmvvr6i3CWTPvC/FGC06MbN5TNBfRO6Ox62AEz90eMq+dVvtX9Bl3jxCEkS0tATzDarRZuOLw7oFg==",
++      "license": "MIT",
++      "dependencies": {
++        "@formatjs/fast-memoize": "2.2.6",
++        "@formatjs/intl-localematcher": "0.6.0",
++        "decimal.js": "10",
++        "tslib": "2"
+       }
+     },
+-    "node_modules/@img/sharp-linuxmusl-arm64": {
+-      "version": "0.33.5",
+-      "resolved": "https://registry.npmjs.org/@img/sharp-linuxmusl-arm64/-/sharp-linuxmusl-arm64-0.33.5.tgz",
+-      "integrity": "sha512-XrHMZwGQGvJg2V/oRSUfSAfjfPxO+4DkiRh6p2AFjLQztWUuY/o8Mq0eMQVIY7HJ1CDQUJlxGGZRw1a5bqmd1g==",
+-      "cpu": [
+-        "arm64"
+-      ],
+-      "license": "Apache-2.0",
+-      "optional": true,
+-      "os": [
+-        "linux"
+-      ],
+-      "engines": {
+-        "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
+-      },
+-      "funding": {
+-        "url": "https://opencollective.com/libvips"
+-      },
+-      "optionalDependencies": {
+-        "@img/sharp-libvips-linuxmusl-arm64": "1.0.4"
++    "node_modules/@formatjs/ecma402-abstract/node_modules/@formatjs/intl-localematcher": {
++      "version": "0.6.0",
++      "resolved": "https://registry.npmmirror.com/@formatjs/intl-localematcher/-/intl-localematcher-0.6.0.tgz",
++      "integrity": "sha512-4rB4g+3hESy1bHSBG3tDFaMY2CH67iT7yne1e+0CLTsGLDcmoEWWpJjjpWVaYgYfYuohIRuo0E+N536gd2ZHZA==",
++      "license": "MIT",
++      "dependencies": {
++        "tslib": "2"
+       }
+     },
+-    "node_modules/@img/sharp-linuxmusl-x64": {
+-      "version": "0.33.5",
+-      "resolved": "https://registry.npmjs.org/@img/sharp-linuxmusl-x64/-/sharp-linuxmusl-x64-0.33.5.tgz",
+-      "integrity": "sha512-WT+d/cgqKkkKySYmqoZ8y3pxx7lx9vVejxW/W4DOFMYVSkErR+w7mf2u8m/y4+xHe7yY9DAXQMWQhpnMuFfScw==",
+-      "cpu": [
+-        "x64"
+-      ],
+-      "license": "Apache-2.0",
+-      "optional": true,
+-      "os": [
+-        "linux"
+-      ],
+-      "engines": {
+-        "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
+-      },
+-      "funding": {
+-        "url": "https://opencollective.com/libvips"
+-      },
+-      "optionalDependencies": {
+-        "@img/sharp-libvips-linuxmusl-x64": "1.0.4"
++    "node_modules/@formatjs/fast-memoize": {
++      "version": "2.2.6",
++      "resolved": "https://registry.npmmirror.com/@formatjs/fast-memoize/-/fast-memoize-2.2.6.tgz",
++      "integrity": "sha512-luIXeE2LJbQnnzotY1f2U2m7xuQNj2DA8Vq4ce1BY9ebRZaoPB1+8eZ6nXpLzsxuW5spQxr7LdCg+CApZwkqkw==",
++      "license": "MIT",
++      "dependencies": {
++        "tslib": "2"
+       }
+     },
+-    "node_modules/@img/sharp-wasm32": {
+-      "version": "0.33.5",
+-      "resolved": "https://registry.npmjs.org/@img/sharp-wasm32/-/sharp-wasm32-0.33.5.tgz",
+-      "integrity": "sha512-ykUW4LVGaMcU9lu9thv85CbRMAwfeadCJHRsg2GmeRa/cJxsVY9Rbd57JcMxBkKHag5U/x7TSBpScF4U8ElVzg==",
+-      "cpu": [
+-        "wasm32"
+-      ],
+-      "license": "Apache-2.0 AND LGPL-3.0-or-later AND MIT",
+-      "optional": true,
++    "node_modules/@formatjs/icu-messageformat-parser": {
++      "version": "2.11.1",
++      "resolved": "https://registry.npmmirror.com/@formatjs/icu-messageformat-parser/-/icu-messageformat-parser-2.11.1.tgz",
++      "integrity": "sha512-o0AhSNaOfKoic0Sn1GkFCK4MxdRsw7mPJ5/rBpIqdvcC7MIuyUSW8WChUEvrK78HhNpYOgqCQbINxCTumJLzZA==",
++      "license": "MIT",
+       "dependencies": {
+-        "@emnapi/runtime": "^1.2.0"
+-      },
+-      "engines": {
+-        "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
+-      },
+-      "funding": {
+-        "url": "https://opencollective.com/libvips"
++        "@formatjs/ecma402-abstract": "2.3.3",
++        "@formatjs/icu-skeleton-parser": "1.8.13",
++        "tslib": "2"
+       }
+     },
+-    "node_modules/@img/sharp-win32-ia32": {
+-      "version": "0.33.5",
+-      "resolved": "https://registry.npmjs.org/@img/sharp-win32-ia32/-/sharp-win32-ia32-0.33.5.tgz",
+-      "integrity": "sha512-T36PblLaTwuVJ/zw/LaH0PdZkRz5rd3SmMHX8GSmR7vtNSP5Z6bQkExdSK7xGWyxLw4sUknBuugTelgw2faBbQ==",
+-      "cpu": [
+-        "ia32"
+-      ],
+-      "license": "Apache-2.0 AND LGPL-3.0-or-later",
+-      "optional": true,
+-      "os": [
+-        "win32"
+-      ],
+-      "engines": {
+-        "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
+-      },
+-      "funding": {
+-        "url": "https://opencollective.com/libvips"
++    "node_modules/@formatjs/icu-skeleton-parser": {
++      "version": "1.8.13",
++      "resolved": "https://registry.npmmirror.com/@formatjs/icu-skeleton-parser/-/icu-skeleton-parser-1.8.13.tgz",
++      "integrity": "sha512-N/LIdTvVc1TpJmMt2jVg0Fr1F7Q1qJPdZSCs19unMskCmVQ/sa0H9L8PWt13vq+gLdLg1+pPsvBLydL1Apahjg==",
++      "license": "MIT",
++      "dependencies": {
++        "@formatjs/ecma402-abstract": "2.3.3",
++        "tslib": "2"
+       }
+     },
+-    "node_modules/@img/sharp-win32-x64": {
+-      "version": "0.33.5",
+-      "resolved": "https://registry.npmjs.org/@img/sharp-win32-x64/-/sharp-win32-x64-0.33.5.tgz",
+-      "integrity": "sha512-MpY/o8/8kj+EcnxwvrP4aTJSWw/aZ7JIGR4aBeZkZw5B7/Jn+tY9/VNwtcoGmdT7GfggGIU4kygOMSbYnOrAbg==",
+-      "cpu": [
+-        "x64"
+-      ],
+-      "license": "Apache-2.0 AND LGPL-3.0-or-later",
+-      "optional": true,
+-      "os": [
+-        "win32"
+-      ],
+-      "engines": {
+-        "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
+-      },
+-      "funding": {
+-        "url": "https://opencollective.com/libvips"
++    "node_modules/@formatjs/intl-localematcher": {
++      "version": "0.5.10",
++      "resolved": "https://registry.npmmirror.com/@formatjs/intl-localematcher/-/intl-localematcher-0.5.10.tgz",
++      "integrity": "sha512-af3qATX+m4Rnd9+wHcjJ4w2ijq+rAVP3CCinJQvFv1kgSu1W6jypUmvleJxcewdxmutM8dmIRZFxO/IQBZmP2Q==",
++      "license": "MIT",
++      "dependencies": {
++        "tslib": "2"
+       }
+     },
+     "node_modules/@next/env": {
+-      "version": "15.2.1",
+-      "resolved": "https://registry.npmjs.org/@next/env/-/env-15.2.1.tgz",
+-      "integrity": "sha512-JmY0qvnPuS2NCWOz2bbby3Pe0VzdAQ7XpEB6uLIHmtXNfAsAO0KLQLkuAoc42Bxbo3/jMC3dcn9cdf+piCcG2Q==",
++      "version": "14.2.24",
++      "resolved": "https://registry.npmmirror.com/@next/env/-/env-14.2.24.tgz",
++      "integrity": "sha512-LAm0Is2KHTNT6IT16lxT+suD0u+VVfYNQqM+EJTKuFRRuY2z+zj01kueWXPCxbMBDt0B5vONYzabHGUNbZYAhA==",
+       "license": "MIT"
+     },
+     "node_modules/@next/swc-darwin-arm64": {
+-      "version": "15.2.1",
+-      "resolved": "https://registry.npmjs.org/@next/swc-darwin-arm64/-/swc-darwin-arm64-15.2.1.tgz",
+-      "integrity": "sha512-aWXT+5KEREoy3K5AKtiKwioeblmOvFFjd+F3dVleLvvLiQ/mD//jOOuUcx5hzcO9ISSw4lrqtUPntTpK32uXXQ==",
++      "version": "14.2.24",
++      "resolved": "https://registry.npmmirror.com/@next/swc-darwin-arm64/-/swc-darwin-arm64-14.2.24.tgz",
++      "integrity": "sha512-7Tdi13aojnAZGpapVU6meVSpNzgrFwZ8joDcNS8cJVNuP3zqqrLqeory9Xec5TJZR/stsGJdfwo8KeyloT3+rQ==",
+       "cpu": [
+         "arm64"
+       ],
+@@ -429,9 +144,9 @@
+       }
+     },
+     "node_modules/@next/swc-darwin-x64": {
+-      "version": "15.2.1",
+-      "resolved": "https://registry.npmjs.org/@next/swc-darwin-x64/-/swc-darwin-x64-15.2.1.tgz",
+-      "integrity": "sha512-E/w8ervu4fcG5SkLhvn1NE/2POuDCDEy5gFbfhmnYXkyONZR68qbUlJlZwuN82o7BrBVAw+tkR8nTIjGiMW1jQ==",
++      "version": "14.2.24",
++      "resolved": "https://registry.npmmirror.com/@next/swc-darwin-x64/-/swc-darwin-x64-14.2.24.tgz",
++      "integrity": "sha512-lXR2WQqUtu69l5JMdTwSvQUkdqAhEWOqJEYUQ21QczQsAlNOW2kWZCucA6b3EXmPbcvmHB1kSZDua/713d52xg==",
+       "cpu": [
+         "x64"
+       ],
+@@ -445,9 +160,9 @@
+       }
+     },
+     "node_modules/@next/swc-linux-arm64-gnu": {
+-      "version": "15.2.1",
+-      "resolved": "https://registry.npmjs.org/@next/swc-linux-arm64-gnu/-/swc-linux-arm64-gnu-15.2.1.tgz",
+-      "integrity": "sha512-gXDX5lIboebbjhiMT6kFgu4svQyjoSed6dHyjx5uZsjlvTwOAnZpn13w9XDaIMFFHw7K8CpBK7HfDKw0VZvUXQ==",
++      "version": "14.2.24",
++      "resolved": "https://registry.npmmirror.com/@next/swc-linux-arm64-gnu/-/swc-linux-arm64-gnu-14.2.24.tgz",
++      "integrity": "sha512-nxvJgWOpSNmzidYvvGDfXwxkijb6hL9+cjZx1PVG6urr2h2jUqBALkKjT7kpfurRWicK6hFOvarmaWsINT1hnA==",
+       "cpu": [
+         "arm64"
+       ],
+@@ -461,9 +176,9 @@
+       }
+     },
+     "node_modules/@next/swc-linux-arm64-musl": {
+-      "version": "15.2.1",
+-      "resolved": "https://registry.npmjs.org/@next/swc-linux-arm64-musl/-/swc-linux-arm64-musl-15.2.1.tgz",
+-      "integrity": "sha512-3v0pF/adKZkBWfUffmB/ROa+QcNTrnmYG4/SS+r52HPwAK479XcWoES2I+7F7lcbqc7mTeVXrIvb4h6rR/iDKg==",
++      "version": "14.2.24",
++      "resolved": "https://registry.npmmirror.com/@next/swc-linux-arm64-musl/-/swc-linux-arm64-musl-14.2.24.tgz",
++      "integrity": "sha512-PaBgOPhqa4Abxa3y/P92F3kklNPsiFjcjldQGT7kFmiY5nuFn8ClBEoX8GIpqU1ODP2y8P6hio6vTomx2Vy0UQ==",
+       "cpu": [
+         "arm64"
+       ],
+@@ -477,9 +192,9 @@
+       }
+     },
+     "node_modules/@next/swc-linux-x64-gnu": {
+-      "version": "15.2.1",
+-      "resolved": "https://registry.npmjs.org/@next/swc-linux-x64-gnu/-/swc-linux-x64-gnu-15.2.1.tgz",
+-      "integrity": "sha512-RbsVq2iB6KFJRZ2cHrU67jLVLKeuOIhnQB05ygu5fCNgg8oTewxweJE8XlLV+Ii6Y6u4EHwETdUiRNXIAfpBww==",
++      "version": "14.2.24",
++      "resolved": "https://registry.npmmirror.com/@next/swc-linux-x64-gnu/-/swc-linux-x64-gnu-14.2.24.tgz",
++      "integrity": "sha512-vEbyadiRI7GOr94hd2AB15LFVgcJZQWu7Cdi9cWjCMeCiUsHWA0U5BkGPuoYRnTxTn0HacuMb9NeAmStfBCLoQ==",
+       "cpu": [
+         "x64"
+       ],
+@@ -493,9 +208,9 @@
+       }
+     },
+     "node_modules/@next/swc-linux-x64-musl": {
+-      "version": "15.2.1",
+-      "resolved": "https://registry.npmjs.org/@next/swc-linux-x64-musl/-/swc-linux-x64-musl-15.2.1.tgz",
+-      "integrity": "sha512-QHsMLAyAIu6/fWjHmkN/F78EFPKmhQlyX5C8pRIS2RwVA7z+t9cTb0IaYWC3EHLOTjsU7MNQW+n2xGXr11QPpg==",
++      "version": "14.2.24",
++      "resolved": "https://registry.npmmirror.com/@next/swc-linux-x64-musl/-/swc-linux-x64-musl-14.2.24.tgz",
++      "integrity": "sha512-df0FC9ptaYsd8nQCINCzFtDWtko8PNRTAU0/+d7hy47E0oC17tI54U/0NdGk7l/76jz1J377dvRjmt6IUdkpzQ==",
+       "cpu": [
+         "x64"
+       ],
+@@ -509,9 +224,9 @@
+       }
+     },
+     "node_modules/@next/swc-win32-arm64-msvc": {
+-      "version": "15.2.1",
+-      "resolved": "https://registry.npmjs.org/@next/swc-win32-arm64-msvc/-/swc-win32-arm64-msvc-15.2.1.tgz",
+-      "integrity": "sha512-Gk42XZXo1cE89i3hPLa/9KZ8OuupTjkDmhLaMKFohjf9brOeZVEa3BQy1J9s9TWUqPhgAEbwv6B2+ciGfe54Vw==",
++      "version": "14.2.24",
++      "resolved": "https://registry.npmmirror.com/@next/swc-win32-arm64-msvc/-/swc-win32-arm64-msvc-14.2.24.tgz",
++      "integrity": "sha512-ZEntbLjeYAJ286eAqbxpZHhDFYpYjArotQ+/TW9j7UROh0DUmX7wYDGtsTPpfCV8V+UoqHBPU7q9D4nDNH014Q==",
+       "cpu": [
+         "arm64"
+       ],
+@@ -524,10 +239,26 @@
+         "node": ">= 10"
+       }
+     },
++    "node_modules/@next/swc-win32-ia32-msvc": {
++      "version": "14.2.24",
++      "resolved": "https://registry.npmmirror.com/@next/swc-win32-ia32-msvc/-/swc-win32-ia32-msvc-14.2.24.tgz",
++      "integrity": "sha512-9KuS+XUXM3T6v7leeWU0erpJ6NsFIwiTFD5nzNg8J5uo/DMIPvCp3L1Ao5HjbHX0gkWPB1VrKoo/Il4F0cGK2Q==",
++      "cpu": [
++        "ia32"
++      ],
++      "license": "MIT",
++      "optional": true,
++      "os": [
++        "win32"
++      ],
++      "engines": {
++        "node": ">= 10"
++      }
++    },
+     "node_modules/@next/swc-win32-x64-msvc": {
+-      "version": "15.2.1",
+-      "resolved": "https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-15.2.1.tgz",
+-      "integrity": "sha512-YjqXCl8QGhVlMR8uBftWk0iTmvtntr41PhG1kvzGp0sUP/5ehTM+cwx25hKE54J0CRnHYjSGjSH3gkHEaHIN9g==",
++      "version": "14.2.24",
++      "resolved": "https://registry.npmmirror.com/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-14.2.24.tgz",
++      "integrity": "sha512-cXcJ2+x0fXQ2CntaE00d7uUH+u1Bfp/E0HsNQH79YiLaZE5Rbm7dZzyAYccn3uICM7mw+DxoMqEfGXZtF4Fgaw==",
+       "cpu": [
+         "x64"
+       ],
+@@ -542,17 +273,18 @@
+     },
+     "node_modules/@swc/counter": {
+       "version": "0.1.3",
+-      "resolved": "https://registry.npmjs.org/@swc/counter/-/counter-0.1.3.tgz",
++      "resolved": "https://registry.npmmirror.com/@swc/counter/-/counter-0.1.3.tgz",
+       "integrity": "sha512-e2BR4lsJkkRlKZ/qCHPw9ZaSxc0MVUd7gtbtaB7aMvHeJVYe8sOB8DBZkP2DtISHGSku9sCK6T6cnY0CtXrOCQ==",
+       "license": "Apache-2.0"
+     },
+     "node_modules/@swc/helpers": {
+-      "version": "0.5.15",
+-      "resolved": "https://registry.npmjs.org/@swc/helpers/-/helpers-0.5.15.tgz",
+-      "integrity": "sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==",
++      "version": "0.5.5",
++      "resolved": "https://registry.npmmirror.com/@swc/helpers/-/helpers-0.5.5.tgz",
++      "integrity": "sha512-KGYxvIOXcceOAbEk4bi/dVLEK9z8sZ0uBB3Il5b1rhfClSpcX0yfRO0KmTkqR2cnQDymwLB+25ZyMzICg/cm/A==",
+       "license": "Apache-2.0",
+       "dependencies": {
+-        "tslib": "^2.8.0"
++        "@swc/counter": "^0.1.3",
++        "tslib": "^2.4.0"
+       }
+     },
+     "node_modules/@tailwindcss/node": {
+@@ -792,6 +524,17 @@
+         "tailwindcss": "4.0.9"
+       }
+     },
++    "node_modules/@types/hoist-non-react-statics": {
++      "version": "3.3.6",
++      "resolved": "https://registry.npmmirror.com/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.6.tgz",
++      "integrity": "sha512-lPByRJUer/iN/xa4qpyL0qmL11DqNW81iU/IG1S3uvRUq4oKagz8VCxZjiWkumgt66YT3vOdDgZ0o32sGKtCEw==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "@types/react": "*",
++        "hoist-non-react-statics": "^3.3.0"
++      }
++    },
+     "node_modules/@types/node": {
+       "version": "20.17.23",
+       "resolved": "https://registry.npmjs.org/@types/node/-/node-20.17.23.tgz",
+@@ -822,6 +565,24 @@
+         "@types/react": "^19.0.0"
+       }
+     },
++    "node_modules/@types/styled-components": {
++      "version": "5.1.34",
++      "resolved": "https://registry.npmmirror.com/@types/styled-components/-/styled-components-5.1.34.tgz",
++      "integrity": "sha512-mmiVvwpYklFIv9E8qfxuPyIt/OuyIrn6gMOAMOFUO3WJfSrSE+sGUoa4PiZj77Ut7bKZpaa6o1fBKS/4TOEvnA==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "@types/hoist-non-react-statics": "*",
++        "@types/react": "*",
++        "csstype": "^3.0.2"
++      }
++    },
++    "node_modules/@types/stylis": {
++      "version": "4.2.5",
++      "resolved": "https://registry.npmmirror.com/@types/stylis/-/stylis-4.2.5.tgz",
++      "integrity": "sha512-1Xve+NMN7FWjY14vLoY5tL3BVEQ/n42YLwaqJIPYhotZ9uBHt87VceMwWQpzmdEt2TNXIorIFG+YeCUUW7RInw==",
++      "license": "MIT"
++    },
+     "node_modules/asynckit": {
+       "version": "0.4.0",
+       "resolved": "https://registry.npmmirror.com/asynckit/-/asynckit-0.4.0.tgz",
+@@ -863,6 +624,15 @@
+         "node": ">= 0.4"
+       }
+     },
++    "node_modules/camelize": {
++      "version": "1.0.1",
++      "resolved": "https://registry.npmmirror.com/camelize/-/camelize-1.0.1.tgz",
++      "integrity": "sha512-dU+Tx2fsypxTgtLoE36npi3UqcjSSMNYfkqgmoEhtZrraP5VWq0K7FkWVTYa8eMPtnU/G2txVsfdCJTn9uzpuQ==",
++      "license": "MIT",
++      "funding": {
++        "url": "https://github.com/sponsors/ljharb"
++      }
++    },
+     "node_modules/caniuse-lite": {
+       "version": "1.0.30001702",
+       "resolved": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001702.tgz",
+@@ -885,72 +655,52 @@
+     },
+     "node_modules/client-only": {
+       "version": "0.0.1",
+-      "resolved": "https://registry.npmjs.org/client-only/-/client-only-0.0.1.tgz",
++      "resolved": "https://registry.npmmirror.com/client-only/-/client-only-0.0.1.tgz",
+       "integrity": "sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==",
+       "license": "MIT"
+     },
+-    "node_modules/color": {
+-      "version": "4.2.3",
+-      "resolved": "https://registry.npmjs.org/color/-/color-4.2.3.tgz",
+-      "integrity": "sha512-1rXeuUUiGGrykh+CeBdu5Ie7OJwinCgQY0bc7GCRxy5xVHy+moaqkpL/jqQq0MtQOeYcrqEz4abc5f0KtU7W4A==",
++    "node_modules/combined-stream": {
++      "version": "1.0.8",
++      "resolved": "https://registry.npmmirror.com/combined-stream/-/combined-stream-1.0.8.tgz",
++      "integrity": "sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==",
+       "license": "MIT",
+-      "optional": true,
+       "dependencies": {
+-        "color-convert": "^2.0.1",
+-        "color-string": "^1.9.0"
++        "delayed-stream": "~1.0.0"
+       },
+       "engines": {
+-        "node": ">=12.5.0"
++        "node": ">= 0.8"
+       }
+     },
+-    "node_modules/color-convert": {
+-      "version": "2.0.1",
+-      "resolved": "https://registry.npmjs.org/color-convert/-/color-convert-2.0.1.tgz",
+-      "integrity": "sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==",
+-      "license": "MIT",
+-      "optional": true,
+-      "dependencies": {
+-        "color-name": "~1.1.4"
+-      },
++    "node_modules/css-color-keywords": {
++      "version": "1.0.0",
++      "resolved": "https://registry.npmmirror.com/css-color-keywords/-/css-color-keywords-1.0.0.tgz",
++      "integrity": "sha512-FyyrDHZKEjXDpNJYvVsV960FiqQyXc/LlYmsxl2BcdMb2WPx0OGRVgTg55rPSyLSNMqP52R9r8geSp7apN3Ofg==",
++      "license": "ISC",
+       "engines": {
+-        "node": ">=7.0.0"
++        "node": ">=4"
+       }
+     },
+-    "node_modules/color-name": {
+-      "version": "1.1.4",
+-      "resolved": "https://registry.npmjs.org/color-name/-/color-name-1.1.4.tgz",
+-      "integrity": "sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==",
+-      "license": "MIT",
+-      "optional": true
+-    },
+-    "node_modules/color-string": {
+-      "version": "1.9.1",
+-      "resolved": "https://registry.npmjs.org/color-string/-/color-string-1.9.1.tgz",
+-      "integrity": "sha512-shrVawQFojnZv6xM40anx4CkoDP+fZsw/ZerEMsW/pyzsRbElpsL/DBVW7q3ExxwusdNXI3lXpuhEZkzs8p5Eg==",
++    "node_modules/css-to-react-native": {
++      "version": "3.2.0",
++      "resolved": "https://registry.npmmirror.com/css-to-react-native/-/css-to-react-native-3.2.0.tgz",
++      "integrity": "sha512-e8RKaLXMOFii+02mOlqwjbD00KSEKqblnpO9e++1aXS1fPQOpS1YoqdVHBqPjHNoxeF2mimzVqawm2KCbEdtHQ==",
+       "license": "MIT",
+-      "optional": true,
+       "dependencies": {
+-        "color-name": "^1.0.0",
+-        "simple-swizzle": "^0.2.2"
+-      }
+-    },
+-    "node_modules/combined-stream": {
+-      "version": "1.0.8",
+-      "resolved": "https://registry.npmmirror.com/combined-stream/-/combined-stream-1.0.8.tgz",
+-      "integrity": "sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==",
+-      "license": "MIT",
+-      "dependencies": {
+-        "delayed-stream": "~1.0.0"
+-      },
+-      "engines": {
+-        "node": ">= 0.8"
++        "camelize": "^1.0.0",
++        "css-color-keywords": "^1.0.0",
++        "postcss-value-parser": "^4.0.2"
+       }
+     },
+     "node_modules/csstype": {
+       "version": "3.1.3",
+       "resolved": "https://registry.npmjs.org/csstype/-/csstype-3.1.3.tgz",
+       "integrity": "sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==",
+-      "dev": true,
++      "license": "MIT"
++    },
++    "node_modules/decimal.js": {
++      "version": "10.5.0",
++      "resolved": "https://registry.npmmirror.com/decimal.js/-/decimal.js-10.5.0.tgz",
++      "integrity": "sha512-8vDa8Qxvr/+d94hSh5P3IJwI5t8/c0KsMp+g8bNw9cY2icONa5aPfvKeieW1WlG0WQYwwhJ7mjui2xtiePQSXw==",
+       "license": "MIT"
+     },
+     "node_modules/delayed-stream": {
+@@ -1145,7 +895,6 @@
+       "version": "4.2.11",
+       "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.11.tgz",
+       "integrity": "sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==",
+-      "dev": true,
+       "license": "ISC"
+     },
+     "node_modules/has-symbols": {
+@@ -1187,12 +936,27 @@
+         "node": ">= 0.4"
+       }
+     },
+-    "node_modules/is-arrayish": {
+-      "version": "0.3.2",
+-      "resolved": "https://registry.npmjs.org/is-arrayish/-/is-arrayish-0.3.2.tgz",
+-      "integrity": "sha512-eVRqCvVlZbuw3GrM63ovNSNAeA1K16kaR/LRY/92w0zxQ5/1YzwblUX652i4Xs9RwAGjW9d9y6X88t8OaAJfWQ==",
+-      "license": "MIT",
+-      "optional": true
++    "node_modules/hoist-non-react-statics": {
++      "version": "3.3.2",
++      "resolved": "https://registry.npmmirror.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz",
++      "integrity": "sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==",
++      "dev": true,
++      "license": "BSD-3-Clause",
++      "dependencies": {
++        "react-is": "^16.7.0"
++      }
++    },
++    "node_modules/intl-messageformat": {
++      "version": "10.7.15",
++      "resolved": "https://registry.npmmirror.com/intl-messageformat/-/intl-messageformat-10.7.15.tgz",
++      "integrity": "sha512-LRyExsEsefQSBjU2p47oAheoKz+EOJxSLDdjOaEjdriajfHsMXOmV/EhMvYSg9bAgCUHasuAC+mcUBe/95PfIg==",
++      "license": "BSD-3-Clause",
++      "dependencies": {
++        "@formatjs/ecma402-abstract": "2.3.3",
++        "@formatjs/fast-memoize": "2.2.6",
++        "@formatjs/icu-messageformat-parser": "2.11.1",
++        "tslib": "2"
++      }
+     },
+     "node_modules/jiti": {
+       "version": "2.4.2",
+@@ -1204,6 +968,12 @@
+         "jiti": "lib/jiti-cli.mjs"
+       }
+     },
++    "node_modules/js-tokens": {
++      "version": "4.0.0",
++      "resolved": "https://registry.npmmirror.com/js-tokens/-/js-tokens-4.0.0.tgz",
++      "integrity": "sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==",
++      "license": "MIT"
++    },
+     "node_modules/lightningcss": {
+       "version": "1.29.1",
+       "resolved": "https://registry.npmjs.org/lightningcss/-/lightningcss-1.29.1.tgz",
+@@ -1443,6 +1213,18 @@
+         "url": "https://opencollective.com/parcel"
+       }
+     },
++    "node_modules/loose-envify": {
++      "version": "1.4.0",
++      "resolved": "https://registry.npmmirror.com/loose-envify/-/loose-envify-1.4.0.tgz",
++      "integrity": "sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==",
++      "license": "MIT",
++      "dependencies": {
++        "js-tokens": "^3.0.0 || ^4.0.0"
++      },
++      "bin": {
++        "loose-envify": "cli.js"
++      }
++    },
+     "node_modules/math-intrinsics": {
+       "version": "1.1.0",
+       "resolved": "https://registry.npmmirror.com/math-intrinsics/-/math-intrinsics-1.1.0.tgz",
+@@ -1491,43 +1273,51 @@
+         "node": "^10 || ^12 || ^13.7 || ^14 || >=15.0.1"
+       }
+     },
++    "node_modules/negotiator": {
++      "version": "1.0.0",
++      "resolved": "https://registry.npmmirror.com/negotiator/-/negotiator-1.0.0.tgz",
++      "integrity": "sha512-8Ofs/AUQh8MaEcrlq5xOX0CQ9ypTF5dl78mjlMNfOK08fzpgTHQRQPBxcPlEtIw0yRpws+Zo/3r+5WRby7u3Gg==",
++      "license": "MIT",
++      "engines": {
++        "node": ">= 0.6"
++      }
++    },
+     "node_modules/next": {
+-      "version": "15.2.1",
+-      "resolved": "https://registry.npmjs.org/next/-/next-15.2.1.tgz",
+-      "integrity": "sha512-zxbsdQv3OqWXybK5tMkPCBKyhIz63RstJ+NvlfkaLMc/m5MwXgz2e92k+hSKcyBpyADhMk2C31RIiaDjUZae7g==",
++      "version": "14.2.24",
++      "resolved": "https://registry.npmmirror.com/next/-/next-14.2.24.tgz",
++      "integrity": "sha512-En8VEexSJ0Py2FfVnRRh8gtERwDRaJGNvsvad47ShkC2Yi8AXQPXEA2vKoDJlGFSj5WE5SyF21zNi4M5gyi+SQ==",
+       "license": "MIT",
+       "dependencies": {
+-        "@next/env": "15.2.1",
+-        "@swc/counter": "0.1.3",
+-        "@swc/helpers": "0.5.15",
++        "@next/env": "14.2.24",
++        "@swc/helpers": "0.5.5",
+         "busboy": "1.6.0",
+         "caniuse-lite": "^1.0.30001579",
++        "graceful-fs": "^4.2.11",
+         "postcss": "8.4.31",
+-        "styled-jsx": "5.1.6"
++        "styled-jsx": "5.1.1"
+       },
+       "bin": {
+         "next": "dist/bin/next"
+       },
+       "engines": {
+-        "node": "^18.18.0 || ^19.8.0 || >= 20.0.0"
++        "node": ">=18.17.0"
+       },
+       "optionalDependencies": {
+-        "@next/swc-darwin-arm64": "15.2.1",
+-        "@next/swc-darwin-x64": "15.2.1",
+-        "@next/swc-linux-arm64-gnu": "15.2.1",
+-        "@next/swc-linux-arm64-musl": "15.2.1",
+-        "@next/swc-linux-x64-gnu": "15.2.1",
+-        "@next/swc-linux-x64-musl": "15.2.1",
+-        "@next/swc-win32-arm64-msvc": "15.2.1",
+-        "@next/swc-win32-x64-msvc": "15.2.1",
+-        "sharp": "^0.33.5"
++        "@next/swc-darwin-arm64": "14.2.24",
++        "@next/swc-darwin-x64": "14.2.24",
++        "@next/swc-linux-arm64-gnu": "14.2.24",
++        "@next/swc-linux-arm64-musl": "14.2.24",
++        "@next/swc-linux-x64-gnu": "14.2.24",
++        "@next/swc-linux-x64-musl": "14.2.24",
++        "@next/swc-win32-arm64-msvc": "14.2.24",
++        "@next/swc-win32-ia32-msvc": "14.2.24",
++        "@next/swc-win32-x64-msvc": "14.2.24"
+       },
+       "peerDependencies": {
+         "@opentelemetry/api": "^1.1.0",
+         "@playwright/test": "^1.41.2",
+-        "babel-plugin-react-compiler": "*",
+-        "react": "^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0",
+-        "react-dom": "^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0",
++        "react": "^18.2.0",
++        "react-dom": "^18.2.0",
+         "sass": "^1.3.0"
+       },
+       "peerDependenciesMeta": {
+@@ -1537,14 +1327,42 @@
+         "@playwright/test": {
+           "optional": true
+         },
+-        "babel-plugin-react-compiler": {
+-          "optional": true
+-        },
+         "sass": {
+           "optional": true
+         }
+       }
+     },
++    "node_modules/next-intl": {
++      "version": "3.26.5",
++      "resolved": "https://registry.npmmirror.com/next-intl/-/next-intl-3.26.5.tgz",
++      "integrity": "sha512-EQlCIfY0jOhRldiFxwSXG+ImwkQtDEfQeSOEQp6ieAGSLWGlgjdb/Ck/O7wMfC430ZHGeUKVKax8KGusTPKCgg==",
++      "funding": [
++        {
++          "type": "individual",
++          "url": "https://github.com/sponsors/amannn"
++        }
++      ],
++      "license": "MIT",
++      "dependencies": {
++        "@formatjs/intl-localematcher": "^0.5.4",
++        "negotiator": "^1.0.0",
++        "use-intl": "^3.26.5"
++      },
++      "peerDependencies": {
++        "next": "^10.0.0 || ^11.0.0 || ^12.0.0 || ^13.0.0 || ^14.0.0 || ^15.0.0",
++        "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || >=19.0.0-rc <19.0.0 || ^19.0.0"
++      }
++    },
++    "node_modules/next-themes": {
++      "version": "0.4.4",
++      "resolved": "https://registry.npmmirror.com/next-themes/-/next-themes-0.4.4.tgz",
++      "integrity": "sha512-LDQ2qIOJF0VnuVrrMSMLrWGjRMkq+0mpgl6e0juCLqdJ+oo8Q84JRWT6Wh11VDQKkMMe+dVzDKLWs5n87T+PkQ==",
++      "license": "MIT",
++      "peerDependencies": {
++        "react": "^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc",
++        "react-dom": "^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc"
++      }
++    },
+     "node_modules/next/node_modules/postcss": {
+       "version": "8.4.31",
+       "resolved": "https://registry.npmjs.org/postcss/-/postcss-8.4.31.tgz",
+@@ -1608,6 +1426,12 @@
+         "node": "^10 || ^12 || >=14"
+       }
+     },
++    "node_modules/postcss-value-parser": {
++      "version": "4.2.0",
++      "resolved": "https://registry.npmmirror.com/postcss-value-parser/-/postcss-value-parser-4.2.0.tgz",
++      "integrity": "sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==",
++      "license": "MIT"
++    },
+     "node_modules/proxy-from-env": {
+       "version": "1.1.0",
+       "resolved": "https://registry.npmmirror.com/proxy-from-env/-/proxy-from-env-1.1.0.tgz",
+@@ -1615,105 +1439,62 @@
+       "license": "MIT"
+     },
+     "node_modules/react": {
+-      "version": "19.0.0",
+-      "resolved": "https://registry.npmjs.org/react/-/react-19.0.0.tgz",
+-      "integrity": "sha512-V8AVnmPIICiWpGfm6GLzCR/W5FXLchHop40W4nXBmdlEceh16rCN8O8LNWm5bh5XUX91fh7KpA+W0TgMKmgTpQ==",
++      "version": "18.2.0",
++      "resolved": "https://registry.npmmirror.com/react/-/react-18.2.0.tgz",
++      "integrity": "sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==",
+       "license": "MIT",
++      "dependencies": {
++        "loose-envify": "^1.1.0"
++      },
+       "engines": {
+         "node": ">=0.10.0"
+       }
+     },
+     "node_modules/react-dom": {
+-      "version": "19.0.0",
+-      "resolved": "https://registry.npmjs.org/react-dom/-/react-dom-19.0.0.tgz",
+-      "integrity": "sha512-4GV5sHFG0e/0AD4X+ySy6UJd3jVl1iNsNHdpad0qhABJ11twS3TTBnseqsKurKcsNqCEFeGL3uLpVChpIO3QfQ==",
++      "version": "18.2.0",
++      "resolved": "https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz",
++      "integrity": "sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==",
+       "license": "MIT",
+       "dependencies": {
+-        "scheduler": "^0.25.0"
++        "loose-envify": "^1.1.0",
++        "scheduler": "^0.23.0"
+       },
+       "peerDependencies": {
+-        "react": "^19.0.0"
++        "react": "^18.2.0"
+       }
+     },
+-    "node_modules/scheduler": {
+-      "version": "0.25.0",
+-      "resolved": "https://registry.npmjs.org/scheduler/-/scheduler-0.25.0.tgz",
+-      "integrity": "sha512-xFVuu11jh+xcO7JOAGJNOXld8/TcEHK/4CituBUeUb5hqxJLj9YuemAEuvm9gQ/+pgXYfbQuqAkiYu+u7YEsNA==",
++    "node_modules/react-is": {
++      "version": "16.13.1",
++      "resolved": "https://registry.npmmirror.com/react-is/-/react-is-16.13.1.tgz",
++      "integrity": "sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==",
++      "dev": true,
+       "license": "MIT"
+     },
+-    "node_modules/semver": {
+-      "version": "7.7.1",
+-      "resolved": "https://registry.npmjs.org/semver/-/semver-7.7.1.tgz",
+-      "integrity": "sha512-hlq8tAfn0m/61p4BVRcPzIGr6LKiMwo4VM6dGi6pt4qcRkmNzTcWq6eCEjEh+qXjkMDvPlOFFSGwQjoEa6gyMA==",
+-      "license": "ISC",
+-      "optional": true,
+-      "bin": {
+-        "semver": "bin/semver.js"
+-      },
+-      "engines": {
+-        "node": ">=10"
+-      }
+-    },
+-    "node_modules/sharp": {
+-      "version": "0.33.5",
+-      "resolved": "https://registry.npmjs.org/sharp/-/sharp-0.33.5.tgz",
+-      "integrity": "sha512-haPVm1EkS9pgvHrQ/F3Xy+hgcuMV0Wm9vfIBSiwZ05k+xgb0PkBQpGsAA/oWdDobNaZTH5ppvHtzCFbnSEwHVw==",
+-      "hasInstallScript": true,
+-      "license": "Apache-2.0",
+-      "optional": true,
+-      "dependencies": {
+-        "color": "^4.2.3",
+-        "detect-libc": "^2.0.3",
+-        "semver": "^7.6.3"
+-      },
+-      "engines": {
+-        "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
+-      },
+-      "funding": {
+-        "url": "https://opencollective.com/libvips"
+-      },
+-      "optionalDependencies": {
+-        "@img/sharp-darwin-arm64": "0.33.5",
+-        "@img/sharp-darwin-x64": "0.33.5",
+-        "@img/sharp-libvips-darwin-arm64": "1.0.4",
+-        "@img/sharp-libvips-darwin-x64": "1.0.4",
+-        "@img/sharp-libvips-linux-arm": "1.0.5",
+-        "@img/sharp-libvips-linux-arm64": "1.0.4",
+-        "@img/sharp-libvips-linux-s390x": "1.0.4",
+-        "@img/sharp-libvips-linux-x64": "1.0.4",
+-        "@img/sharp-libvips-linuxmusl-arm64": "1.0.4",
+-        "@img/sharp-libvips-linuxmusl-x64": "1.0.4",
+-        "@img/sharp-linux-arm": "0.33.5",
+-        "@img/sharp-linux-arm64": "0.33.5",
+-        "@img/sharp-linux-s390x": "0.33.5",
+-        "@img/sharp-linux-x64": "0.33.5",
+-        "@img/sharp-linuxmusl-arm64": "0.33.5",
+-        "@img/sharp-linuxmusl-x64": "0.33.5",
+-        "@img/sharp-wasm32": "0.33.5",
+-        "@img/sharp-win32-ia32": "0.33.5",
+-        "@img/sharp-win32-x64": "0.33.5"
+-      }
+-    },
+-    "node_modules/sharp/node_modules/detect-libc": {
+-      "version": "2.0.3",
+-      "resolved": "https://registry.npmjs.org/detect-libc/-/detect-libc-2.0.3.tgz",
+-      "integrity": "sha512-bwy0MGW55bG41VqxxypOsdSdGqLwXPI/focwgTYCFMbdUiBAxLg9CFzG08sz2aqzknwiX7Hkl0bQENjg8iLByw==",
+-      "license": "Apache-2.0",
+-      "optional": true,
+-      "engines": {
+-        "node": ">=8"
++    "node_modules/react-spinners": {
++      "version": "0.15.0",
++      "resolved": "https://registry.npmmirror.com/react-spinners/-/react-spinners-0.15.0.tgz",
++      "integrity": "sha512-ZO3/fNB9Qc+kgpG3SfdlMnvTX6LtLmTnOogb3W6sXIaU/kZ1ydEViPfZ06kSOaEsor58C/tzXw2wROGQu3X2pA==",
++      "license": "MIT",
++      "peerDependencies": {
++        "react": "^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
++        "react-dom": "^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
+       }
+     },
+-    "node_modules/simple-swizzle": {
+-      "version": "0.2.2",
+-      "resolved": "https://registry.npmjs.org/simple-swizzle/-/simple-swizzle-0.2.2.tgz",
+-      "integrity": "sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==",
++    "node_modules/scheduler": {
++      "version": "0.23.2",
++      "resolved": "https://registry.npmmirror.com/scheduler/-/scheduler-0.23.2.tgz",
++      "integrity": "sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==",
+       "license": "MIT",
+-      "optional": true,
+       "dependencies": {
+-        "is-arrayish": "^0.3.1"
++        "loose-envify": "^1.1.0"
+       }
+     },
++    "node_modules/shallowequal": {
++      "version": "1.1.0",
++      "resolved": "https://registry.npmmirror.com/shallowequal/-/shallowequal-1.1.0.tgz",
++      "integrity": "sha512-y0m1JoUZSlPAjXVtPPW70aZWfIL/dSP7AFkRnniLCrK/8MDKog3TySTBmckD+RObVxH0v4Tox67+F14PdED2oQ==",
++      "license": "MIT"
++    },
+     "node_modules/source-map-js": {
+       "version": "1.2.1",
+       "resolved": "https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.1.tgz",
+@@ -1731,10 +1512,72 @@
+         "node": ">=10.0.0"
+       }
+     },
++    "node_modules/styled-components": {
++      "version": "6.1.15",
++      "resolved": "https://registry.npmmirror.com/styled-components/-/styled-components-6.1.15.tgz",
++      "integrity": "sha512-PpOTEztW87Ua2xbmLa7yssjNyUF9vE7wdldRfn1I2E6RTkqknkBYpj771OxM/xrvRGinLy2oysa7GOd7NcZZIA==",
++      "license": "MIT",
++      "dependencies": {
++        "@emotion/is-prop-valid": "1.2.2",
++        "@emotion/unitless": "0.8.1",
++        "@types/stylis": "4.2.5",
++        "css-to-react-native": "3.2.0",
++        "csstype": "3.1.3",
++        "postcss": "8.4.49",
++        "shallowequal": "1.1.0",
++        "stylis": "4.3.2",
++        "tslib": "2.6.2"
++      },
++      "engines": {
++        "node": ">= 16"
++      },
++      "funding": {
++        "type": "opencollective",
++        "url": "https://opencollective.com/styled-components"
++      },
++      "peerDependencies": {
++        "react": ">= 16.8.0",
++        "react-dom": ">= 16.8.0"
++      }
++    },
++    "node_modules/styled-components/node_modules/postcss": {
++      "version": "8.4.49",
++      "resolved": "https://registry.npmmirror.com/postcss/-/postcss-8.4.49.tgz",
++      "integrity": "sha512-OCVPnIObs4N29kxTjzLfUryOkvZEq+pf8jTF0lg8E7uETuWHA+v7j3c/xJmiqpX450191LlmZfUKkXxkTry7nA==",
++      "funding": [
++        {
++          "type": "opencollective",
++          "url": "https://opencollective.com/postcss/"
++        },
++        {
++          "type": "tidelift",
++          "url": "https://tidelift.com/funding/github/npm/postcss"
++        },
++        {
++          "type": "github",
++          "url": "https://github.com/sponsors/ai"
++        }
++      ],
++      "license": "MIT",
++      "dependencies": {
++        "nanoid": "^3.3.7",
++        "picocolors": "^1.1.1",
++        "source-map-js": "^1.2.1"
++      },
++      "engines": {
++        "node": "^10 || ^12 || >=14"
++      }
++    },
++    "node_modules/styled-components/node_modules/tslib": {
++      "version": "2.6.2",
++      "resolved": "https://registry.npmmirror.com/tslib/-/tslib-2.6.2.tgz",
++      "integrity": "sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==",
++      "license": "0BSD"
++    },
+     "node_modules/styled-jsx": {
+-      "version": "5.1.6",
+-      "resolved": "https://registry.npmjs.org/styled-jsx/-/styled-jsx-5.1.6.tgz",
+-      "integrity": "sha512-qSVyDTeMotdvQYoHWLNGwRFJHC+i+ZvdBRYosOFgC+Wg1vx4frN2/RG/NA7SYqqvKNLf39P2LSRA2pu6n0XYZA==",
++      "version": "5.1.1",
++      "resolved": "https://registry.npmmirror.com/styled-jsx/-/styled-jsx-5.1.1.tgz",
++      "integrity": "sha512-pW7uC1l4mBZ8ugbiZrcIsiIvVx1UmTfw7UkC3Um2tmfUq9Bhk8IiyEIPl6F8agHgjzku6j0xQEZbfA5uSgSaCw==",
+       "license": "MIT",
+       "dependencies": {
+         "client-only": "0.0.1"
+@@ -1743,7 +1586,7 @@
+         "node": ">= 12.0.0"
+       },
+       "peerDependencies": {
+-        "react": ">= 16.8.0 || 17.x.x || ^18.0.0-0 || ^19.0.0-0"
++        "react": ">= 16.8.0 || 17.x.x || ^18.0.0-0"
+       },
+       "peerDependenciesMeta": {
+         "@babel/core": {
+@@ -1754,6 +1597,12 @@
+         }
+       }
+     },
++    "node_modules/stylis": {
++      "version": "4.3.2",
++      "resolved": "https://registry.npmmirror.com/stylis/-/stylis-4.3.2.tgz",
++      "integrity": "sha512-bhtUjWd/z6ltJiQwg0dUfxEJ+W+jdqQd8TbWLWyeIJHlnsqmGLRFFd8e5mA0AZi/zx90smXRlN66YMTcaSFifg==",
++      "license": "MIT"
++    },
+     "node_modules/tailwindcss": {
+       "version": "4.0.9",
+       "resolved": "https://registry.npmjs.org/tailwindcss/-/tailwindcss-4.0.9.tgz",
+@@ -1797,6 +1646,19 @@
+       "integrity": "sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==",
+       "dev": true,
+       "license": "MIT"
++    },
++    "node_modules/use-intl": {
++      "version": "3.26.5",
++      "resolved": "https://registry.npmmirror.com/use-intl/-/use-intl-3.26.5.tgz",
++      "integrity": "sha512-OdsJnC/znPvHCHLQH/duvQNXnP1w0hPfS+tkSi3mAbfjYBGh4JnyfdwkQBfIVf7t8gs9eSX/CntxUMvtKdG2MQ==",
++      "license": "MIT",
++      "dependencies": {
++        "@formatjs/fast-memoize": "^2.2.0",
++        "intl-messageformat": "^10.5.14"
++      },
++      "peerDependencies": {
++        "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || >=19.0.0-rc <19.0.0 || ^19.0.0"
++      }
+     }
+   }
+ }
+diff --git a/package.json b/package.json
+index d601f1c..49df771 100644
+--- a/package.json
++++ b/package.json
+@@ -3,22 +3,27 @@
+   "version": "0.1.0",
+   "private": true,
+   "scripts": {
+-    "dev": "next dev --turbopack",
++    "dev": "next dev",
+     "build": "next build",
+     "start": "next start",
+     "lint": "next lint"
+   },
+   "dependencies": {
+     "axios": "^1.8.1",
+-    "next": "15.2.1",
+-    "react": "^19.0.0",
+-    "react-dom": "^19.0.0"
++    "next": "14.2.24",
++    "next-intl": "^3.26.5",
++    "next-themes": "^0.4.4",
++    "react": "18.2.0",
++    "react-dom": "18.2.0",
++    "react-spinners": "^0.15.0",
++    "styled-components": "^6.1.15"
+   },
+   "devDependencies": {
+     "@tailwindcss/postcss": "^4",
+     "@types/node": "^20",
+     "@types/react": "^19",
+     "@types/react-dom": "^19",
++    "@types/styled-components": "^5.1.34",
+     "tailwindcss": "^4",
+     "typescript": "^5"
+   }
+diff --git a/tailwind.config.js b/tailwind.config.js
+new file mode 100644
+index 0000000..8798338
+--- /dev/null
++++ b/tailwind.config.js
+@@ -0,0 +1,13 @@
++/** @type {import('tailwindcss').Config} */
++module.exports = {
++  content: [
++    "./app/**/*.{js,ts,jsx,tsx}",
++    "./pages/**/*.{js,ts,jsx,tsx}",
++    "./components/**/*.{js,ts,jsx,tsx}",
++  ],
++  darkMode: 'class',
++  theme: {
++    extend: {},
++  },
++  plugins: [],
++}; 
+\ No newline at end of file
+diff --git a/tailwind.config.ts b/tailwind.config.ts
+deleted file mode 100644
+index fcb9e96..0000000
+--- a/tailwind.config.ts
++++ /dev/null
+@@ -1,43 +0,0 @@
+-import type { Config } from "tailwindcss";
+-
+-const config: Config = {
+-  content: [
+-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+-  ],
+-  theme: {
+-    extend: {
+-      colors: {
+-        primary: {
+-          50: "#f0f9ff",
+-          100: "#e0f2fe",
+-          200: "#bae6fd",
+-          300: "#7dd3fc",
+-          400: "#38bdf8",
+-          500: "#0ea5e9",
+-          600: "#0284c7",
+-          700: "#0369a1",
+-          800: "#075985",
+-          900: "#0c4a6e",
+-          950: "#082f49",
+-        },
+-      },
+-      animation: {
+-        'gradient': 'gradient 8s ease infinite',
+-      },
+-      keyframes: {
+-        gradient: {
+-          '0%, 100%': { backgroundPosition: '0% 50%' },
+-          '50%': { backgroundPosition: '100% 50%' },
+-        },
+-      },
+-      backgroundSize: {
+-        'gradient-size': '200% 200%',
+-      },
+-    },
+-  },
+-  plugins: [],
+-};
+-
+-export default config; 
+\ No newline at end of file
+-- 
+2.42.0.windows.1
+
