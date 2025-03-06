@@ -11,7 +11,7 @@ const enTranslations = {
   // Emoji generator component
   generator: {
     title: 'Emoji Generator',
-    subtitle: 'Enter your text and create custom emoji images!',
+    subtitle: 'Enter your text and AI will create emoji images that match the meaning!',
     inputLabel: 'Enter Text',
     inputPlaceholder: 'Type something...',
     charactersCount: 'characters',
@@ -20,7 +20,7 @@ const enTranslations = {
     errorEmpty: 'Please enter some text',
     errorGeneral: 'Something went wrong',
     errorDownload: 'Failed to download the emoji image',
-    resultTitle: 'Your Emoji',
+    resultTitle: 'Your AI Generated Emoji',
     buttonDownload: 'Download Emoji'
   },
   

@@ -11,7 +11,7 @@ const zhTranslations = {
   // Emoji生成器组件
   generator: {
     title: 'Emoji 生成器',
-    subtitle: '输入文字，创建自定义emoji图片！',
+    subtitle: '输入文字，AI将创建与文字含义相匹配的emoji图片！',
     inputLabel: '输入文字',
     inputPlaceholder: '输入些什么...',
     charactersCount: '字符',
@@ -20,7 +20,7 @@ const zhTranslations = {
     errorEmpty: '请输入一些文字',
     errorGeneral: '出现错误',
     errorDownload: '下载emoji图片失败',
-    resultTitle: '你的 Emoji',
+    resultTitle: '你的 AI 生成的 Emoji',
     buttonDownload: '下载 Emoji'
   },
   

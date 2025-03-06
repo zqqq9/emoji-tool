@@ -8,7 +8,11 @@ export default function EmojiGenerator() {
   const [text, setText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [emojiResult, setEmojiResult] = useState<{ imageUrl: string; text: string } | null>(null);
+  const [emojiResult, setEmojiResult] = useState<{ 
+    imageUrl: string; 
+    text: string;
+    emoji?: string;
+  } | null>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -50,7 +54,7 @@ export default function EmojiGenerator() {
     if (!emojiResult) return;
     
     try {
-      // 获取图片数据
+      // 直接从Data URL创建Blob
       const response = await fetch(emojiResult.imageUrl);
       const blob = await response.blob();
       
@@ -61,9 +65,8 @@ export default function EmojiGenerator() {
       const link = document.createElement('a');
       link.href = url;
       
-      // 根据图片类型设置文件扩展名
-      const extension = blob.type.includes('svg') ? 'svg' : 'png';
-      link.download = `emoji-${emojiResult.text.replace(/\s+/g, '-')}.${extension}`;
+      // 设置文件扩展名为SVG
+      link.download = `emoji-${emojiResult.text.replace(/\s+/g, '-')}.svg`;
       
       // 触发下载
       document.body.appendChild(link);
@@ -130,6 +133,13 @@ export default function EmojiGenerator() {
       {emojiResult && (
         <div className="text-center bg-gray-100 dark:bg-gray-800 p-6 rounded-xl">
           <h2 className="text-xl font-semibold mb-4">{t.generator.resultTitle}</h2>
+          
+          {emojiResult.emoji && (
+            <div className="text-7xl mb-4">
+              {emojiResult.emoji}
+            </div>
+          )}
+          
           <div className="relative w-40 h-40 mx-auto mb-4 bg-white dark:bg-gray-700 rounded-lg p-2 flex items-center justify-center">
             <img
               ref={imageRef}
