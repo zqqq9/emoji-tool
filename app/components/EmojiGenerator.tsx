@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import Image from 'next/image';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function EmojiGenerator() {
+  const { t } = useLanguage();
   const [text, setText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -14,7 +15,7 @@ export default function EmojiGenerator() {
     e.preventDefault();
     
     if (!text.trim()) {
-      setError('请输入一些文字');
+      setError(t.generator.errorEmpty);
       return;
     }
     
@@ -32,14 +33,14 @@ export default function EmojiGenerator() {
       
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || '生成emoji失败');
+        throw new Error(errorData.error || t.generator.errorGeneral);
       }
       
       const data = await response.json();
       setEmojiResult(data);
     } catch (error) {
       console.error('Error:', error);
-      setError(error instanceof Error ? error.message : '出现错误');
+      setError(error instanceof Error ? error.message : t.generator.errorGeneral);
     } finally {
       setIsLoading(false);
     }
@@ -73,7 +74,7 @@ export default function EmojiGenerator() {
       URL.revokeObjectURL(url);
     } catch (error) {
       console.error('下载emoji时出错:', error);
-      setError('下载emoji图片失败');
+      setError(t.generator.errorDownload);
     }
   };
 
@@ -81,24 +82,24 @@ export default function EmojiGenerator() {
     <div className="max-w-2xl mx-auto p-4 bg-white dark:bg-black rounded-xl shadow-md">
       <div className="mb-8 text-center">
         <h1 className="text-4xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500">
-          Emoji 生成器
+          {t.generator.title}
         </h1>
         <p className="text-gray-600 dark:text-gray-400">
-          输入文字，创建自定义emoji图片！
+          {t.generator.subtitle}
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="mb-8">
         <div className="mb-4">
           <label htmlFor="text-input" className="block mb-2 text-sm font-medium">
-            输入文字
+            {t.generator.inputLabel}
           </label>
           <input
             id="text-input"
             type="text"
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="输入些什么..."
+            placeholder={t.generator.inputPlaceholder}
             className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 
                      bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 
                      focus:ring-blue-500 focus:border-transparent transition-all"
@@ -106,7 +107,7 @@ export default function EmojiGenerator() {
           />
           {text.length > 0 && (
             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-              {text.length}/50 字符
+              {text.length}/50 {t.generator.charactersCount}
             </p>
           )}
         </div>
@@ -118,7 +119,7 @@ export default function EmojiGenerator() {
                    text-white font-medium rounded-lg hover:opacity-90 transition-opacity 
                    focus:ring-4 focus:outline-none focus:ring-blue-300 disabled:opacity-70"
         >
-          {isLoading ? '创建中...' : '创建 Emoji'}
+          {isLoading ? t.generator.buttonCreating : t.generator.buttonCreate}
         </button>
 
         {error && (
@@ -128,7 +129,7 @@ export default function EmojiGenerator() {
 
       {emojiResult && (
         <div className="text-center bg-gray-100 dark:bg-gray-800 p-6 rounded-xl">
-          <h2 className="text-xl font-semibold mb-4">你的 Emoji</h2>
+          <h2 className="text-xl font-semibold mb-4">{t.generator.resultTitle}</h2>
           <div className="relative w-40 h-40 mx-auto mb-4 bg-white dark:bg-gray-700 rounded-lg p-2 flex items-center justify-center">
             <img
               ref={imageRef}
@@ -147,7 +148,7 @@ export default function EmojiGenerator() {
                      hover:bg-blue-700 transition-colors focus:ring-4 
                      focus:outline-none focus:ring-blue-300"
           >
-            下载 Emoji
+            {t.generator.buttonDownload}
           </button>
         </div>
       )}

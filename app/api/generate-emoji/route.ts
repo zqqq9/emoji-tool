@@ -1,14 +1,33 @@
 // API endpoint for generating emoji images
 import { NextRequest, NextResponse } from "next/server";
 
+// 错误消息的多语言支持
+const errorMessages = {
+  en: {
+    textRequired: "Text input is required",
+    failedFetch: "Failed to fetch emoji list from GitHub",
+    failedGenerate: "Failed to generate emoji"
+  },
+  zh: {
+    textRequired: "需要输入文字",
+    failedFetch: "从GitHub获取emoji列表失败",
+    failedGenerate: "生成emoji失败"
+  }
+};
+
 export async function POST(request: NextRequest) {
+  // 尝试从请求头中获取语言
+  const acceptLanguage = request.headers.get('Accept-Language') || '';
+  const lang = acceptLanguage.includes('zh') ? 'zh' : 'en';
+  const errors = errorMessages[lang];
+
   try {
     // Parse the request body
     const { text } = await request.json();
     
     if (!text || typeof text !== 'string') {
       return NextResponse.json(
-        { error: "Text input is required" },
+        { error: errors.textRequired },
         { status: 400 }
       );
     }
@@ -38,7 +57,7 @@ export async function POST(request: NextRequest) {
     // 获取GitHub的emoji列表
     const githubResponse = await fetch(imageUrl);
     if (!githubResponse.ok) {
-      throw new Error('Failed to fetch emoji list from GitHub');
+      throw new Error(errors.failedFetch);
     }
     
     const emojiList = await githubResponse.json();
@@ -65,7 +84,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Error generating emoji:", error);
     return NextResponse.json(
-      { error: "Failed to generate emoji" },
+      { error: errors.failedGenerate },
       { status: 500 }
     );
   }
