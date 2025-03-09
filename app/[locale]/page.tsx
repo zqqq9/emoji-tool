@@ -267,6 +267,23 @@ export default function Home() {
         <div id="emoji-generator">
           <EmojiGenerator ref={generatorRef} />
         </div>
+
+        
+        <ExampleSection>
+          <FeatureTitle>
+            <span>{t('examples.title').split(' ')[0]}</span> {t('examples.title').split(' ').slice(1).join(' ')}
+          </FeatureTitle>
+          <ExampleGrid>
+            {examplePrompts.map((prompt, index) => (
+              <ExampleTag 
+                key={index} 
+                onClick={() => handleExampleClick(prompt)}
+              >
+                {prompt}
+              </ExampleTag>
+            ))}
+          </ExampleGrid>
+        </ExampleSection>
         
         <FeatureSection>
           <FeatureTitle>
@@ -310,6 +327,7 @@ export default function Home() {
             </FeatureCard>
           </FeatureGrid>
         </FeatureSection>
+
         
         <HowSection>
           <FeatureTitle>
@@ -342,21 +360,6 @@ export default function Home() {
           </StepGrid>
         </HowSection>
         
-        <ExampleSection>
-          <FeatureTitle>
-            <span>{t('examples.title').split(' ')[0]}</span> {t('examples.title').split(' ').slice(1).join(' ')}
-          </FeatureTitle>
-          <ExampleGrid>
-            {examplePrompts.map((prompt, index) => (
-              <ExampleTag 
-                key={index} 
-                onClick={() => handleExampleClick(prompt)}
-              >
-                {prompt}
-              </ExampleTag>
-            ))}
-          </ExampleGrid>
-        </ExampleSection>
         
         <Footer>
           <p>© {new Date().getFullYear()} AI Emoji Generator | Powered by AI</p>
