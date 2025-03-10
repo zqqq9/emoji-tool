@@ -1,16 +1,16 @@
 import createMiddleware from 'next-intl/middleware';
+import { locales } from './app/i18n';
 
-// 配置国际化，只支持英语
+// 创建国际化中间件
 export default createMiddleware({
-  // 仅支持英语
-  locales: ['en'],
-  // 默认语言是英语
-  defaultLocale: 'en',
-  // 总是在URL中显示语言前缀
-  localePrefix: 'always'
+  // 支持的地区语言列表
+  locales: locales,
+  // 默认语言
+  defaultLocale: 'en'
 });
 
+// 匹配需要国际化的路径
 export const config = {
-  // 匹配除静态资源和API路由外的所有路由
-  matcher: ['/((?!api|_next|.*\\..*).*)']
+  // 匹配所有路径，除了 api 路由、静态资源、图片等
+  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)']
 }; 
