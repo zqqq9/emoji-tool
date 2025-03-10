@@ -110,32 +110,29 @@ const enMessages = {
   },
   Blog: {
     title: 'Blog',
+    highlight: 'AI Emoji Generator',
+    featured: 'Featured',
     comingSoon: 'More blog posts coming soon!',
     readMore: 'Read more',
     recentPosts: 'Recent Posts',
+    featuredDescription: 'In the digital age, emojis have become a universal language—over 6 billion are sent daily, transcending cultural and linguistic barriers. Yet traditional emoji libraries are limited. Enter AI emoji generators, a game-changing innovation reshaping how we communicate visually.',
     mainArticle: {
       title: 'The Evolution and Impact of AI Emoji Generator in Modern Communication',
       date: 'May 10, 2023',
       author: 'Emoji Team'
     },
     backToBlog: 'Back to Blog',
-    posts: [
-      {
-        title: 'Getting Started with AI Emoji Generator',
-        excerpt: 'Learn how to create your first AI-generated emoji in less than a minute...',
-        date: 'Oct 15, 2023'
-      },
-      {
-        title: 'Top 10 Creative Emoji Ideas to Try',
-        excerpt: 'Looking for inspiration? Here are ten creative emoji concepts that our users love...',
-        date: 'Oct 3, 2023'
-      },
-      {
-        title: 'The Future of AI in Creative Design',
-        excerpt: 'How artificial intelligence is transforming digital creativity and what it means for designers...',
-        date: 'Sep 28, 2023'
-      }
-    ]
+    post0Title: 'Getting Started with AI Emoji Generator',
+    post0Excerpt: 'Learn how to create your first AI-generated emoji in less than a minute...',
+    post0Date: 'Oct 15, 2023',
+    
+    post1Title: 'Top 10 Creative Emoji Ideas to Try',
+    post1Excerpt: 'Looking for inspiration? Here are ten creative emoji concepts that our users love...',
+    post1Date: 'Nov 5, 2023',
+    
+    post2Title: 'How AI is Revolutionizing Digital Expression',
+    post2Excerpt: 'Artificial intelligence is changing the way we express ourselves online...',
+    post2Date: 'Dec 12, 2023'
   }
 };
 
@@ -245,32 +242,29 @@ const zhMessages = {
   },
   Blog: {
     title: '博客',
+    highlight: 'AI Emoji Generator',
+    featured: 'Featured',
     comingSoon: '更多博客文章即将推出！',
     readMore: '阅读更多',
     recentPosts: '最新文章',
+    featuredDescription: '在数字时代，表情符号已成为一种全球语言——每天发送超过60亿个，跨越文化和语言障碍。然而，传统的表情符号库是有限的。进入AI表情符号生成器，一种改变沟通方式的创新，重塑我们视觉交流的方式。',
     mainArticle: {
       title: 'AI Emoji Generator在现代通信中的演变和影响',
       date: '2023年5月10日',
       author: 'Emoji团队'
     },
     backToBlog: '返回博客',
-    posts: [
-      {
-        title: 'AI表情生成器入门指南',
-        excerpt: '学习如何在不到一分钟的时间内创建您的第一个AI生成的表情符号...',
-        date: '2023年10月15日'
-      },
-      {
-        title: '值得一试的10个创意表情想法',
-        excerpt: '寻找灵感？这里有十个我们用户喜爱的创意表情概念...',
-        date: '2023年10月3日'
-      },
-      {
-        title: 'AI在创意设计中的未来',
-        excerpt: '人工智能如何改变数字创意领域，以及这对设计师意味着什么...',
-        date: '2023年9月28日'
-      }
-    ]
+    post0Title: 'AI表情生成器入门指南',
+    post0Excerpt: '学习如何在不到一分钟的时间内创建您的第一个AI生成的表情符号...',
+    post0Date: '2023年10月15日',
+    
+    post1Title: 'Top 10创意表情想法',
+    post1Excerpt: '寻找灵感？这里有十个我们用户喜爱的创意表情概念...',
+    post1Date: '2023年11月5日',
+    
+    post2Title: 'AI如何改变数字表达',
+    post2Excerpt: '人工智能正在改变我们在线表达自己的方式...',
+    post2Date: '2023年12月12日'
   }
 };
 
@@ -380,32 +374,29 @@ const esMessages = {
   },
   Blog: {
     title: 'Blog',
+    highlight: 'AI Emoji Generator',
+    featured: 'Featured',
     comingSoon: '¡Más publicaciones próximamente!',
     readMore: 'Leer más',
     recentPosts: 'Publicaciones Recientes',
+    featuredDescription: 'En la era digital, los emojis se han convertido en un lenguaje universal—más de 6 mil millones se envían diariamente, transcendiéndose las barreras culturales y lingüísticas. Sin embargo, las bibliotecas tradicionales de emojis son limitadas. Entra en los generadores de emojis de IA, una innovación revolucionaria que está cambiando cómo nos comunicamos visualmente.',
     mainArticle: {
       title: 'La Evolución e Impacto del Generador de Emojis IA en la Comunicación Moderna',
       date: '10 de Mayo de 2023',
       author: 'Equipo Emoji'
     },
     backToBlog: 'Volver al Blog',
-    posts: [
-      {
-        title: 'Primeros pasos con AI Emoji Generator',
-        excerpt: 'Aprende a crear tu primer emoji generado por IA en menos de un minuto...',
-        date: '15 de Oct, 2023'
-      },
-      {
-        title: 'Top 10 ideas creativas de emojis para probar',
-        excerpt: '¿Buscando inspiración? Aquí hay diez conceptos creativos de emoji que nuestros usuarios adoran...',
-        date: '3 de Oct, 2023'
-      },
-      {
-        title: 'El futuro de la IA en el diseño creativo',
-        excerpt: 'Cómo la inteligencia artificial está transformando la creatividad digital y lo que significa para los diseñadores...',
-        date: '28 de Sep, 2023'
-      }
-    ]
+    post0Title: 'Primeros pasos con AI Emoji Generator',
+    post0Excerpt: 'Aprende a crear tu primer emoji generado por IA en menos de un minuto...',
+    post0Date: '15 de Oct, 2023',
+    
+    post1Title: 'Top 10 ideas creativas de emojis para probar',
+    post1Excerpt: '¿Buscando inspiración? Aquí hay diez conceptos creativos de emoji que nuestros usuarios adoran...',
+    post1Date: '3 de Oct, 2023',
+    
+    post2Title: 'El futuro de la IA en el diseño creativo',
+    post2Excerpt: 'Cómo la inteligencia artificial está transformando la creatividad digital y lo que significa para los diseñadores...',
+    post2Date: '28 de Sep, 2023'
   }
 };
 
@@ -515,32 +506,29 @@ const frMessages = {
   },
   Blog: {
     title: 'Blog',
+    highlight: 'AI Emoji Generator',
+    featured: 'Featured',
     comingSoon: 'More blog posts coming soon!',
     readMore: 'Lire Plus',
     recentPosts: 'Publications Récentes',
+    featuredDescription: 'In the digital age, emojis have become a universal language—over 6 billion are sent daily, transcending cultural and linguistic barriers. Yet traditional emoji libraries are limited. Enter AI emoji generators, a game-changing innovation reshaping how we communicate visually.',
     mainArticle: {
       title: 'L\'Évolution et l\'Impact du Générateur d\'Emojis IA dans la Communication Moderne',
       date: '10 Mai 2023',
       author: 'Équipe Emoji'
     },
     backToBlog: 'Retour au Blog',
-    posts: [
-      {
-        title: 'Erste Schritte mit dem AI Emoji Generator',
-        excerpt: 'Lernen Sie, wie Sie Ihren ersten KI-generierten Emoji in weniger als einer Minute erstellen...',
-        date: '15. Okt 2023'
-      },
-      {
-        title: 'Top 10 kreative Emoji-Ideen zum Ausprobieren',
-        excerpt: 'Suchen Sie nach Inspiration? Hier sind zehn kreative Emoji-Konzepte, die unsere Benutzer lieben...',
-        date: '3. Okt 2023'
-      },
-      {
-        title: 'Die Zukunft der KI im kreativen Design',
-        excerpt: 'Wie künstliche Intelligenz die digitale Kreativität verändert und was das für Designer bedeutet...',
-        date: '28. Sep 2023'
-      }
-    ]
+    post0Title: 'Erste Schritte mit dem AI Emoji Generator',
+    post0Excerpt: 'Lernen Sie, wie Sie Ihren ersten KI-generierten Emoji in weniger als einer Minute erstellen...',
+    post0Date: '15. Okt 2023',
+    
+    post1Title: 'Top 10 kreative Emoji-Ideen zum Ausprobieren',
+    post1Excerpt: 'Suchen Sie nach Inspiration? Hier sind zehn kreative Emoji-Konzepte, die unsere Benutzer lieben...',
+    post1Date: '3. Okt 2023',
+    
+    post2Title: 'Die Zukunft der KI im kreativen Design',
+    post2Excerpt: 'Wie künstliche Intelligenz die digitale Kreativität verändert und was das für Designer bedeutet...',
+    post2Date: '28. Sep 2023'
   }
 };
 
@@ -650,32 +638,29 @@ const jaMessages = {
   },
   Blog: {
     title: 'ブログ',
+    highlight: 'AI Emoji Generator',
+    featured: 'Featured',
     comingSoon: 'More blog posts coming soon!',
     readMore: '続きを読む',
     recentPosts: '最新の投稿',
+    featuredDescription: 'In the digital age, emojis have become a universal language—over 6 billion are sent daily, transcending cultural and linguistic barriers. Yet traditional emoji libraries are limited. Enter AI emoji generators, a game-changing innovation reshaping how we communicate visually.',
     mainArticle: {
       title: '現代のコミュニケーションにおけるAI絵文字ジェネレーターの進化と影響',
       date: '2023年5月10日',
       author: '絵文字チーム'
     },
     backToBlog: 'ブログに戻る',
-    posts: [
-      {
-        title: 'AI表情生成器入门指南',
-        excerpt: '学习如何在不到一分钟的时间内创建您的第一个AI生成的表情符号...',
-        date: '2023年10月15日'
-      },
-      {
-        title: '值得一试的10个创意表情想法',
-        excerpt: '寻找灵感？这里有十个我们用户喜爱的创意表情概念...',
-        date: '2023年10月3日'
-      },
-      {
-        title: 'AI在创意设计中的未来',
-        excerpt: '人工智能如何改变数字创意领域，以及这对设计师意味着什么...',
-        date: '2023年9月28日'
-      }
-    ]
+    post0Title: 'AI表情生成器入门指南',
+    post0Excerpt: '学习如何在不到一分钟的时间内创建您的第一个AI生成的表情符号...',
+    post0Date: '2023年10月15日',
+    
+    post1Title: '值得一试的10个创意表情想法',
+    post1Excerpt: '寻找灵感？这里有十个我们用户喜爱的创意表情概念...',
+    post1Date: '2023年10月3日',
+    
+    post2Title: 'AI在创意设计中的未来',
+    post2Excerpt: '人工智能如何改变数字创意领域，以及这对设计师意味着什么...',
+    post2Date: '2023年9月28日'
   }
 };
 
@@ -785,32 +770,29 @@ const deMessages = {
   },
   Blog: {
     title: 'Blog',
+    highlight: 'AI Emoji Generator',
+    featured: 'Featured',
     comingSoon: 'Weitere Blogbeiträge in Kürze!',
     readMore: 'Weiterlesen',
     recentPosts: 'Neueste Beiträge',
+    featuredDescription: 'In the digital age, emojis have become a universal language—over 6 billion are sent daily, transcending cultural and linguistic barriers. Yet traditional emoji libraries are limited. Enter AI emoji generators, a game-changing innovation reshaping how we communicate visually.',
     mainArticle: {
       title: 'Die Entwicklung und Auswirkung des KI-Emoji-Generators in der modernen Kommunikation',
       date: '10. Mai 2023',
       author: 'Emoji-Team'
     },
     backToBlog: 'Zurück zum Blog',
-    posts: [
-      {
-        title: 'Erste Schritte mit dem AI Emoji Generator',
-        excerpt: 'Lernen Sie, wie Sie Ihren ersten KI-generierten Emoji in weniger als einer Minute erstellen...',
-        date: '15. Okt 2023'
-      },
-      {
-        title: 'Top 10 kreative Emoji-Ideen zum Ausprobieren',
-        excerpt: 'Suchen Sie nach Inspiration? Hier sind zehn kreative Emoji-Konzepte, die unsere Benutzer lieben...',
-        date: '3. Okt 2023'
-      },
-      {
-        title: 'Die Zukunft der KI im kreativen Design',
-        excerpt: 'Wie künstliche Intelligenz die digitale Kreativität verändert und was das für Designer bedeutet...',
-        date: '28. Sep 2023'
-      }
-    ]
+    post0Title: 'Erste Schritte mit dem AI Emoji Generator',
+    post0Excerpt: 'Lernen Sie, wie Sie Ihren ersten KI-generierten Emoji in weniger als einer Minute erstellen...',
+    post0Date: '15. Okt 2023',
+    
+    post1Title: 'Top 10 kreative Emoji-Ideen zum Ausprobieren',
+    post1Excerpt: 'Suchen Sie nach Inspiration? Hier sind zehn kreative Emoji-Konzepte, die unsere Benutzer lieben...',
+    post1Date: '3. Okt 2023',
+    
+    post2Title: 'Die Zukunft der KI im kreativen Design',
+    post2Excerpt: 'Wie künstliche Intelligenz die digitale Kreativität verändert und was das für Designer bedeutet...',
+    post2Date: '28. Sep 2023'
   }
 };
 
@@ -920,32 +902,29 @@ const ruMessages = {
   },
   Blog: {
     title: 'Блог',
+    highlight: 'AI Emoji Generator',
+    featured: 'Featured',
     comingSoon: 'More blog posts coming soon!',
     readMore: 'Читать далее',
     recentPosts: 'Недавние публикации',
+    featuredDescription: 'In the digital age, emojis have become a universal language—over 6 billion are sent daily, transcending cultural and linguistic barriers. Yet traditional emoji libraries are limited. Enter AI emoji generators, a game-changing innovation reshaping how we communicate visually.',
     mainArticle: {
       title: 'Эволюция и влияние генератора эмодзи на базе ИИ в современной коммуникации',
       date: '10 мая 2023',
       author: 'Команда Emoji'
     },
     backToBlog: 'Вернуться к блогу',
-    posts: [
-      {
-        title: 'AI表情生成器入门指南',
-        excerpt: '学习如何在不到一分钟的时间内创建您的第一个AI生成的表情符号...',
-        date: '2023年10月15日'
-      },
-      {
-        title: '值得一试的10个创意表情想法',
-        excerpt: '寻找灵感？这里有十个我们用户喜爱的创意表情概念...',
-        date: '2023年10月3日'
-      },
-      {
-        title: 'AI在创意设计中的未来',
-        excerpt: '人工智能如何改变数字创意领域，以及这对设计师意味着什么...',
-        date: '2023年9月28日'
-      }
-    ]
+    post0Title: 'AI表情生成器入门指南',
+    post0Excerpt: '学习如何在不到一分钟的时间内创建您的第一个AI生成的表情符号...',
+    post0Date: '2023年10月15日',
+    
+    post1Title: '值得一试的10个创意表情想法',
+    post1Excerpt: '寻找灵感？这里有十个我们用户喜爱的创意表情概念...',
+    post1Date: '2023年10月3日',
+    
+    post2Title: 'AI在创意设计中的未来',
+    post2Excerpt: '人工智能如何改变数字创意领域，以及这对设计师意味着什么...',
+    post2Date: '2023年9月28日'
   }
 };
 
