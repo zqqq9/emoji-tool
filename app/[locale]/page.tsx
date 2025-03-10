@@ -168,7 +168,7 @@ const StepText = styled.p`
 
 const ExampleSection = styled.section`
   margin: 4rem auto;
-  max-width: 1200px;
+  max-width: 80vw;
   padding: 0 1rem;
   
   @media (max-width: 768px) {

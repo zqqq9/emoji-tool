@@ -7,8 +7,8 @@ import '../globals.css';
 
 // 元数据
 export const metadata = {
-  title: 'AI Sticker Generator - Create Custom Stickers with AI',
-  description: 'Create custom stickers and emojis with AI. Generate unique stickers for chat, social media, and more!',
+  title: 'AI Emoji Generator - Create Custom Emojis with AI',
+  description: 'Create custom emojis with AI. Generate unique emojis for chat, social media, and more!',
 };
 
 // 国际化路由布局
@@ -25,16 +25,12 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} suppressHydrationWarning>
-      <body>
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          <ThemeProviderClient>
-            <SiteProvider>
-              {children}
-            </SiteProvider>
-          </ThemeProviderClient>
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <NextIntlClientProvider locale={locale} messages={messages}>
+      <ThemeProviderClient>
+        <SiteProvider>
+          {children}
+        </SiteProvider>
+      </ThemeProviderClient>
+    </NextIntlClientProvider>
   );
 } 
