@@ -5,6 +5,23 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'AI Emoji Generator',
   description: 'Create custom emojis with AI. Generate unique emojis for chat, social media, and more!',
+  manifest: '/manifest.json',
+  icons: {
+    icon: [
+      {
+        url: '/puzzle-emoji.svg',
+        type: 'image/svg+xml',
+        media: '(prefers-color-scheme: light)',
+      },
+      {
+        url: '/puzzle-emoji-dark.svg',
+        type: 'image/svg+xml',
+        media: '(prefers-color-scheme: dark)',
+      },
+    ],
+    shortcut: '/puzzle-emoji.svg',
+    apple: '/puzzle-emoji.svg',
+  },
 };
 
 export default function RootLayout({

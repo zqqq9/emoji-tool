@@ -5,6 +5,8 @@ export default function Head() {
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta name="description" content="Create custom emojis with AI. Generate unique emojis for chat, social media, and more!" />
       <meta name="theme-color" content="#6e8efb" />
+      <link rel="icon" href="/puzzle-emoji.svg" type="image/svg+xml" media="(prefers-color-scheme: light)" />
+      <link rel="icon" href="/puzzle-emoji-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)" />
       <link rel="preload" href="/styles.css" as="style" />
       <style dangerouslySetInnerHTML={{ 
         __html: `

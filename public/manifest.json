@@ -1,0 +1,17 @@
+{
+  "name": "AI Emoji Generator",
+  "short_name": "AI Emoji",
+  "description": "Create custom emojis with AI. Generate unique emojis for chat, social media, and more!",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#6e8efb",
+  "icons": [
+    {
+      "src": "/puzzle-emoji.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+} 
