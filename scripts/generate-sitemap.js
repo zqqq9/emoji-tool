@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 // 配置
-const SITE_URL = 'https://yourdomain.com'; // 更改为您的实际域名
+const SITE_URL = 'https://emoji-gen.com'; // 更改为您的实际域名
 const LAST_MOD = new Date().toISOString().split('T')[0]; // 今天的日期，格式为YYYY-MM-DD
 
 // 主要路由
