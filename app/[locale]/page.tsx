@@ -224,6 +224,44 @@ const Footer = styled.footer`
   color: #888;
 `;
 
+const FAQSection = styled.section`
+  margin: 4rem 0;
+`;
+
+const FAQContainer = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+`;
+
+const FAQItem = styled.div`
+  margin-bottom: 1rem;
+`;
+
+const FAQQuestion = styled.h3`
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+`;
+
+const FAQAnswer = styled.p`
+  color: #666;
+  line-height: 1.5;
+`;
+
+const ExplanatorySection = styled.section`
+  margin: 4rem 0;
+`;
+
+const ExplanatoryContainer = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+`;
+
+const ExplanatoryParagraph = styled.p`
+  margin-bottom: 1rem;
+`;
+
 export default function Home() {
   const t = useTranslations('Home');
   const generatorRef = useRef<EmojiGeneratorRef>(null);
@@ -360,6 +398,52 @@ export default function Home() {
           </StepGrid>
         </HowSection>
         
+        <FAQSection>
+          <FeatureTitle>
+            <span>{t('faq.title').split(' ')[0]}</span> {t('faq.title').split(' ').slice(1).join(' ')}
+          </FeatureTitle>
+          <FAQContainer>
+            <FAQItem>
+              <FAQQuestion>{t('faq.question1')}</FAQQuestion>
+              <FAQAnswer>{t('faq.answer1')}</FAQAnswer>
+            </FAQItem>
+            <FAQItem>
+              <FAQQuestion>{t('faq.question2')}</FAQQuestion>
+              <FAQAnswer>{t('faq.answer2')}</FAQAnswer>
+            </FAQItem>
+            <FAQItem>
+              <FAQQuestion>{t('faq.question3')}</FAQQuestion>
+              <FAQAnswer>{t('faq.answer3')}</FAQAnswer>
+            </FAQItem>
+            <FAQItem>
+              <FAQQuestion>{t('faq.question4')}</FAQQuestion>
+              <FAQAnswer>{t('faq.answer4')}</FAQAnswer>
+            </FAQItem>
+            <FAQItem>
+              <FAQQuestion>{t('faq.question5')}</FAQQuestion>
+              <FAQAnswer>{t('faq.answer5')}</FAQAnswer>
+            </FAQItem>
+            <FAQItem>
+              <FAQQuestion>{t('faq.question6')}</FAQQuestion>
+              <FAQAnswer>{t('faq.answer6')}</FAQAnswer>
+            </FAQItem>
+          </FAQContainer>
+        </FAQSection>
+        
+        <ExplanatorySection>
+          <FeatureTitle>
+            <span>{t('explanatoryText.title').split(' ')[0]}</span> {t('explanatoryText.title').split(' ').slice(1).join(' ')}
+          </FeatureTitle>
+          <ExplanatoryContainer>
+            <ExplanatoryParagraph>{t('explanatoryText.paragraph1')}</ExplanatoryParagraph>
+            <ExplanatoryParagraph>{t('explanatoryText.paragraph2')}</ExplanatoryParagraph>
+            <ExplanatoryParagraph>{t('explanatoryText.paragraph3')}</ExplanatoryParagraph>
+            <ExplanatoryParagraph>{t('explanatoryText.paragraph4')}</ExplanatoryParagraph>
+            <ExplanatoryParagraph>{t('explanatoryText.paragraph5')}</ExplanatoryParagraph>
+            <ExplanatoryParagraph>{t('explanatoryText.paragraph6')}</ExplanatoryParagraph>
+            <ExplanatoryParagraph>{t('explanatoryText.paragraph7')}</ExplanatoryParagraph>
+          </ExplanatoryContainer>
+        </ExplanatorySection>
         
         <Footer>
           <p>© {new Date().getFullYear()} AI Emoji Generator | Powered by AI</p>

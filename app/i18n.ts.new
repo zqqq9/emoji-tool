@@ -1,4 +1,4 @@
-// 国际化配置 - 支持多语言
+// 国际化配�?- 支持多语言
 import { createTranslator } from 'next-intl';
 
 // 定义支持的语言列表
@@ -123,7 +123,7 @@ const enMessages = {
       
       paragraph6: 'Beyond personal use, the AI Emoji Generator offers valuable applications for content creators, marketers, educators, and businesses. Custom emojis can strengthen brand identity, enhance educational materials, or add visual interest to digital content. The possibilities are as limitless as your imagination.',
       
-      paragraph7: 'As artificial intelligence technology continues to evolve, so too will the capabilities of our AI Emoji Generator. We are committed to incorporating the latest advancements in AI research to provide you with even more powerful and versatile emoji creation tools. Join us on this exciting journey at the intersection of artificial intelligence and creative expression.'
+      paragraph7: 'As artificial intelligence technology continues to evolve, so too will the capabilities of our AI Emoji Generator. We're committed to incorporating the latest advancements in AI research to provide you with even more powerful and versatile emoji creation tools. Join us on this exciting journey at the intersection of artificial intelligence and creative expression.'
     }
   },
   About: {
@@ -180,27 +180,27 @@ const zhMessages = {
     about: '关于'
   },
   EmojiGenerator: {
-    title: '表情生成器',
-    description: '使用AI创建自定义表情。输入你的想法，生成独特图像。',
+    title: '表情生成�?,
+    description: '使用AI创建自定义表情。输入你的想法，生成独特图像�?,
     categoryEmoji: '表情',
     categorySticker: '贴纸',
     categoryIcon: '图标',
     inputPlaceholder: '描述你的表情想法...',
     generateButton: '生成',
-    generating: '生成中...',
+    generating: '生成�?..',
     loadingMessage: '正在创建你的表情...',
     copyButton: '复制',
     downloadButton: '下载',
     tryExample: '试试这些例子',
-    errorGenerating: '生成图像时出错。请重试。',
+    errorGenerating: '生成图像时出错。请重试�?,
     copiedToClipboard: '已复制到剪贴板！',
-    errorCopying: '复制图像时出错。请尝试使用下载按钮。',
-    failedToCopy: '复制图像失败。请尝试使用下载按钮。',
-    exampleEmoji1: '开心的猫',
-    exampleEmoji2: '惊讶的熊猫',
-    exampleEmoji3: '笑着的披萨',
-    exampleSticker1: '戴墨镜的可爱狗',
-    exampleSticker2: '彩虹独角兽',
+    errorCopying: '复制图像时出错。请尝试使用下载按钮�?,
+    failedToCopy: '复制图像失败。请尝试使用下载按钮�?,
+    exampleEmoji1: '开心的�?,
+    exampleEmoji2: '惊讶的熊�?,
+    exampleEmoji3: '笑着的披�?,
+    exampleSticker1: '戴墨镜的可爱�?,
+    exampleSticker2: '彩虹独角�?,
     exampleSticker3: '兴奋的机器人',
     exampleIcon1: '邮件图标',
     exampleIcon2: '设置齿轮',
@@ -212,46 +212,46 @@ const zhMessages = {
     colorfulBackground: '彩色',
     gradientBackground: '渐变',
     artStyleTitle: '艺术风格',
-    cartoonStyle: '卡通',
+    cartoonStyle: '卡�?,
     pixelStyle: '像素艺术',
     watercolorStyle: '水彩',
     sketchStyle: '素描',
     threeDStyle: '3D',
     realisticStyle: '写实',
-    customizeTitle: '自定义你的表情',
+    customizeTitle: '自定义你的表�?,
   },
   Home: {
-    title: 'AI表情生成器',
+    title: 'AI表情生成�?,
     subtitle: '利用人工智能创造独特的表情符号',
-    getStarted: '开始使用',
+    getStarted: '开始使�?,
     features: {
       title: 'AI魔法赋能表情创作',
       instant: {
         title: '即时创建',
-        description: '借助先进的AI技术，几秒钟内将文字描述转化为生动的表情图像。无需设计经验，人人都能成为创作者。',
+        description: '借助先进的AI技术，几秒钟内将文字描述转化为生动的表情图像。无需设计经验，人人都能成为创作者�?,
       },
       quality: {
-        title: '高品质输出',
-        description: '生成的表情拥有高清品质和透明背景，可以无缝融入各种聊天应用和社交平台。一键复制或下载，即可分享。',
+        title: '高品质输�?,
+        description: '生成的表情拥有高清品质和透明背景，可以无缝融入各种聊天应用和社交平台。一键复制或下载，即可分享�?,
       },
       limitless: {
         title: '无限创意',
-        description: '你的想象力是唯一的限制。从可爱的动物到奇特的概念，从情感表达到抽象艺术，AI都能将你的创意变为现实。',
+        description: '你的想象力是唯一的限制。从可爱的动物到奇特的概念，从情感表达到抽象艺术，AI都能将你的创意变为现实�?,
       },
     },
     howToUse: {
       title: '使用方法',
       step1: {
         title: '输入描述',
-        description: '在输入框中描述你想要的表情。可以尝试"开心的猫"、"惊讶的熊猫"或任何创意想法。描述越详细，结果越准确。',
+        description: '在输入框中描述你想要的表情。可以尝�?开心的�?�?惊讶的熊�?或任何创意想法。描述越详细，结果越准确�?,
       },
       step2: {
         title: '生成图像',
-        description: '点击"生成"按钮，AI将处理你的描述并创建相应的表情图像。整个过程只需几秒钟，请耐心等待。',
+        description: '点击"生成"按钮，AI将处理你的描述并创建相应的表情图像。整个过程只需几秒钟，请耐心等待�?,
       },
       step3: {
-        title: '保存与分享',
-        description: '图像生成后，你可以复制或下载。复制功能方便直接粘贴到聊天应用中，下载则可永久保存到你的设备。',
+        title: '保存与分�?,
+        description: '图像生成后，你可以复制或下载。复制功能方便直接粘贴到聊天应用中，下载则可永久保存到你的设备�?,
       },
     },
     examples: {
@@ -260,83 +260,83 @@ const zhMessages = {
     faq: {
       title: '常见问题',
       question1: '什么是AI表情生成器？',
-      answer1: 'AI表情生成器是一种高级工具，使用人工智能根据文本描述创建自定义表情。我们的AI表情生成器将您的想法转化为独特的、高质量的表情符号图像，可以在各种数字平台上使用。',
+      answer1: 'AI表情生成器是一种高级工具，使用人工智能根据文本描述创建自定义表情。我们的AI表情生成器将您的想法转化为独特的、高质量的表情符号图像，可以在各种数字平台上使用�?,
       
       question2: 'AI表情生成器如何工作？',
-      answer2: '我们的AI表情生成器使用复杂的机器学习算法，经过数百万张图像的训练。当您输入文本描述时，AI会分析您的输入并生成与描述匹配的自定义表情符号。该技术结合了自然语言处理和图像生成功能，以创建独特的视觉表达您的想法。',
+      answer2: '我们的AI表情生成器使用复杂的机器学习算法，经过数百万张图像的训练。当您输入文本描述时，AI会分析您的输入并生成与描述匹配的自定义表情符号。该技术结合了自然语言处理和图像生成功能，以创建独特的视觉表达您的想法�?,
       
-      question3: '生成的表情符号可以免费使用吗？',
-      answer3: '是的！所有使用我们的AI表情生成器创建的表情符号都可以免费用于个人用途。您可以在消息、社交媒体帖子和个人项目中使用它们，而无需任何限制。对于营销材料、品牌内容或销售的产品，请参考我们的服务条款。',
+      question3: '生成的表情符号可以免费使用吗�?,
+      answer3: '是的！所有使用我们的AI表情生成器创建的表情符号都可以免费用于个人用途。您可以在消息、社交媒体帖子和个人项目中使用它们，而无需任何限制。对于营销材料、品牌内容或销售的产品，请参考我们的服务条款�?,
       
-      question4: '我可以自定义表情符号的风格吗？',
-      answer4: '绝对可以！我们的AI表情生成器提供了各种自定义选项。您可以在描述中指定艺术风格（卡通、像素艺术、水彩画等）、背景颜色和其他属性。为了获得最佳效果，请在提示中明确您想要的风格。',
+      question4: '我可以自定义表情符号的风格吗�?,
+      answer4: '绝对可以！我们的AI表情生成器提供了各种自定义选项。您可以在描述中指定艺术风格（卡通、像素艺术、水彩画等）、背景颜色和其他属性。为了获得最佳效果，请在提示中明确您想要的风格�?,
       
       question5: '有哪些文件格式可供下载？',
-      answer5: '生成的表情符号可以下载为PNG文件，带有透明背景，使它们非常适合在不同平台和应用程序中使用。透明背景确保表情符号可以无缝融入任何聊天界面或文档。',
+      answer5: '生成的表情符号可以下载为PNG文件，带有透明背景，使它们非常适合在不同平台和应用程序中使用。透明背景确保表情符号可以无缝融入任何聊天界面或文档�?,
       
-      question6: '我可以生成多少个表情符号？',
-      answer6: '我们目前每天提供大量的免费生成次数。此限制有助于我们为所有用户维护服务质量和可用性。如果您需要创建更多表情符号，您可以在第二天生成次数重置后返回。'
+      question6: '我可以生成多少个表情符号�?,
+      answer6: '我们目前每天提供大量的免费生成次数。此限制有助于我们为所有用户维护服务质量和可用性。如果您需要创建更多表情符号，您可以在第二天生成次数重置后返回�?
     },
     explanatoryText: {
-      title: '释放您的创造力与AI驱动的表情符号生成',
-      paragraph1: 'AI表情生成器代表了数字表达方式的革命性方法，结合了尖端的人工智能与用户友好的设计。我们的高级AI技术分析您的文本描述并将其转化为生动、富有表现力的表情符号图像，完美地捕捉您的想法和情感。',
+      title: '释放您的创造力与AI驱动的表情符号生�?,
+      paragraph1: 'AI表情生成器代表了数字表达方式的革命性方法，结合了尖端的人工智能与用户友好的设计。我们的高级AI技术分析您的文本描述并将其转化为生动、富有表现力的表情符号图像，完美地捕捉您的想法和情感�?,
       
-      paragraph2: '与提供有限选项的传统表情符号库不同，我们的AI表情生成器提供了无限的创意可能性。无论您需要一只戴着太阳镜的可爱猫、一个带有彩虹顶的跳舞披萨，还是任何其他富有想象力的概念，我们的AI都可以将其变为具有透明背景的高质量表情符号。',
+      paragraph2: '与提供有限选项的传统表情符号库不同，我们的AI表情生成器提供了无限的创意可能性。无论您需要一只戴着太阳镜的可爱猫、一个带有彩虹顶的跳舞披萨，还是任何其他富有想象力的概念，我们的AI都可以将其变为具有透明背景的高质量表情符号�?,
       
-      paragraph3: '我们的AI表情生成器技术利用复杂的深度学习模型，经过多样化的视觉数据集训练。这些模型理解单词和图像之间的关系，使它们能够解释您的描述并生成相应的视觉元素。AI通过机器学习不断改进，每次生成都会变得更加准确和富有创造力。',
+      paragraph3: '我们的AI表情生成器技术利用复杂的深度学习模型，经过多样化的视觉数据集训练。这些模型理解单词和图像之间的关系，使它们能够解释您的描述并生成相应的视觉元素。AI通过机器学习不断改进，每次生成都会变得更加准确和富有创造力�?,
       
-      paragraph4: '使用我们的AI生成器创建的表情符号增强了数字通信，通过为您的消息添加个性和上下文，帮助您更有效地传达情感。它们比文本本身更能有效地传达情感，可以使您的对话更加生动和难忘。从个人聊天到专业交流，自定义表情符号为对话增添了独特的触感。',
+      paragraph4: '使用我们的AI生成器创建的表情符号增强了数字通信，通过为您的消息添加个性和上下文，帮助您更有效地传达情感。它们比文本本身更能有效地传达情感，可以使您的对话更加生动和难忘。从个人聊天到专业交流，自定义表情符号为对话增添了独特的触感�?,
       
-      paragraph5: '我们的AI表情生成器设计为可供每个人使用，无论设计经验或技术知识如何。直观的界面使其易于描述您的表情符号想法、生成图像并立即下载或复制以供使用。这种创意工具的民主化使在线表达自己的新奇和令人兴奋的方式成为可能。',
+      paragraph5: '我们的AI表情生成器设计为可供每个人使用，无论设计经验或技术知识如何。直观的界面使其易于描述您的表情符号想法、生成图像并立即下载或复制以供使用。这种创意工具的民主化使在线表达自己的新奇和令人兴奋的方式成为可能�?,
       
-      paragraph6: '超越个人使用，AI表情生成器为内容创作者、营销人员、教育工作者和企业提供了宝贵的应用。自定义表情符号可以加强品牌身份、增强教育材料或为数字内容添加视觉兴趣。可能性是无穷无尽的，就像您的想象力一样。',
+      paragraph6: '超越个人使用，AI表情生成器为内容创作者、营销人员、教育工作者和企业提供了宝贵的应用。自定义表情符号可以加强品牌身份、增强教育材料或为数字内容添加视觉兴趣。可能性是无穷无尽的，就像您的想象力一样�?,
       
-      paragraph7: '随着人工智能技术不断发展，我们的AI表情生成器的能力也将随之发展。我们致力于将AI研究的最新进展融入其中，为您提供更多强大且多才多艺的表情符号创作工具。加入我们，在人工智能和创造性表达的交汇处踏上令人兴奋的旅程。'
+      paragraph7: '随着人工智能技术不断发展，我们的AI表情生成器的能力也将随之发展。我们致力于将AI研究的最新进展融入其中，为您提供更多强大且多才多艺的表情符号创作工具。加入我们，在人工智能和创造性表达的交汇处踏上令人兴奋的旅程�?
     }
   },
   About: {
     title: '关于',
     mission: {
-      title: '我们的使命',
-      paragraph1: 'AI Emoji Generator 是一款免费工具，旨在帮助所有人利用人工智能的力量创建独特、个性化的表情符号。我们相信，无论艺术能力或技术知识如何，创意表达都应该对所有人开放。',
-      paragraph2: '我们的使命是通过提供简单、直观且免费的尖端AI工具，实现数字创意的民主化。我们希望帮助人们在网上更具表现力地交流。'
+      title: '我们的使�?,
+      paragraph1: 'AI Emoji Generator 是一款免费工具，旨在帮助所有人利用人工智能的力量创建独特、个性化的表情符号。我们相信，无论艺术能力或技术知识如何，创意表达都应该对所有人开放�?,
+      paragraph2: '我们的使命是通过提供简单、直观且免费的尖端AI工具，实现数字创意的民主化。我们希望帮助人们在网上更具表现力地交流�?
     },
     howItWorks: {
       title: '工作原理',
-      paragraph1: '我们的表情生成器使用先进的AI模型，将文本描述转化为生动、独特的图像。在幕后，我们利用最先进的图像生成技术，这些技术经过专门训练，可以创建表情符号风格的图形。',
-      paragraph2: 'AI能够理解自然语言描述，并以各种艺术风格将其可视化，让您在不需要设计技能的情况下拥有完全的创作自由。'
+      paragraph1: '我们的表情生成器使用先进的AI模型，将文本描述转化为生动、独特的图像。在幕后，我们利用最先进的图像生成技术，这些技术经过专门训练，可以创建表情符号风格的图形�?,
+      paragraph2: 'AI能够理解自然语言描述，并以各种艺术风格将其可视化，让您在不需要设计技能的情况下拥有完全的创作自由�?
     },
     noAccount: {
       title: '无需账户',
-      paragraph1: '我们相信以最小的阻力使技术可访问。这就是为什么AI Emoji Generator不需要注册、不需要创建账户，也不需要个人信息。只需访问网站，输入您的想法，即时生成独特的表情符号。',
-      paragraph2: '您的创作属于您自己，可以随意使用。下载它们，复制它们，并在您喜爱的所有平台和应用程序中分享它们。'
+      paragraph1: '我们相信以最小的阻力使技术可访问。这就是为什么AI Emoji Generator不需要注册、不需要创建账户，也不需要个人信息。只需访问网站，输入您的想法，即时生成独特的表情符号�?,
+      paragraph2: '您的创作属于您自己，可以随意使用。下载它们，复制它们，并在您喜爱的所有平台和应用程序中分享它们�?
     }
   },
   Blog: {
     title: '博客',
     highlight: 'AI Emoji Generator',
     featured: 'Featured',
-    comingSoon: '更多博客文章即将推出！',
+    comingSoon: '更多博客文章即将推出�?,
     readMore: '阅读更多',
-    recentPosts: '最新文章',
-    featuredDescription: '在数字时代，表情符号已成为一种全球语言——每天发送超过60亿个，跨越文化和语言障碍。然而，传统的表情符号库是有限的。进入AI表情符号生成器，一种改变沟通方式的创新，重塑我们视觉交流的方式。',
+    recentPosts: '最新文�?,
+    featuredDescription: '在数字时代，表情符号已成为一种全球语言——每天发送超�?0亿个，跨越文化和语言障碍。然而，传统的表情符号库是有限的。进入AI表情符号生成器，一种改变沟通方式的创新，重塑我们视觉交流的方式�?,
     mainArticle: {
-      title: 'AI Emoji Generator在现代通信中的演变和影响',
-      date: '2023年5月10日',
+      title: 'AI Emoji Generator在现代通信中的演变和影�?,
+      date: '2023�?�?0�?,
       author: 'Emoji团队'
     },
     backToBlog: '返回博客',
-    post0Title: 'AI表情生成器入门指南',
-    post0Excerpt: '学习如何在不到一分钟的时间内创建您的第一个AI生成的表情符号...',
-    post0Date: '2023年10月15日',
+    post0Title: 'AI表情生成器入门指�?,
+    post0Excerpt: '学习如何在不到一分钟的时间内创建您的第一个AI生成的表情符�?..',
+    post0Date: '2023�?0�?5�?,
     
     post1Title: 'Top 10创意表情想法',
-    post1Excerpt: '寻找灵感？这里有十个我们用户喜爱的创意表情概念...',
-    post1Date: '2023年10月3日',
+    post1Excerpt: '寻找灵感？这里有十个我们用户喜爱的创意表情概�?..',
+    post1Date: '2023�?0�?�?,
     
     post2Title: 'AI如何改变数字表达',
-    post2Excerpt: '人工智能正在改变我们在线表达自己的方式...',
-    post2Date: '2023年12月12日'
+    post2Excerpt: '人工智能正在改变我们在线表达自己的方�?..',
+    post2Date: '2023�?2�?2�?
   }
 };
 
@@ -679,145 +679,145 @@ const frMessages = {
 // 日语翻译
 const jaMessages = {
   Navbar: {
-    home: 'ホーム',
-    blog: 'ブログ',
+    home: 'ホー�?,
+    blog: 'ブロ�?,
     about: '概要'
   },
   EmojiGenerator: {
     title: '絵文字ジェネレーター',
-    description: 'AIで独自の絵文字を作成。アイデアを入力して、ユニークな画像を生成しましょう。',
-    categoryEmoji: '絵文字',
-    categorySticker: 'ステッカー',
+    description: 'AIで独自の絵文字を作成。アイデアを入力して、ユニークな画像を生成しましょう�?,
+    categoryEmoji: '絵文�?,
+    categorySticker: 'ステッカ�?,
     categoryIcon: 'アイコン',
-    inputPlaceholder: '絵文字のアイデアを説明してください...',
+    inputPlaceholder: '絵文字のアイデアを説明してくださ�?..',
     generateButton: '生成',
-    generating: '生成中...',
-    loadingMessage: '絵文字を作成しています...',
-    copyButton: 'コピー',
-    downloadButton: 'ダウンロード',
+    generating: '生成�?..',
+    loadingMessage: '絵文字を作成していま�?..',
+    copyButton: 'コピ�?,
+    downloadButton: 'ダウンロー�?,
     tryExample: '例を試す',
-    errorGenerating: '画像の生成中にエラーが発生しました。もう一度お試しください。',
-    copiedToClipboard: 'クリップボードにコピーされました！',
-    errorCopying: '画像のコピー中にエラーが発生しました。ダウンロードボタンをお試しください。',
-    failedToCopy: '画像のコピーに失敗しました。ダウンロードボタンをお試しください。',
+    errorGenerating: '画像の生成中にエラーが発生しました。もう一度お試しください�?,
+    copiedToClipboard: 'クリップボードにコピーされました�?,
+    errorCopying: '画像のコピー中にエラーが発生しました。ダウンロードボタンをお試しください�?,
+    failedToCopy: '画像のコピーに失敗しました。ダウンロードボタンをお試しください�?,
     exampleEmoji1: '幸せな猫',
     exampleEmoji2: '驚いたパンダ',
     exampleEmoji3: '笑うピザ',
     exampleSticker1: 'サングラスをかけたかわいい犬',
     exampleSticker2: '虹色のユニコーン',
     exampleSticker3: '興奮したロボット',
-    exampleIcon1: 'メールアイコン',
+    exampleIcon1: 'メールアイコ�?,
     exampleIcon2: '設定歯車',
-    exampleIcon3: 'チャットバブル',
-    backgroundColorTitle: '背景色',
+    exampleIcon3: 'チャットバブ�?,
+    backgroundColorTitle: '背景�?,
     transparentBackground: '透明',
-    whiteBackground: '白',
-    blackBackground: '黒',
+    whiteBackground: '�?,
+    blackBackground: '�?,
     colorfulBackground: 'カラフル',
-    gradientBackground: 'グラデーション',
-    artStyleTitle: 'アートスタイル',
+    gradientBackground: 'グラデーショ�?,
+    artStyleTitle: 'アートスタイ�?,
     cartoonStyle: '漫画',
-    pixelStyle: 'ピクセルアート',
-    watercolorStyle: '水彩画',
+    pixelStyle: 'ピクセルアー�?,
+    watercolorStyle: '水彩�?,
     sketchStyle: 'スケッチ',
     threeDStyle: '3D',
-    realisticStyle: 'リアル',
+    realisticStyle: 'リア�?,
     customizeTitle: '絵文字をカスタマイズ',
   },
   Home: {
     title: 'AI Emoji Generator',
     subtitle: '人工知能の力で独自の絵文字を作成',
-    getStarted: '始める',
+    getStarted: '始め�?,
     features: {
       title: '絵文字作成のためのAIマジック',
       instant: {
         title: '即時作成',
-        description: '高度なAI技術を使用して、テキストの説明を数秒で鮮やかな絵文字画像に変換します。デザイン経験は必要ありません。',
+        description: '高度なAI技術を使用して、テキストの説明を数秒で鮮やかな絵文字画像に変換します。デザイン経験は必要ありません�?,
       },
       quality: {
-        title: '高品質',
-        description: '生成された絵文字は高解像度で透明な背景を持ち、チャットアプリやソーシャルプラットフォームに最適です。ワンクリックでコピーまたはダウンロードできます。',
+        title: '高品�?,
+        description: '生成された絵文字は高解像度で透明な背景を持ち、チャットアプリやソーシャルプラットフォームに最適です。ワンクリックでコピーまたはダウンロードできます�?,
       },
       limitless: {
-        title: '無限の創造性',
-        description: 'あなたの想像力だけが限界です。かわいい動物から抽象的な概念まで、AIはどんなアイデアも絵文字として具現化できます。',
+        title: '無限の創造�?,
+        description: 'あなたの想像力だけが限界です。かわいい動物から抽象的な概念まで、AIはどんなアイデアも絵文字として具現化できます�?,
       },
     },
     howToUse: {
       title: '使用方法',
       step1: {
-        title: '説明を入力',
-        description: '入力フィールドに欲しい絵文字を説明します。「幸せな猫」、「驚いたパンダ」など、創造的なアイデアを試してみてください。詳細が多いほど、より良い結果が得られます。',
+        title: '説明を入�?,
+        description: '入力フィールドに欲しい絵文字を説明します。「幸せな猫」、「驚いたパンダ」など、創造的なアイデアを試してみてください。詳細が多いほど、より良い結果が得られます�?,
       },
       step2: {
-        title: '画像を生成',
-        description: '「生成」ボタンをクリックして、AIに説明を処理させます。作成には数秒しかかかりませんが、しばらくお待ちください。',
+        title: '画像を生�?,
+        description: '「生成」ボタンをクリックして、AIに説明を処理させます。作成には数秒しかかかりませんが、しばらくお待ちください�?,
       },
       step3: {
         title: '保存して共有',
-        description: '生成後、絵文字をコピーしてチャットアプリですぐに使用したり、ダウンロードして永久に保存したりできます。',
+        description: '生成後、絵文字をコピーしてチャットアプリですぐに使用したり、ダウンロードして永久に保存したりできます�?,
       },
     },
     examples: {
-      title: 'これらの例を試してみてください'
+      title: 'これらの例を試してみてくださ�?
     },
     faq: {
       title: 'よくある質問',
-      question1: 'AI絵文字ジェネレーターとは？',
-      answer1: 'AI絵文字ジェネレーターは、テキストの説明に基づいてカスタム絵文字を作成するためにAIを使用する高度なツールです。AI絵文字ジェネレーターは、アイデアを独特で高品質な絵文字画像に変換します。',
+      question1: 'AI絵文字ジェネレーターとは�?,
+      answer1: 'AI絵文字ジェネレーターは、テキストの説明に基づいてカスタム絵文字を作成するためにAIを使用する高度なツールです。AI絵文字ジェネレーターは、アイデアを独特で高品質な絵文字画像に変換します�?,
       
-      question2: 'AI絵文字ジェネレーターはどのように機能しますか？',
-      answer2: 'AI絵文字ジェネレーターは、数百万の画像に基づいてトレーニングされた高度な機械学習アルゴリズムを使用します。テキストの説明を入力すると、AIは入力を分析し、説明に基づいてカスタム絵文字を生成します。技術は自然言語処理と画像生成機能を組み合わせて、アイデアの独自の視覚的表現を作成します。',
+      question2: 'AI絵文字ジェネレーターはどのように機能しますか�?,
+      answer2: 'AI絵文字ジェネレーターは、数百万の画像に基づいてトレーニングされた高度な機械学習アルゴリズムを使用します。テキストの説明を入力すると、AIは入力を分析し、説明に基づいてカスタム絵文字を生成します。技術は自然言語処理と画像生成機能を組み合わせて、アイデアの独自の視覚的表現を作成します�?,
       
       question3: '生成された絵文字は無料で使用できますか？',
-      answer3: 'はい！AI絵文字ジェネレーターで作成された絵文字は個人使用のため無料です。メッセージ、ソーシャルメディアの投稿、個人のプロジェクトで使用できます。マーケティング材料、ブランドコンテンツ、販売する製品の場合は、サービスの利用規約を参照してください。',
+      answer3: 'はい！AI絵文字ジェネレーターで作成された絵文字は個人使用のため無料です。メッセージ、ソーシャルメディアの投稿、個人のプロジェクトで使用できます。マーケティング材料、ブランドコンテンツ、販売する製品の場合は、サービスの利用規約を参照してください�?,
       
-      question4: '絵文字のスタイルをカスタマイズできますか？',
-      answer4: '絶対にできます！AI絵文字ジェネレーターはさまざまなカスタマイズオプションを提供します。説明にアートスタイル（コミック、ピクセルアート、アクアレル、など）、背景色、その他の属性を指定できます。最高の結果を得るために、プロンプトで明確にスタイルを指定してください。',
+      question4: '絵文字のスタイルをカスタマイズできますか�?,
+      answer4: '絶対にできます！AI絵文字ジェネレーターはさまざまなカスタマイズオプションを提供します。説明にアートスタイル（コミック、ピクセルアート、アクアレル、など）、背景色、その他の属性を指定できます。最高の結果を得るために、プロンプトで明確にスタイルを指定してください�?,
       
       question5: 'ダウンロード可能なファイル形式は？',
-      answer5: '透明な背景を持つPNGファイルとして生成された絵文字をダウンロードできます。透明な背景により、絵文字はチャットインターフェイスやドキュメントに完全に統合できます。',
+      answer5: '透明な背景を持つPNGファイルとして生成された絵文字をダウンロードできます。透明な背景により、絵文字はチャットインターフェイスやドキュメントに完全に統合できます�?,
       
       question6: '絵文字を生成できる数に制限はありますか？',
-      answer6: '現在、無料の生成回数を提供しています。この制限は、サービスの品質と可用性を維持するのに役立ちます。もっと絵文字が必要な場合は、翌日に生成回数がリセットされた日に戻ることができます。'
+      answer6: '現在、無料の生成回数を提供しています。この制限は、サービスの品質と可用性を維持するのに役立ちます。もっと絵文字が必要な場合は、翌日に生成回数がリセットされた日に戻ることができます�?
     },
     explanatoryText: {
-      title: 'AI駆動の絵文字生成で創造力を解放',
-      paragraph1: 'AI絵文字ジェネレーターは、デジタル表現への革命的アプローチを表しています。最先端のAI技術とユーザーフレンドリーなインターフェイスを組み合わせることで、アイデアを鮮やかで表現力豊かな絵文字画像に変換します。',
+      title: 'AI駆動の絵文字生成で創造力を解�?,
+      paragraph1: 'AI絵文字ジェネレーターは、デジタル表現への革命的アプローチを表しています。最先端のAI技術とユーザーフレンドリーなインターフェイスを組み合わせることで、アイデアを鮮やかで表現力豊かな絵文字画像に変換します�?,
       
-      paragraph2: '従来の絵文字ライブラリが提供する制限されたオプションとは異なり、AI絵文字ジェネレーターは無限のクリエイティブな可能性を提供します。サングラスをかけたかわいい猫、虹色のコニー、またはどんな想像的な概念でも、透明な背景を持つ高品質な絵文字にします。',
+      paragraph2: '従来の絵文字ライブラリが提供する制限されたオプションとは異なり、AI絵文字ジェネレーターは無限のクリエイティブな可能性を提供します。サングラスをかけたかわいい猫、虹色のコニー、またはどんな想像的な概念でも、透明な背景を持つ高品質な絵文字にします�?,
       
-      paragraph3: 'AI絵文字ジェネレーターの技術は、さまざまな視覚的データセットに基づいてトレーニングされた複雑なディープラーニングモデルを利用します。これらのモデルは、ワードとイメージの関係を理解し、説明を解釈し、対応する視覚的要素を生成します。AIは機械学習を通じて継続的に改善され、各生成でより正確で創造的になります。',
+      paragraph3: 'AI絵文字ジェネレーターの技術は、さまざまな視覚的データセットに基づいてトレーニングされた複雑なディープラーニングモデルを利用します。これらのモデルは、ワードとイメージの関係を理解し、説明を解釈し、対応する視覚的要素を生成します。AIは機械学習を通じて継続的に改善され、各生成でより正確で創造的になります�?,
       
-      paragraph4: 'AI絵文字ジェネレーターで作成されたカスタム絵文字は、デジタル通信を強化するために使用されます。テキストのみよりもはるかに効果的に感情を伝えるのに役立ちます。テキストのみのシンプルなチャットから、プロフェッショナルなコミュニケーションまで、カスタム絵文字は独自のノートを追加します。',
+      paragraph4: 'AI絵文字ジェネレーターで作成されたカスタム絵文字は、デジタル通信を強化するために使用されます。テキストのみよりもはるかに効果的に感情を伝えるのに役立ちます。テキストのみのシンプルなチャットから、プロフェッショナルなコミュニケーションまで、カスタム絵文字は独自のノートを追加します�?,
       
-      paragraph5: 'AI絵文字ジェネレーターは、デザインの経験や技術的な知識に関係なく、誰にでもアクセス可能に設計されています。直感的なインターフェイスにより、あなたの絵文字のアイデアを説明し、画像を生成し、使用するために即座にダウンロードまたはコピーするのが簡単になります。この創造的なツールの民主化により、オンラインで新しい刺激的な方法で自分を表現する機会がもたらされます。',
+      paragraph5: 'AI絵文字ジェネレーターは、デザインの経験や技術的な知識に関係なく、誰にでもアクセス可能に設計されています。直感的なインターフェイスにより、あなたの絵文字のアイデアを説明し、画像を生成し、使用するために即座にダウンロードまたはコピーするのが簡単になります。この創造的なツールの民主化により、オンラインで新しい刺激的な方法で自分を表現する機会がもたらされます�?,
       
-      paragraph6: '個人使用を超えて、AI絵文字ジェネレーターは、コンテンツクリエーター、マーケティングプロフェッショナル、教育者、および企業の貴重なアプリケーションを提供します。カスタム絵文字はブランドのアイデンティティを強化し、教育材料を強化し、デジタルコンテンツに視覚的な興味を追加することができます。可能性は無限です。',
+      paragraph6: '個人使用を超えて、AI絵文字ジェネレーターは、コンテンツクリエーター、マーケティングプロフェッショナル、教育者、および企業の貴重なアプリケーションを提供します。カスタム絵文字はブランドのアイデンティティを強化し、教育材料を強化し、デジタルコンテンツに視覚的な興味を追加することができます。可能性は無限です�?,
       
-      paragraph7: 'AI技術が進化するにつれて、AI絵文字ジェネレーターの能力も進化します。最新のAI研究の進歩を組み込むことにコミットしています。あなたにより強力で多才な絵文字作成ツールを提供します。この興味深い旅に参加してください。AIと創造的な表現の交差点で。'
+      paragraph7: 'AI技術が進化するにつれて、AI絵文字ジェネレーターの能力も進化します。最新のAI研究の進歩を組み込むことにコミットしています。あなたにより強力で多才な絵文字作成ツールを提供します。この興味深い旅に参加してください。AIと創造的な表現の交差点で�?
     }
   },
   About: {
     title: '概要',
     mission: {
       title: '私たちの使命',
-      paragraph1: 'AI Emoji Generatorは、人工知能の力を使用して、誰もが独自のパーソナライズされた絵文字を作成できるように設計された無料ツールです。私たちは、芸術的な能力や技術的な知識に関係なく、創造的な表現がすべての人にアクセス可能であるべきだと信じています。',
-      paragraph2: '私たちの使命は、シンプルで直感的、そして無料で使える最先端のAIツールを提供することにより、デジタル創造性を民主化することです。私たちは、人々がオンラインでより表現豊かにコミュニケーションできるよう支援したいと考えています。'
+      paragraph1: 'AI Emoji Generatorは、人工知能の力を使用して、誰もが独自のパーソナライズされた絵文字を作成できるように設計された無料ツールです。私たちは、芸術的な能力や技術的な知識に関係なく、創造的な表現がすべての人にアクセス可能であるべきだと信じています�?,
+      paragraph2: '私たちの使命は、シンプルで直感的、そして無料で使える最先端のAIツールを提供することにより、デジタル創造性を民主化することです。私たちは、人々がオンラインでより表現豊かにコミュニケーションできるよう支援したいと考えています�?
     },
     howItWorks: {
-      title: '仕組み',
-      paragraph1: '当社の絵文字ジェネレーターは、高度なAIモデルを使用してテキストの説明を鮮やかでユニークな画像に変換します。背後では、絵文字スタイルのグラフィックを作成するために特別に訓練された最先端の画像生成技術を活用しています。',
-      paragraph2: 'AIは自然言語の説明を理解し、それをさまざまな芸術的スタイルで視覚化し、デザインスキルを必要とせずに完全な創造的自由を提供します。'
+      title: '仕組�?,
+      paragraph1: '当社の絵文字ジェネレーターは、高度なAIモデルを使用してテキストの説明を鮮やかでユニークな画像に変換します。背後では、絵文字スタイルのグラフィックを作成するために特別に訓練された最先端の画像生成技術を活用しています�?,
+      paragraph2: 'AIは自然言語の説明を理解し、それをさまざまな芸術的スタイルで視覚化し、デザインスキルを必要とせずに完全な創造的自由を提供します�?
     },
     noAccount: {
-      title: 'アカウント不要',
-      paragraph1: '私たちは、最小限の摩擦で技術をアクセス可能にすることを信じています。そのため、AI Emoji Generatorはサインアップ、アカウント作成、個人情報を必要としません。サイトを訪問し、アイデアを入力するだけで、独自の絵文字を即座に生成できます。',
-      paragraph2: 'あなたの作品はあなたのものであり、好きなように保存して使用できます。ダウンロードして、コピーして、お気に入りのすべてのプラットフォームやアプリで共有しましょう。'
+      title: 'アカウント不�?,
+      paragraph1: '私たちは、最小限の摩擦で技術をアクセス可能にすることを信じています。そのため、AI Emoji Generatorはサインアップ、アカウント作成、個人情報を必要としません。サイトを訪問し、アイデアを入力するだけで、独自の絵文字を即座に生成できます�?,
+      paragraph2: 'あなたの作品はあなたのものであり、好きなように保存して使用できます。ダウンロードして、コピーして、お気に入りのすべてのプラットフォームやアプリで共有しましょう�?
     }
   },
   Blog: {
-    title: 'ブログ',
+    title: 'ブロ�?,
     highlight: 'AI Emoji Generator',
     featured: 'Featured',
     comingSoon: 'More blog posts coming soon!',
@@ -825,22 +825,22 @@ const jaMessages = {
     recentPosts: '最新の投稿',
     featuredDescription: 'In the digital age, emojis have become a universal language—over 6 billion are sent daily, transcending cultural and linguistic barriers. Yet traditional emoji libraries are limited. Enter AI emoji generators, a game-changing innovation reshaping how we communicate visually.',
     mainArticle: {
-      title: '現代のコミュニケーションにおけるAI絵文字ジェネレーターの進化と影響',
+      title: '現代のコミュニケーションにおけるAI絵文字ジェネレーターの進化と影�?,
       date: '10 maio 2023',
       author: 'Equipe Emoji'
     },
     backToBlog: 'ブログに戻る',
-    post0Title: 'AI表情生成器入门指南',
-    post0Excerpt: '学习如何在不到一分钟的时间内创建您的第一个AI生成的表情符号...',
-    post0Date: '2023年10月15日',
+    post0Title: 'AI表情生成器入门指�?,
+    post0Excerpt: '学习如何在不到一分钟的时间内创建您的第一个AI生成的表情符�?..',
+    post0Date: '2023�?0�?5�?,
     
-    post1Title: '值得一试的10个创意表情想法',
-    post1Excerpt: '寻找灵感？这里有十个我们用户喜爱的创意表情概念...',
-    post1Date: '2023年10月3日',
+    post1Title: '值得一试的10个创意表情想�?,
+    post1Excerpt: '寻找灵感？这里有十个我们用户喜爱的创意表情概�?..',
+    post1Date: '2023�?0�?�?,
     
-    post2Title: 'AI在创意设计中的未来',
-    post2Excerpt: '人工智能如何改变数字创意领域，以及这对设计师意味着什么...',
-    post2Date: '2023年12月12日'
+    post2Title: 'AI在创意设计中的未�?,
+    post2Excerpt: '人工智能如何改变数字创意领域，以及这对设计师意味着什�?..',
+    post2Date: '2023�?2�?2�?
   }
 };
 
@@ -1166,22 +1166,21 @@ const ruMessages = {
       author: 'Команда Emoji'
     },
     backToBlog: 'Вернуться к блогу',
-    post0Title: 'AI表情生成器入门指南',
-    post0Excerpt: '学习如何在不到一分钟的时间内创建您的第一个AI生成的表情符号...',
-    post0Date: '2023年10月15日',
+    post0Title: 'AI表情生成器入门指�?,
+    post0Excerpt: '学习如何在不到一分钟的时间内创建您的第一个AI生成的表情符�?..',
+    post0Date: '2023�?0�?5�?,
     
-    post1Title: '值得一试的10个创意表情想法',
-    post1Excerpt: '寻找灵感？这里有十个我们用户喜爱的创意表情概念...',
-    post1Date: '2023年10月3日',
+    post1Title: '值得一试的10个创意表情想�?,
+    post1Excerpt: '寻找灵感？这里有十个我们用户喜爱的创意表情概�?..',
+    post1Date: '2023�?0�?�?,
     
-    post2Title: 'AI在创意设计中的未来',
-    post2Excerpt: '人工智能如何改变数字创意领域，以及这对设计师意味着什么...',
-    post2Date: '2023年9月28日'
+    post2Title: 'AI在创意设计中的未�?,
+    post2Excerpt: '人工智能如何改变数字创意领域，以及这对设计师意味着什�?..',
+    post2Date: '2023�?�?8�?
   }
 };
 
-// 所有语言的翻译消息
-const messages = {
+// 所有语言的翻译消�?const messages = {
   en: enMessages,
   zh: zhMessages,
   es: esMessages,
@@ -1205,12 +1204,10 @@ const messages = {
 
 // 获取翻译消息 - 根据语言代码返回相应翻译
 export async function getMessages(locale = 'en') {
-  // 如果请求的语言不在支持列表中，则使用英语
-  return messages[locale as keyof typeof messages] || messages.en;
+  // 如果请求的语言不在支持列表中，则使用英�?  return messages[locale as keyof typeof messages] || messages.en;
 }
 
-// 创建翻译器
-export function getTranslator(locale = 'en', namespace?: string) {
+// 创建翻译�?export function getTranslator(locale = 'en', namespace?: string) {
   const msgs = messages[locale as keyof typeof messages] || messages.en;
   return createTranslator({ locale, messages: msgs, namespace });
 } 
