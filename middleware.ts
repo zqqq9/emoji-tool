@@ -2,54 +2,6 @@ import createMiddleware from 'next-intl/middleware';
 import { locales } from './app/i18n';
 import { NextRequest, NextResponse } from 'next/server';
 
-// 创建处理域名重定向的中间件
-function redirectMiddleware(request: NextRequest) {
-  const url = request.nextUrl.clone();
-  const hostname = request.headers.get('host') || '';
-  
-  // 添加调试信息
-  console.log(`处理请求: ${request.url}, 主机名: ${hostname}, 协议: ${request.nextUrl.protocol}`);
-  
-  // 检查是否需要重定向
-  if (hostname === 'www.emoji-gen.com') {
-    // 只将 www 子域名重定向到主域名
-    const newUrl = new URL(url.pathname + url.search, 'https://emoji-gen.com');
-    console.log(`重定向 www 到非 www: ${request.url} -> ${newUrl.toString()}`);
-    
-    // 设置较长的缓存控制头，防止浏览器缓存重定向
-    return NextResponse.redirect(newUrl, {
-      headers: {
-        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0'
-      }
-    });
-  } else if (hostname === 'emoji-gen.com' && !request.nextUrl.protocol.includes('https')) {
-    // 将 HTTP 重定向到 HTTPS
-    const newUrl = new URL(url.pathname + url.search, 'https://emoji-gen.com');
-    console.log(`重定向 HTTP 到 HTTPS: ${request.url} -> ${newUrl.toString()}`);
-    
-    // 设置较长的缓存控制头，防止浏览器缓存重定向
-    return NextResponse.redirect(newUrl, {
-      headers: {
-        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0'
-      }
-    });
-  }
-  
-  // 重要：检查是否有循环重定向的迹象
-  const referer = request.headers.get('referer') || '';
-  if (referer.includes('emoji-gen.com') && hostname.includes('emoji-gen.com')) {
-    console.log(`检测到可能的重定向循环: ${referer} -> ${request.url}`);
-    // 如果检测到可能的循环，不执行重定向
-    return null;
-  }
-  
-  return null;
-}
-
 // 创建国际化中间件
 const intlMiddleware = createMiddleware({
   // 支持的地区语言列表
@@ -60,11 +12,38 @@ const intlMiddleware = createMiddleware({
 
 // 组合中间件
 export default function middleware(request: NextRequest) {
-  // 首先检查是否需要域名重定向
-  const redirectResponse = redirectMiddleware(request);
-  if (redirectResponse) return redirectResponse;
+  // 获取请求信息
+  const url = request.nextUrl.clone();
+  const hostname = request.headers.get('host') || '';
+  const referer = request.headers.get('referer') || '';
   
-  // 否则应用国际化中间件
+  console.log(`处理请求: ${request.url}, 主机名: ${hostname}, 引用: ${referer}`);
+  
+  // 检查是否有重定向循环的迹象
+  const redirectCount = parseInt(request.headers.get('x-redirect-count') || '0');
+  if (redirectCount > 2) {
+    console.log(`检测到重定向循环，停止重定向: ${request.url}`);
+    // 如果已经重定向超过2次，直接应用国际化中间件，不再重定向
+    return intlMiddleware(request);
+  }
+  
+  // 只处理 HTTP 到 HTTPS 的重定向，不再处理 www 到非 www 的重定向
+  if (!request.nextUrl.protocol.includes('https') && hostname.includes('emoji-gen.com')) {
+    const newUrl = new URL(url.pathname + url.search, 'https://' + hostname);
+    console.log(`重定向 HTTP 到 HTTPS: ${request.url} -> ${newUrl.toString()}`);
+    
+    // 设置重定向计数头
+    const headers = new Headers({
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+      'x-redirect-count': (redirectCount + 1).toString()
+    });
+    
+    return NextResponse.redirect(newUrl, { headers });
+  }
+  
+  // 应用国际化中间件
   return intlMiddleware(request);
 }
 
