@@ -2,7 +2,4 @@ User-agent: *
 Allow: /
 
 # 站点地图位置
-Sitemap: https://emoji-gen.com/sitemap.xml
-
-# 指定规范域名
-Host: https://emoji-gen.com 
+Sitemap: https://emoji-gen.com/sitemap.xml 

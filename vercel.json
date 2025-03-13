@@ -21,10 +21,6 @@
         {
           "key": "Referrer-Policy",
           "value": "strict-origin-when-cross-origin"
-        },
-        {
-          "key": "Link",
-          "value": "<https://emoji-gen.com>; rel=\"canonical\""
         }
       ]
     }

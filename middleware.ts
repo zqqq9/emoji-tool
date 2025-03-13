@@ -7,15 +7,44 @@ function redirectMiddleware(request: NextRequest) {
   const url = request.nextUrl.clone();
   const hostname = request.headers.get('host') || '';
   
+  // 添加调试信息
+  console.log(`处理请求: ${request.url}, 主机名: ${hostname}, 协议: ${request.nextUrl.protocol}`);
+  
   // 检查是否需要重定向
   if (hostname === 'www.emoji-gen.com') {
     // 只将 www 子域名重定向到主域名
     const newUrl = new URL(url.pathname + url.search, 'https://emoji-gen.com');
-    return NextResponse.redirect(newUrl);
+    console.log(`重定向 www 到非 www: ${request.url} -> ${newUrl.toString()}`);
+    
+    // 设置较长的缓存控制头，防止浏览器缓存重定向
+    return NextResponse.redirect(newUrl, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      }
+    });
   } else if (hostname === 'emoji-gen.com' && !request.nextUrl.protocol.includes('https')) {
     // 将 HTTP 重定向到 HTTPS
     const newUrl = new URL(url.pathname + url.search, 'https://emoji-gen.com');
-    return NextResponse.redirect(newUrl);
+    console.log(`重定向 HTTP 到 HTTPS: ${request.url} -> ${newUrl.toString()}`);
+    
+    // 设置较长的缓存控制头，防止浏览器缓存重定向
+    return NextResponse.redirect(newUrl, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      }
+    });
+  }
+  
+  // 重要：检查是否有循环重定向的迹象
+  const referer = request.headers.get('referer') || '';
+  if (referer.includes('emoji-gen.com') && hostname.includes('emoji-gen.com')) {
+    console.log(`检测到可能的重定向循环: ${referer} -> ${request.url}`);
+    // 如果检测到可能的循环，不执行重定向
+    return null;
   }
   
   return null;
