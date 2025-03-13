@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: 'AI Emoji Generator',
   description: 'Create custom emojis with AI. Generate unique emojis for chat, social media, and more!',
   manifest: '/manifest.json',
+  alternates: {
+    canonical: 'https://emoji-gen.com',
+  },
   icons: {
     icon: [
       {

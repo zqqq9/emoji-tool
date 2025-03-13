@@ -132,11 +132,6 @@ const languageMap: LanguageMap = {
   id: { name: 'Indonesian', local: 'Bahasa Indonesia', icon: '🇮🇩' },
 };
 
-// 主要语言（使用广泛的语言）
-const majorLanguages = ['en', 'zh', 'es', 'fr', 'ar', 'ru', 'pt', 'ja', 'de', 'hi'];
-// 次要语言（使用较少的语言）
-const minorLanguages = ['ko', 'it', 'nl', 'tr', 'pl', 'sv', 'he', 'id'];
-
 export default function LanguageSwitcher() {
   const [isOpen, setIsOpen] = useState(false);
   const locale = useLocale();
@@ -204,23 +199,8 @@ export default function LanguageSwitcher() {
       <DropdownContainer $isOpen={isOpen}>
         {/* 主要语言组 */}
         <LanguageGroup>
-          <GroupTitle>Major Languages</GroupTitle>
-          {majorLanguages.map(langCode => (
-            <LanguageOption
-              key={langCode}
-              $isActive={langCode === locale}
-              onClick={() => switchLanguage(langCode)}
-            >
-              <LanguageIcon>{languageMap[langCode]?.icon || '🌐'}</LanguageIcon>
-              {languageMap[langCode]?.local || langCode}
-            </LanguageOption>
-          ))}
-        </LanguageGroup>
-
-        {/* 次要语言组 */}
-        <LanguageGroup>
-          <GroupTitle>Other Languages</GroupTitle>
-          {minorLanguages.map(langCode => (
+          <GroupTitle>Languages</GroupTitle>
+          {Object.keys(languageMap).map(langCode => (
             <LanguageOption
               key={langCode}
               $isActive={langCode === locale}

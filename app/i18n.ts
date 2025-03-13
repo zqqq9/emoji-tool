@@ -2,14 +2,16 @@
 import { createTranslator } from 'next-intl';
 
 // 定义支持的语言列表
-export const locales = ['en', 'zh', 'es', 'fr', 'ar', 'ru', 'pt', 'ja', 'de', 'hi', 'ko', 'it', 'nl', 'tr', 'pl', 'sv', 'he', 'id'];
+export const defaultLocale = 'en';
+export const locales = ['en', 'zh', 'es', 'fr', 'ar', 'ru', 'pt', 'ja', 'de', 'hi'];
 
 // 英文翻译
 const enMessages = {
   Navbar: {
     home: 'Home',
     blog: 'Blog',
-    about: 'About'
+    about: 'About',
+    emojitools: 'Emoji Tools'
   },
   EmojiGenerator: {
     title: 'Emoji Generator',
@@ -169,6 +171,24 @@ const enMessages = {
     post2Title: 'How AI is Revolutionizing Digital Expression',
     post2Excerpt: 'Artificial intelligence is changing the way we express ourselves online...',
     post2Date: 'Dec 12, 2023'
+  },
+  EmojiTools: {
+    title: 'Emoji',
+    subtitle: 'Tools',
+    description: 'Discover our collection of AI-powered emoji tools to create, customize, and have fun with emojis.',
+    tryButton: 'Try Now'
+  },
+  TextToEmoji: {
+    title: 'Text to Emoji',
+    subtitle: 'Type any text and see it translated into emojis. No text in responses, just pure emoji expression.',
+    inputPlaceholder: 'Type your text here...',
+    sendButton: 'Translate'
+  },
+  EmojiChat: {
+    title: 'Emoji Chat',
+    subtitle: 'Ask any question and get answers using only emojis. AI responds with emoji-only expressions.',
+    inputPlaceholder: 'Type your question here...',
+    sendButton: 'Send'
   }
 };
 
@@ -177,7 +197,8 @@ const zhMessages = {
   Navbar: {
     home: '首页',
     blog: '博客',
-    about: '关于'
+    about: '关于',
+    emojitools: '表情工具'
   },
   EmojiGenerator: {
     title: '表情生成器',
@@ -337,6 +358,24 @@ const zhMessages = {
     post2Title: 'AI如何改变数字表达',
     post2Excerpt: '人工智能正在改变我们在线表达自己的方式...',
     post2Date: '2023年12月12日'
+  },
+  EmojiTools: {
+    title: '表情',
+    subtitle: '工具',
+    description: '探索我们的AI驱动表情工具集合，创建、自定义和享受表情符号的乐趣。',
+    tryButton: '立即尝试'
+  },
+  TextToEmoji: {
+    title: '文字转表情',
+    subtitle: '输入任何文字，将其转换为表情符号。没有文字回应，只有纯粹的表情符号表达。',
+    inputPlaceholder: '在这里输入你的文字...',
+    sendButton: '翻译'
+  },
+  EmojiChat: {
+    title: '表情符号聊天',
+    subtitle: '表情符号提问，AI用表情符号回答。没有文字，只有纯粹的表情符号表达。',
+    inputPlaceholder: '在这里输入你的问题...',
+    sendButton: '发送'
   }
 };
 
@@ -345,7 +384,8 @@ const esMessages = {
   Navbar: {
     home: 'Inicio',
     blog: 'Blog',
-    about: 'Acerca de'
+    about: 'Acerca de',
+    emojitools: 'Herramientas de Emoji'
   },
   EmojiGenerator: {
     title: 'Generador de Emojis',
@@ -505,6 +545,24 @@ const esMessages = {
     post2Title: 'El futuro de la IA en el diseño creativo',
     post2Excerpt: 'Cómo la inteligencia artificial está transformando la creatividad digital y lo que significa para los diseñadores...',
     post2Date: '28 de Sep, 2023'
+  },
+  EmojiTools: {
+    title: 'Emoji',
+    subtitle: 'Herramientas',
+    description: 'Descubre nuestra colección de herramientas de emoji con IA para crear, personalizar y divertirte con emojis.',
+    tryButton: 'Probar Ahora'
+  },
+  TextToEmoji: {
+    title: 'Texto a Emoji',
+    subtitle: 'Escribe cualquier texto y míralo traducido a emojis. Sin texto en las respuestas, solo expresión pura de emoji.',
+    inputPlaceholder: 'Escribe tu texto aquí...',
+    sendButton: 'Traducir'
+  },
+  EmojiChat: {
+    title: 'Emoji Chat',
+    subtitle: 'Pregunta cualquier cosa y obtén respuestas solo con emojis. AI responde con expresiones puras de emoji.',
+    inputPlaceholder: 'Escribe tu pregunta aquí...',
+    sendButton: 'Enviar'
   }
 };
 
@@ -513,7 +571,8 @@ const frMessages = {
   Navbar: {
     home: 'Accueil',
     blog: 'Blog',
-    about: 'À propos'
+    about: 'À propos',
+    emojitools: 'Outils Emoji'
   },
   EmojiGenerator: {
     title: 'Générateur d\'Emoji',
@@ -599,7 +658,7 @@ const frMessages = {
       answer1: 'Un Générateur d\'Emoji IA est une excellente outil qui utilise l\'intelligence artificielle pour créer des emojis personnalisés basés sur des descriptions de texte. Notre Générateur d\'Emoji IA transforme vos idées en images d\'emoji uniques et de haute qualité que vous pouvez utiliser sur diverses plateformes numériques.',
       
       question2: 'Comment fonctionne le Générateur d\'Emoji IA?',
-      answer2: 'Notre Générateur d\'Emoji IA utilise des algorithmes d\'apprentissage automatique avancés entraînés sur des millions d\'images. Lorsque vous entrez une description de texte, le IA analyse votre entrée et génère un emoji personnalisé qui correspond à votre description. La technologie combine le traitement du langage naturel avec des capacités de génération d\'images pour créer des représentations visuelles uniques de vos idées.',
+      answer2: 'Notre Générateur d\'Emoji IA utilise des algorithmes d\'apprentissage automatique avancés entraînés sur des millions d\'images. Lorsque vous entrez une description de texte, le IA analyse votre entrée et génère un emoji personalizado que correspond à votre description. La technologie combine le traitement du langage naturel avec des capacités de génération d\'images pour créer des représentations visuelles uniques de vos idées.',
       
       question3: 'Les emojis générés sont-ils gratuits à utiliser?',
       answer3: 'Oui! Tous les emojis créés avec notre Générateur d\'Emoji IA sont gratuits pour utilisation personnelle. Vous pouvez les utiliser dans les messages, les publications de médias sociaux et les projets personnels sans restrictions. Pour utilisation commerciale dans des matériaux de marketing, contenu marqué, ou produits à vendre, veuillez vous référer à nos termes de service.',
@@ -611,7 +670,7 @@ const frMessages = {
       answer5: 'Les emojis générés peuvent être téléchargés sous forme de fichiers PNG avec arrière-plan transparent, ce qui les rend parfaits pour utiliser sur diverses plateformes et applications. L\'arrière-plan transparent garantit que les emojis s\'intègrent parfaitement avec toute interface de chat ou document.',
       
       question6: 'Y a-t-il une limite au nombre d\'emojis que je peux générer?',
-      answer6: 'Actuellement, nous offrons une quantité généreuse de générations gratuites par jour. Ce limite nous aide à maintenir la qualité du service et la disponibilité pour tous les utilisateurs. Si vous avez besoin de créer plus d\'emojis, vous pouvez revenir le jour suivant lorsque votre compteur de génération se réinitialise.'
+      answer6: 'Actuellement, nous offrons une quantité généreuse de générations gratuites par jour. Ce limite nous aide à maintenir la calité du service et la disponibilité pour tous les utilisateurs. Si vous avez besoin de créer plus d\'emojis, vous pouvez revenir le jour suivant lorsque votre compteur de génération se réinitialise.'
     },
     explanatoryText: {
       title: 'Débloquez Votre Créativité Avec La Génération D\'Emoji IA',
@@ -625,9 +684,9 @@ const frMessages = {
       
       paragraph5: 'Notre Générateur d\'Emoji IA est conçu pour être accessible à tous, indépendamment de l\'expérience en design ou des connaissances techniques. L\'interface intuitive le rend facile de décrire votre idée d\'emoji, de générer l\'image et de la copier ou la télécharger pour une utilisation immédiate. Cette démocratisation des outils créatifs stimule les utilisateurs à s\'exprimer de nouvelles et excitantes façons en ligne.',
       
-      paragraph6: 'Au-delà de l\'utilisation personnelle, le Générateur d\'Emoji IA offre des applications précieuses pour les créateurs de contenu, les professionnels du marketing, les éducateurs et les entreprises. Les emojis personnalisés peuvent renforcer l\'identité de marque, améliorer les matériaux éducatifs ou ajouter de l\'intérêt visuel aux contenus numériques. Les possibilités sont infinies, comme votre imagination.',
+      paragraph6: 'Au-delà de l\'utilisation personnelle, le Générateur d\'Emoji IA offre des applications précieuses pour les créateurs de contenu, les professionnels du marketing, les éducateurs et les entreprises. Les emojis personnalisés peuvent renforcer l\'identité de la marque, améliorer les matériaux éducatifs ou ajouter de l\'intérêt visuel aux contenus numériques. Les possibilités sont infinies, comme votre imagination.',
       
-      paragraph7: 'À mesure que la technologie d\'intelligence artificielle continue d\'évoluer, les capacités de notre Générateur d\'Emoji IA s\'également. Nous nous engageons à intégrer les derniers avancés en recherche d\'IA pour vous fournir des outils de création d\'emojis encore plus puissants et versatiles. Rejoignez-nous sur ce voyage passionnant à l\'intersection de l\'intelligence artificielle et de l\'expression créative.'
+      paragraph7: 'À mesure que la technologie d\'intelligence artificielle continue d\'évoluer, les capacités de notre Générateur d\'Emoji IA s\'également. Nous nous engageons à intégrer les derniers avances en recherche d\'IA pour vous fournir des outils de création de emojis aún más poderosas y versátiles. Únete a nosotros en ce emocionante viaje en la intersección de la inteligencia artificial y la expresión creativa.'
     }
   },
   About: {
@@ -673,6 +732,212 @@ const frMessages = {
     post2Title: 'Die Zukunft der KI im kreativen Design',
     post2Excerpt: 'Wie künstliche Intelligenz die digitale Kreativität verändert und was das für Designer bedeutet...',
     post2Date: '28. Sep 2023'
+  },
+  EmojiTools: {
+    title: 'Emoji',
+    subtitle: 'Outils',
+    description: 'Découvrez notre collection d\'outils emoji alimentés par l\'IA pour créer, personnaliser et vous amuser avec des emojis.',
+    tryButton: 'Essayer Maintenant'
+  },
+  TextToEmoji: {
+    title: 'Texte en Emoji',
+    subtitle: 'Tapez n\'importe quel texte et voyez-le traduit en emojis. Pas de texte dans les réponses, juste une expression emoji pure.',
+    inputPlaceholder: 'Tapez votre texte ici...',
+    sendButton: 'Traduire'
+  },
+  EmojiChat: {
+    title: 'Emoji Chat',
+    subtitle: 'Preguntez n\'importe quoi et obtenez des réponses uniquement avec des emojis. AI répond avec des expressions purement emoji.',
+    inputPlaceholder: 'Écrivez votre question ici...',
+    sendButton: 'Envoyer'
+  }
+};
+
+// 阿拉伯语翻译
+const arMessages = {
+  Navbar: {
+    home: 'الرئيسية',
+    blog: 'المدونة',
+    about: 'حول',
+    emojitools: 'أدوات الرموز التعبيرية'
+  },
+  EmojiGenerator: {
+    title: 'رموز',
+    subtitle: 'تعبيرية',
+    description: 'اكتشف مجموعتنا من أدوات الرموز التعبيرية المدعومة بالذكاء الاصطناعي لإنشاء وتخصيص والاستمتاع بالرموز التعبيرية.',
+    categoryEmoji: 'رموز',
+    categorySticker: 'صور',
+    categoryIcon: 'رمز',
+    inputPlaceholder: 'أصف الفكرة الخاصة بك لرمز...',
+    generateButton: 'إنشاء',
+    generating: 'إنشاء...',
+    loadingMessage: 'يتم إنشاء رمزك الخاص...',
+    copyButton: 'نسخ',
+    downloadButton: 'تحميل',
+    tryExample: 'جرب الآن',
+    errorGenerating: 'حدث خطأ أثناء إنشاء الصورة. يرجى المحاولة مرة أخرى.',
+    copiedToClipboard: 'تم نسخ الصورة إلى الحافظة!',
+    errorCopying: 'حدث خطأ أثناء نسخ الصورة. يرجى المحاولة مرة أخرى.',
+    failedToCopy: 'فشل نسخ الصورة. يرجى المحاولة مرة أخرى.',
+    exampleEmoji1: 'القط السعيد',
+    exampleEmoji2: 'القط المفاجأ',
+    exampleEmoji3: 'البيتزا المضحكة',
+    exampleSticker1: 'كلب مع شمسيات',
+    exampleSticker2: 'رينغبانو',
+    exampleSticker3: 'روبوت مثير',
+    exampleIcon1: 'رمز البريد',
+    exampleIcon2: 'محرك الإعدادات',
+    exampleIcon3: 'فقاعة الدردشة',
+    backgroundColorTitle: 'لون الخلفية',
+    transparentBackground: 'شفاف',
+    whiteBackground: 'أبيض',
+    blackBackground: 'أسود',
+    colorfulBackground: 'ملون',
+    gradientBackground: 'تدرج',
+    artStyleTitle: 'أسلوب الفن',
+    cartoonStyle: 'كاريكاتور',
+    pixelStyle: 'رسوم بيزيلية',
+    watercolorStyle: 'رسم بالماء',
+    sketchStyle: 'رسم',
+    threeDStyle: '3D',
+    realisticStyle: 'واقعي',
+    customizeTitle: 'تخصيص رمزك الخاص',
+  },
+  Home: {
+    title: 'AI Emoji Generator',
+    subtitle: 'إنشاء رموز خاصة بك باستخدام الذكاء الاصطناعي',
+    getStarted: 'ابدأ الآن',
+    features: {
+      title: 'سحر الذكاء الاصطناعي لإنشاء الرموز',
+      instant: {
+        title: 'إنشاء لحظي',
+        description: 'باستخدام تكنولوجيا ذكية متقدمة، ستحول نصوص الوصف الخاص بك إلى صور رموز حية خلال ثوانٍ قليلة. لا حاجة لخبرة التصميم.',
+      },
+      quality: {
+        title: 'جودة عالية',
+        description: 'تم إنشاء الرموز بجودة عالية مع خلفية شفافة، مثالية للتطبيقات الدردشة والشبكات الاجتماعية. انسخ أو قم بتحميل بضغطة واحدة.',
+      },
+      limitless: {
+        title: 'إبداع لا نهائي',
+        description: 'أبدأ بتخيلك فقط. من الحيوانات القديمة إلى المفاهيم المجردة، يمكن للذكاء الاصطناعي أن يجعل أي فكرة تصبح رمزًا حيًا بجودة عالية مع خلفية شفافة.',
+      },
+    },
+    howToUse: {
+      title: 'كيف تستخدم',
+      step1: {
+        title: 'أدخل الوصف',
+        description: 'أكتب الرمز الذي تريده في مربع الإدخال. جرب "القط السعيد" أو "القط المفاجأ" أو أي فكرة مبتكرة. التفاصيل الأكثر تفضيلًا تعطي نتائج أفضل.',
+      },
+      step2: {
+        title: 'إنشاء الصورة',
+        description: 'انقر على زر "إنشاء" واترك الذكاء الاصطناعي يعالج وصفك. سيتم إنشاء الصورة في غضون ثوانٍ قليلة، يرجى الصبر.',
+      },
+      step3: {
+        title: 'حفظ ومشاركة',
+        description: 'بمجرد إنشاء الصورة، يمكنك نسخ الرمز لاستخدامه فورًا في تطبيقات الدردشة أو تحميله للحفظ بشكل دائم.',
+      },
+    },
+    examples: {
+      title: 'جرب هذه الأمثلة'
+    },
+    faq: {
+      title: 'أسئلة شائعة',
+      question1: 'ما هو مولد الرموز الذكي؟',
+      answer1: 'مولد الرموز الذكي هو أداة متقدمة تستخدم الذكاء الاصطناعي لإنشاء الرموز المخصصة بناءً على وصف النص. مولد الرموز الذكي لدينا يحول أفكارك إلى صور رموز عملاقة عالية الجودة، ويمكن استخدامها على منصات رقمية متعددة.',
+      
+      question2: 'كيف يعمل مولد الرموز الذكي؟',
+      answer2: 'يستخدم مولد الرموز الذكي خوارزميات تعلم آلي متقدمة يتم إدراجها على ملايين الصور. عندما تدخل نصًا من النص، يقوم الذكاء الاصطناعي بتحليل مدخلك وينشأ رمزًا مخصصًا يتطابق مع وصفك. تكنولوجيا التعامل مع اللغة الطبيعية والتوليد الصوري يتم استخدامها معًا لإنشاء تمثيلات عريضة فريدة من أفكارك.',
+      
+      question3: 'هل يمكن استخدام الرموز التي تم إنشاؤها مجانًا؟',
+      answer3: 'نعم! جميع الرموز التي تم إنشاؤها باستخدام مولد الرموز الذكي لدينا مجانية للاستخدام الشخصي. يمكنك استخدامها في الرسائل، والمشاركات على وسائل التواصل الاجتماعي، والمشاريع الشخصية دون أي حصص. للاستخدام التجاري في مواد التسويق، المحتوى المملوك، أو المنتجات المعروضة للبيع، يرجى الرجوع إلى شروط خدمتنا.',
+      
+      question4: 'هل يمكن تخصيص نمط الرموز الخاص بي؟',
+      answer4: 'بالتأكيد! مولد الرموز الذكي لدينا يوفر خيارات تخصيص متعددة. يمكنك تحديد أساليب الفن (كاريكاتور، رسوم بيزيلية، رسم بالماء، إلخ)، وألوان الخلفية، وخصائص أخرى في وصفك. للحصول على أفضل النتائج، يرجى تحديد الأسلوب الذي تريده في موجه الإدخال.',
+      
+      question5: 'ما هي تنسيقات الملف المتاحة للتحميل؟',
+      answer5: 'يمكن تحميل الرموز التي تم إنشاؤها كملفات PNG مع خلفية شفافة، مما يجعلها مثالية للاستخدام على منصات متعددة وتطبيقات. خلفية شفافة تضمن أن الرموز تتفاعل تمامًا مع أي واجهة دردشة أو مستند.',
+      
+      question6: 'هل هناك حد أقصى لعدد الرموز التي يمكن إنشاؤها؟',
+      answer6: 'في الوقت الحالي، نحن نقدم كمية كبيرة من التوليد المجاني يوميًا. يساعد هذا الحد في الحفاظ على جودة الخدمة والتوفر لجميع المستخدمين. إذا كنت تريد إنشاء المزيد من الرموز، يمكنك العودة يوم الغد عندما يتم إعادة ضبط عداد التوليد الخاص بك.'
+    },
+    explanatoryText: {
+      title: 'إطلاق ذكاءك التعبيري مع إنشاء الرموز الذكي',
+      paragraph1: 'يمثل مولد الرموز الذكي نهجًا مثيرًا للتعبير عبر الإنترنت، حيث يجمع بين الذكاء الاصطناعي المتقدم وواجهة المستخدم المستقلة. تكنولوجيا الذكاء الاصطناعي المتقدمة لدينا تحلل وصف النص وتحوله إلى صور رموز حية عالية الجودة، مما يمثل تمثيلًا عاليًا لأفكارك ومشاعرك.',
+      
+      paragraph2: 'بدلاً من تقديم خيارات مقتصرة على الرموز التعبيرية التقليدية، يوفر مولد الرموز الذكي إمكانات إبداعية غير محدودة. سواء كنت تحتاج إلى قط سعيد مع شمسيات، أو بيتزا تنادي مع طباعات الألوان، أو أي مفهوم تخيلي آخر، يمكن للذكاء الاصطناعي أن يجعله حيًا بجودة عالية مع خلفية شفافة.',
+      
+      paragraph3: 'تكنولوجيا مولد الرموز الذكي لدينا تستخدم أنواعًا مختلفة من نماذج التعلم العميق، التي تم إدراجها على مجموعات متنوعة من البيانات البصرية. تفهم هذه النماذج علاقات بين الكلمات والصور، مما يمكننا من تفسير الوصف وإنشاء عناصر تمثيلية تناسبه. يتحسن الذكاء الاصطناعي باستمرار من خلال التعلم الآلي، إنشاء صور جديدة وأكثر إبداعًا في كل توليد.',
+      
+      paragraph4: 'تستخدم الرموز التي تم إنشاؤها بواسطة مولد الرموز الذكي إلى جعل الاتصال الرقمي أكثر فعالية، عن طريق إضافة الشخصية والسياق إلى رسائلك. تساعد على نقل المشاعر بطريقة أكثر فعالية من النص البسيط فقط، ويمكن أن يجعل محادثاتك أكثر جديدة ومثيرة للذكر. من الدردشة الشخصية إلى التواصل المهني، تضيف الرموز المخصصة علامة خاصة تميزها.',
+      
+      paragraph5: 'مولد الرموز الذكي لدينا مصمم بحيث يكون متاحًا للجميع، بغض النظر عن تجربة التصميم أو المعرفة الفنية. واجهة مستقلة يجعل من السهل تصف رأيك لرمز الرموز، إنشاء الصورة ونسخها أو تحميلها للاستخدام الفوري.',
+      
+      paragraph6: 'إذا سرق الأمر بالاستخدام الشخصي، يوفر مولد الرموز الذكي تطبيقات قيمة لمنتجي المحتوى، ومحترفي التسويق، والمعلمين، والشركات. يمكن أن تحفز الرموز المخصصة تعريف العلامة التجارية، وتحسين المواد التعليمية، أو إضافة جوهر مثير للاهتمام إلى المحتوى الرقمي. الإمكانات لا تنتهي، مثل ذكائك التخيلي.',
+      
+      paragraph7: 'مع تطور تكنولوجيا الذكاء الاصطناعي، سيتحسن إمكانات مولد الرموز الذكي لدينا أيضًا. نحن ملزمون بدمج أحدث التقدمات في علم الذكاء الاصطناعي لتزويدك بأدوات إنشاء الرموز أكثر قوة ومتعددة الاستخدامات. إنضم إلينا في هذه الرحلة المثيرة في مجال الذكاء الاصطناعي والتعبير الإبداعي.'
+    }
+  },
+  About: {
+    title: 'حول',
+    mission: {
+      title: 'مهمتنا',
+      paragraph1: 'AI Emoji Generator هي أداة مجانية تصمم لمساعدة كل شخص على إنشاء الرموز المميزة والمخصصة باستخدام الذكاء الاصطناعي. نحن نؤمن بأن التعبير الإبداعي يجب أن يكون متاحًا للجميع، بغض النظر عن قدرة الفن أو المعرفة الفنية.',
+      paragraph2: 'مهمتنا هي تحويل الإبداع الرقمي إلى أداة مجانية متقدمة تساعد الناس على التواصل بطريقة أكثر تعبيرية عبر الإنترنت.'
+    },
+    howItWorks: {
+      title: 'كيف يعمل',
+      paragraph1: 'يستخدم مولد الرموز الذكي أنواعًا مختلفة من أنماط الذكاء الاصطناعي لتحويل الوصف إلى صور حية عملاقة وفريدة. في الخلفية، نستخدم تكنولوجيا إنتاج الصور المتقدمة، التي تم تدريبها خصيصًا لإنشاء الرسومات التعبيرية.',
+      paragraph2: 'تفهم الذكاء الاصطناعي الوصف اللغوي الطبيعي ويرسمه في أنواع مختلفة من أساليب الفن، مما يمنحك كل الحرية الإبداعية من دون الحاجة إلى مهارات التصميم.'
+    },
+    noAccount: {
+      title: 'لا تحتاج إلى حساب',
+      paragraph1: 'نحن نؤمن بتسهيل الوصول إلى التكنولوجيا بأقل إحتكاك. هذا هو السبب في أن AI Emoji Generator لا يتطلب تسجيل الدخول، إنشاء حساب، أو معلومات شخصية. فقط افتح الموقع، أدخل أفكارك، وإنشاء الرموز المميزة فورًا.',
+      paragraph2: 'إن أعمالك تنتمي إليك، يمكنك حفظها واستخدامها كما تريد. قم بتحميلها، نسخها، وشاركها على جميع منصاتك وتطبيقاتك المفضلة.'
+    }
+  },
+  Blog: {
+    title: 'المدونة',
+    highlight: 'AI Emoji Generator',
+    featured: 'Featured',
+    comingSoon: 'أكثر من مقال جديد سيصل قريبًا!',
+    readMore: 'قراءة المزيد',
+    recentPosts: 'المشاركات الأخيرة',
+    featuredDescription: 'في عصر الرقمي، أصبح الرموز التعبيرية خلية اللغة العالمية - تم إرسال أكثر من 6 مليار رمز يوميًا، عبر الثقافات واللغات المختلفة. على الرغم من أن المكتبات التقليدية للرموز التعبيرية غير متاحة، يدخل المولدون الذكيون، إبداعًا مثيرًا يحول كيفية التواصل البصري.',
+    mainArticle: {
+      title: 'تطور وتأثير مولد الرموز الذكي في التواصل الحديث',
+      date: '10 مايو 2023',
+      author: 'فريق Emoji'
+    },
+    backToBlog: 'العودة إلى المدونة',
+    post0Title: 'دليل البدء لمولد الرموز التعبيرية بالذكاء الاصطناعي',
+    post0Excerpt: 'تعلم كيفية إنشاء أول رمز تعبيري مولد بالذكاء الاصطناعي في أقل من دقيقة...',
+    post0Date: '15 أكتوبر 2023',
+    
+    post1Title: '10 أفكار إبداعية للرموز التعبيرية تستحق التجربة',
+    post1Excerpt: 'تبحث عن الإلهام؟ إليك عشرة مفاهيم إبداعية للرموز التعبيرية يحبها مستخدمونا...',
+    post1Date: '3 أكتوبر 2023',
+    
+    post2Title: 'كيف يغير الذكاء الاصطناعي التعبير الرقمي',
+    post2Excerpt: 'الذكاء الاصطناعي يغير الطريقة التي نعبر بها عن أنفسنا عبر الإنترنت...',
+    post2Date: '12 ديسمبر 2023'
+  },
+  EmojiTools: {
+    title: '表情',
+    subtitle: '工具',
+    description: '探索我们的AI驱动表情工具集合，创建、自定义和享受表情符号的乐趣。',
+    tryButton: '立即尝试'
+  },
+  TextToEmoji: {
+    title: '文字转表情',
+    subtitle: '输入任何文字，将其转换为表情符号。没有文字回应，只有纯粹的表情符号表达。',
+    inputPlaceholder: '在这里输入你的文字...',
+    sendButton: '翻译'
+  },
+  EmojiChat: {
+    title: '表情符号聊天',
+    subtitle: '表情符号提问，AI用表情符号回答。没有文字，只有纯粹的表情符号表达。',
+    inputPlaceholder: '在这里输入你的问题...',
+    sendButton: '发送'
   }
 };
 
@@ -681,7 +946,8 @@ const jaMessages = {
   Navbar: {
     home: 'ホーム',
     blog: 'ブログ',
-    about: '概要'
+    about: '概要',
+    emojitools: '絵文字ツール'
   },
   EmojiGenerator: {
     title: '絵文字ジェネレーター',
@@ -830,17 +1096,35 @@ const jaMessages = {
       author: 'Equipe Emoji'
     },
     backToBlog: 'ブログに戻る',
-    post0Title: 'AI表情生成器入门指南',
-    post0Excerpt: '学习如何在不到一分钟的时间内创建您的第一个AI生成的表情符号...',
+    post0Title: 'AI絵文字ジェネレーター入門ガイド',
+    post0Excerpt: '1分以内にあなたの最初のAI生成絵文字を作成する方法を学びましょう...',
     post0Date: '2023年10月15日',
     
-    post1Title: '值得一试的10个创意表情想法',
-    post1Excerpt: '寻找灵感？这里有十个我们用户喜爱的创意表情概念...',
+    post1Title: '試す価値のある10の創造的な絵文字アイデア',
+    post1Excerpt: 'インスピレーションを探していますか？ユーザーに人気の10の創造的な絵文字コンセプトをご紹介します...',
     post1Date: '2023年10月3日',
     
-    post2Title: 'AI在创意设计中的未来',
-    post2Excerpt: '人工智能如何改变数字创意领域，以及这对设计师意味着什么...',
+    post2Title: 'AIがデジタル表現をどのように変革しているか',
+    post2Excerpt: '人工知能がオンラインでの自己表現方法を変えつつあります...',
     post2Date: '2023年12月12日'
+  },
+  EmojiTools: {
+    title: '絵文字',
+    subtitle: 'ツール',
+    description: 'AIを活用した絵文字ツールのコレクションを発見し、絵文字を作成、カスタマイズして楽しみましょう。',
+    tryButton: '今すぐ試す'
+  },
+  TextToEmoji: {
+    title: '絵文字ジェネレーター',
+    subtitle: 'テキストを絵文字に変換。テキスト不要、純粋な絵文字表現のみ。',
+    inputPlaceholder: 'ここにテキストを入力してください...',
+    sendButton: '生成'
+  },
+  EmojiChat: {
+    title: '絵文字チャット',
+    subtitle: '表情符号で質問し、AIが表情符号で回答します。テキスト不要、純粋な表情表現のみ。',
+    inputPlaceholder: 'ここに質問を入力してください...',
+    sendButton: '送信'
   }
 };
 
@@ -849,7 +1133,8 @@ const deMessages = {
   Navbar: {
     home: 'Startseite',
     blog: 'Blog',
-    about: 'Über uns'
+    about: 'Über uns',
+    emojitools: 'Emoji-Tools'
   },
   EmojiGenerator: {
     title: 'Emoji-Generator',
@@ -1009,129 +1294,149 @@ const deMessages = {
     post2Title: 'Die Zukunft der KI im kreativen Design',
     post2Excerpt: 'Wie künstliche Intelligenz die digitale Kreativität verändert und was das für Designer bedeutet...',
     post2Date: '28 avril 2023'
+  },
+  EmojiTools: {
+    title: 'Emoji',
+    subtitle: 'Tools',
+    description: 'Entdecken Sie unsere Sammlung von KI-gestützten Emoji-Tools zum Erstellen, Anpassen und Spaß haben mit Emojis.',
+    tryButton: 'Jetzt Ausprobieren'
+  },
+  TextToEmoji: {
+    title: 'Emoji-Generator',
+    subtitle: 'Text in Emojis umwandeln. Kein Text, nur purem Emoji-Ausdruck.',
+    inputPlaceholder: 'Hier geben Sie Ihren Text ein...',
+    sendButton: 'Generieren'
+  },
+  EmojiChat: {
+    title: 'Emoji Chat',
+    subtitle: 'Stellen Sie jede Frage und erhalten Sie Antworten nur mit Emojis. Kein Text, nur purem Emoji-Ausdruck.',
+    inputPlaceholder: 'Geben Sie hier Ihre Frage ein...',
+    sendButton: 'Senden'
   }
 };
 
-// 俄语翻译
-const ruMessages = {
+// 印地语翻译
+const hiMessages = {
   Navbar: {
-    home: 'Главная',
-    blog: 'Блог',
-    about: 'О нас'
+    home: 'होम',
+    blog: 'ब्लॉग',
+    about: 'हमारे बारे में',
+    emojitools: 'इमोजी टूल्स'
   },
   EmojiGenerator: {
-    title: 'Генератор эмодзи',
-    description: 'Создавайте пользовательские эмодзи с помощью ИИ. Введите свою идею и создайте уникальные изображения.',
-    categoryEmoji: 'Эмодзи',
-    categorySticker: 'Стикер',
-    categoryIcon: 'Иконка',
-    inputPlaceholder: 'Опишите вашу идею эмодзи...',
-    generateButton: 'Создать',
-    generating: 'Создание...',
-    loadingMessage: 'Создание вашего эмодзи...',
-    copyButton: 'Копировать',
-    downloadButton: 'Скачать',
-    tryExample: 'Попробуйте пример',
-    errorGenerating: 'Ошибка при создании изображения. Пожалуйста, попробуйте снова.',
-    copiedToClipboard: 'Скопировано в буфер обмена!',
-    errorCopying: 'Ошибка при копировании изображения. Попробуйте использовать кнопку скачивания.',
-    failedToCopy: 'Не удалось скопировать изображение. Попробуйте использовать кнопку скачивания.',
-    exampleEmoji1: 'счастливый кот',
-    exampleEmoji2: 'удивленная панда',
-    exampleEmoji3: 'смеющаяся пицца',
-    exampleSticker1: 'милый пес в солнечных очках',
-    exampleSticker2: 'радужный единорог',
-    exampleSticker3: 'взволнованный робот',
-    exampleIcon1: 'иконка электронной почты',
-    exampleIcon2: 'шестеренка настроек',
-    exampleIcon3: 'чат-пузырь',
-    backgroundColorTitle: 'Цвет фона',
-    transparentBackground: 'Прозрачный',
-    whiteBackground: 'Белый',
-    blackBackground: 'Черный',
-    colorfulBackground: 'Разноцветный',
-    gradientBackground: 'Градиент',
-    artStyleTitle: 'Художественный стиль',
-    cartoonStyle: 'Мультяшный',
-    pixelStyle: 'Пиксельный',
-    watercolorStyle: 'Акварель',
-    sketchStyle: 'Эскиз',
+    title: 'इमोजी',
+    subtitle: 'टूल्स',
+    description: 'इमोजी बनाने, कस्टमाइज़ करने और मज़े करने के लिए हमारे AI-संचालित इमोजी टूल्स का संग्रह खोजें।',
+    categoryEmoji: 'इमोजी',
+    categorySticker: 'छवि',
+    categoryIcon: 'आइकन',
+    inputPlaceholder: 'आपकी इमोजी विचार बताएं...',
+    generateButton: 'बनाएं',
+    generating: 'बनाने जा रहे हैं...',
+    loadingMessage: 'आपकी इमोजी बन रही है...',
+    copyButton: 'कॉपी करें',
+    downloadButton: 'डाउनलोड करें',
+    tryExample: 'अभी आज़माएं',
+    errorGenerating: 'इमोजी बनाने के दौरान त्रुटि हुई। कृपया फिर से प्रयास करें।',
+    copiedToClipboard: 'इमोजी को क्लिपबोर्ड में कॉपी कर ली है!',
+    errorCopying: 'इमोजी को कॉपी करने में त्रुटि हुई। कृपया डाउनलोड बटन पर प्रयास करें।',
+    failedToCopy: 'इमोजी को कॉपी करने में विफल हुई। कृपया डाउनलोड बटन पर प्रयास करें।',
+    exampleEmoji1: 'खुश बिल्ली',
+    exampleEmoji2: 'आश्चर्यवाद पंडा',
+    exampleEmoji3: 'हंसले वाली पिज्जा',
+    exampleSticker1: 'सूरज के नजर आने वाली बिल्ली',
+    exampleSticker2: 'रंगीन इंहोन',
+    exampleSticker3: 'उत्साहित रोबोट',
+    exampleIcon1: 'ईमेल आइकन',
+    exampleIcon2: 'सेटिंग वोल्टेज',
+    exampleIcon3: 'चैट बबल',
+    backgroundColorTitle: 'बैकग्राउंड कलर',
+    transparentBackground: 'सहज',
+    whiteBackground: 'सफेद',
+    blackBackground: 'काला',
+    colorfulBackground: 'रंगीन',
+    gradientBackground: 'ग्रेडिएंट',
+    artStyleTitle: 'आर्ट स्टाइल',
+    cartoonStyle: 'कार्टून',
+    pixelStyle: 'पिक्सेल आर्ट',
+    watercolorStyle: 'वॉश आर्ट',
+    sketchStyle: 'स्केच',
     threeDStyle: '3D',
-    realisticStyle: 'Реалистичный',
-    customizeTitle: 'Настройте ваш эмодзи',
+    realisticStyle: 'रियलिस्टिक',
+    customizeTitle: 'अपनी इमोजी को कस्टमाइज़ करें',
   },
   Home: {
     title: 'AI Emoji Generator',
-    subtitle: 'Создавайте уникальные эмодзи с помощью искусственного интеллекта',
-    getStarted: 'Начать',
+    subtitle: 'आधुनिक बातचीत में अपनी इमोजी बनाने के लिए AI का जादू',
+    getStarted: 'अभी शुरू करें',
     features: {
-      title: 'Магия ИИ для создания эмодзи',
+      title: 'AI जादू इमोजी बनाने के लिए',
       instant: {
-        title: 'Мгновенное создание',
-        description: 'Используя передовые технологии ИИ, превратите ваши текстовые описания в яркие изображения эмодзи за считанные секунды. Опыт в дизайне не требуется.',
+        title: 'तुरंत बनाना',
+        description: 'उन्नत AI तकनीक का उपयोग करते हुए, आपके टेक्स्ट विवरणों को कुछ सेकंड में जोरदार इमोजी छवियों में बदल दें। डिज़ाइन अनुभव की आवश्यकता नहीं है।',
       },
       quality: {
-        title: 'Высокое качество',
-        description: 'Созданные эмодзи имеют высокое разрешение с прозрачным фоном, идеально подходят для чат-приложений и социальных платформ. Копируйте или скачивайте одним кликом.',
+        title: 'उच्च गुणवत्ता',
+        description: 'हमारे AI द्वारा बनाए गए इमोजी उच्च प्रकाशन गुणवत्ता वाले हैं, जो चैट एप्लिकेशन और सोशल प्लेटफॉर्मों के लिए आदर्श हैं। एक क्लिक के साथ कॉपी या डाउनलोड करें।',
       },
       limitless: {
-        title: 'Безграничное творчество',
-        description: 'Ваше воображение - единственный предел. От милых животных до абстрактных концепций, ИИ может воплотить в эмодзи любую идею.',
+        title: 'अपरिमित क्रियवाद',
+        description: 'आपकी कल्पना ही सीमा है। बिल्लियों से अवचल अवधारणाओं तक, AI कोई भी विचार को इमोजी के रूप में जीवनी देने में सक्षम है।',
       },
     },
     howToUse: {
-      title: 'Как использовать',
+      title: 'कैसे उपयोग करें',
       step1: {
-        title: 'Введите описание',
-        description: 'Опишите желаемый эмодзи в поле ввода. Попробуйте "счастливый кот", "удивленная панда" или любую творческую идею. Больше деталей дает лучшие результаты.',
+        title: 'विवरण दर्ज करें',
+        description: 'इनपुट फ़ील्ड में आपको इमोजी चाहिए जो आप चाहते हैं। "खुश बिल्ली" या "आश्चर्यवाद पंडा" या कोई भी नवीन विचार को प्रयोग करें। अधिक विवरण अधिक बेहतर परिणाम देते हैं।',
       },
       step2: {
-        title: 'Создайте изображение',
-        description: 'Нажмите кнопку "Создать" и позвольте ИИ обработать ваше описание. Создание занимает всего несколько секунд, пожалуйста, наберитесь терпения.',
+        title: 'छवि बनाएं',
+        description: '"उत्पन्न" बटन पर क्लिक करें और AI को आपके विवरण को संसाधित करने दें। बनाने में केवल कुछ सेकंड लगते हैं, कृपया थोड़ी देर इंतजार करें।',
       },
       step3: {
-        title: 'Сохраните и поделитесь',
-        description: 'После создания вы можете скопировать эмодзи для немедленного использования в чат-приложениях или скачать, чтобы сохранить навсегда.',
+        title: 'सहेजें और साझा करें',
+        description: 'बनाने के बाद, आप इमोजी को कॉपी करके चैट एप्लिकेशन में तुरंत उपयोग कर सकते हैं या इसे स्थायी रूप में डाउनलोड कर सकते हैं।',
       },
     },
     examples: {
-      title: 'Попробуйте эти примеры'
+      title: 'इन उदाहरणों को आज़माएं'
     },
     faq: {
-      title: 'Часто задаваемые вопросы',
-      question1: 'Что такое AI Emoji Generator?',
-      answer1: 'AI Emoji Generator - это высокотехнологичное средство, использующее искусственный интеллект для создания пользовательских эмодзи на основе текстовых описаний. AI Emoji Generator превращает ваши идеи в уникальные, высококачественные эмодзи-изображения, которые вы можете использовать на различных цифровых платформах.',
+      title: 'अक्सर पूछे जाने वाले प्रश्न',
+      question1: 'AI इमोजी जनरेटर क्या है?',
+      answer1: 'AI इमोजी जनरेटर एक उन्नत टूल है जो टेक्स्ट विवरणों पर आधारित कस्टम इमोजी बनाने के लिए AI का उपयोग करता है। AI इमोजी जनरेटर आपकी विचारों को एकीकृत उच्च गुणवत्ता वाली इमोजी छवियों में बदल देता है।',
       
-      question2: 'Как работает AI Emoji Generator?',
-      answer2: 'AI Emoji Generator использует сложные алгоритмы машинного обучения, обученные на миллионах изображений. Когда вы вводите текстовое описание, AI анализирует ваш ввод и генерирует персонализированный эмодзи, который соответствует вашему описанию. Технология комбинирует обработку естественного языка с возможностями генерации изображений для создания уникальных визуальных представлений ваших идей.',
+      question2: 'AI इमोजी जनरेटर कैसे काम करता है?',
+      answer2: 'AI इमोजी जनरेटर एक संख्या में ट्रेनिंग किए गए उन्नत मशीन लर्निंग एल्गोरिथ्म का उपयोग करता है। जब आप टेक्स्ट विवरण दर्ज करते हैं, तो AI आपके इनपुट को विश्लेषण करता है और आपके विवरण के आधार पर कस्टम इमोजी बनाता है। तकनीक विश्लेषण और छवि उत्पन्न करने की क्षमता को संयोजित करती है, जो आपके विचारों के अनुरूप विश्लेषण और उत्पन्न करने की अनुमति देती है।',
       
-      question3: 'Эмодзи, созданные генератором, доступны бесплатно для использования?',
-      answer3: 'Да! Все эмодзи, созданные с помощью AI Emoji Generator, доступны бесплатно для личного использования. Вы можете использовать их в сообщениях, публикациях в социальных сетях и личных проектах без ограничений. Для коммерческого использования в маркетинговых материалах, контенте с брендом или для продажи продуктов, пожалуйста, обратитесь к нашим условиям использования.',
+      question3: 'उत्पन्न इमोजी मुफ्त में उपयोग कर सकते हैं?',
+      answer3: 'हाँ! AI इमोजी जनरेटर द्वारा बनाए गए इमोजी आपके व्यक्तिगत उपयोग के लिए मुफ्त हैं। आप उन्हें संदेशों, सोशल मीडिया पोस्टों और व्यक्तिगत प्रोजेक्टों में उपयोग कर सकते हैं। विपणन सामग्री, ब्रांड कंटेंट, या विक्रय की वस्तुओं के लिए, कृपया अपने सेवा की शर्तों को देखें।',
       
-      question4: 'Могу ли я настроить стиль моих эмодзи?',
-      answer4: 'Конечно! AI Emoji Generator предлагает различные варианты настройки. Вы можете указать стиль (карикатура, пиксельная графика, акварель и т.д.), цвет фона и другие атрибуты в описании. Чтобы получить лучшие результаты, будьте конкретны в своем запросе.',
+      question4: 'क्या मैं अपनी इमोजी का स्टाइल कस्टमाइज़ कर सकता हूं?',
+      answer4: 'निश्चित है! AI इमोजी जनरेटर विभिन्न कस्टमाइज़ विकल्प प्रदान करता है। आप विवरण में आर्ट स्टाइल (कार्टून, पिक्सेल आर्ट, एक्यूआरल, आदि) और अन्य विशेषताओं को भी विवरण में दर्ज कर सकते हैं। अधिकतम परिणामों को प्राप्त करने के लिए, आपको अपने प्रोम्प्ट में स्पष्ट रूप से स्टाइल दर्ज करना होगा।',
       
-      question5: 'Какие форматы файлов доступны для загрузки?',
-      answer5: 'Созданные эмодзи можно загрузить в формате PNG с прозрачным фоном, что делает их идеальными для использования на различных платформах и приложениях. Прозрачный фон гарантирует, что эмодзи будут идеально интегрироваться с любой чат-интерфейсом или документом.',
+      question5: 'क्या मैं डाउनलोड करने के लिए उपलब्ध फ़ाइल प्रारूप हूं?',
+      answer5: 'हाँ! हमारे AI इमोजी जनरेटर द्वारा बनाए गए इमोजी को डाउनलोड करने के लिए उपलब्ध हैं। आप उन्हें चैट इंटरफ़ेस या डॉक्यूमेंट में पूर्ण रूप से इंटीग्रेट कर सकते हैं।',
       
-      question6: 'Есть ли ограничение на количество эмодзи, которые я могу создать?',
-      answer6: 'В настоящее время мы предлагаем хорошее количество бесплатных генераций в день. Это ограничение помогает нам поддерживать качество сервиса и доступность для всех пользователей. Если вам нужно создать больше эмодзи, вы можете вернуться на следующий день, когда ваш счетчик генерации сбросится.'
+      question6: 'क्या मैं इमोजी उत्पन्न करने के लिए सीमा है?',
+      answer6: 'वर्तमान में, हम आपको बहुत बड़ी संख्या में मुफ्त उत्पन्न प्रदान करते हैं। यह सीमा हमारे सेवा गुणवत्ता और सभी उपयोगकर्ताओं के लिए उपलब्धता को बनाए रखने में मदद करती है। यदि आपको अधिक इमोजी उत्पन्न करने की आवश्यकता है, तो आप अगले दिन जब आपका उत्पन्न गणना रीसेट हो जाएगी तो वहाँ वापस जाएं।'
     },
     explanatoryText: {
-      title: 'Освободите свою креативность с помощью AI-powered Emoji Generation',
-      paragraph1: 'AI Emoji Generator представляет собой революционный подход к цифровому выражению, объединяя передовую искусственную интеллект с удобной интерфейсом. Наша передовая технология AI анализирует текстовые описания и превращает их в яркие, выразительные эмодзи-изображения, которые совершенно передают ваши идеи и эмоции.',
+      title: 'AI द्वारा उत्पन्न इमोजी उत्पादन में क्रियवाद छोड़ना',
+      paragraph1: 'AI इमोजी जनरेटर डिजिटल अभिव्यक्ति के लिए एक क्रांतिकारी दृष्टिकोण है, जो उन्नत AI को उपयोगकर्ता के अनुकूल इंटरफेस के साथ जोड़ता है। हमारी उन्नत AI तकनीक टेक्स्ट विवरणों का विश्लेषण करती है और उन्हें जीवंत, अभिव्यक्तिपूर्ण इमोजी छवियों में बदल देती है, जो आपके विचारों और भावनाओं को पूरी तरह से व्यक्त करती हैं।',
       
-      paragraph2: 'В отличие от традиционных эмодзи-библиотек, предоставляющих ограниченные варианты, наш AI Emoji Generator предоставляет безграничные творческие возможности. Независимо от того, нужен ли вам счастливый кот в солнцезащитных очках, пицца, танцующая с красочными топпингами, или любой другой воображаемый концепт, AI может его превратить в высококачественный эмодзи с прозрачным фоном.',
+      paragraph2: 'परंपरागत इमोजी लाइब्रेरी के विपरीत, जो सीमित विकल्प प्रदान करती हैं, हमारा AI इमोजी जनरेटर असीमित रचनात्मक संभावनाएं प्रदान करता है। चाहे आपको धूप के चश्मे वाली खुश बिल्ली, रंगीन टॉपिंग के साथ नाचती हुई पिज्जा, या कोई अन्य कल्पनाशील अवधारणा चाहिए, AI इसे पारदर्शी पृष्ठभूमि के साथ उच्च गुणवत्ता वाले इमोजी में बदल सकता है।',
       
-      paragraph3: 'Технология, стоящая за нашим AI Emoji Generator, использует сложные модели глубокого обучения, обученные на разнообразных визуальных наборах данных. Эти модели понимают отношения между словами и изображениями, позволяя нам интерпретировать описания и генерировать соответствующие визуальные элементы. AI непрерывно улучшается за счет машинного обучения, создавая новые и более креативные изображения.',
+      paragraph3: 'हमारे AI इमोजी जनरेटर के पीछे की तकनीक विविध दृश्य डेटासेट पर प्रशिक्षित जटिल डीप लर्निंग मॉडल का उपयोग करती है। ये मॉडल शब्दों और छवियों के बीच संबंधों को समझते हैं, जिससे हमें विवरणों की व्याख्या करने और उपयुक्त दृश्य तत्वों को उत्पन्न करने की अनुमति मिलती है। AI मशीन लर्निंग के माध्यम से निरंतर सुधार करती है, नई और अधिक रचनात्मक छवियां बनाती है।',
       
-      paragraph4: 'Эмодзи, созданные с помощью нашего генератора, улучшают цифровую коммуникацию, добавляя персональность и контекст в ваши сообщения. Они помогают передавать эмоции более эффективно, чем просто текст, и могут сделать ваши разговоры более интересными и запоминающимися. От простых чатов до профессиональных коммуникаций, персонализированные эмодзи добавляют уникальную отметку.',
+      paragraph4: 'हमारे जनरेटर द्वारा बनाए गए इमोजी आपके संदेशों में व्यक्तित्व और संदर्भ जोड़कर डिजिटल संचार को बढ़ाते हैं। वे केवल पाठ की तुलना में अधिक प्रभावी ढंग से भावनाओं को संप्रेषित करने में मदद करते हैं, और आपकी बातचीत को अधिक जीवंत और यादगार बना सकते हैं। व्यक्तिगत चैट से लेकर पेशेवर संचार तक, अनुकूलित इमोजी एक अनूठा स्पर्श जोड़ते हैं।',
       
-      paragraph5: 'AI Emoji Generator спроектирован так, чтобы он был доступен всем, независимо от опыта дизайна или технических знаний. Интуитивный интерфейс делает легким описание вашей идеи эмодзи, создание изображения и его использование для немедленного использования или копирования.',
+      paragraph5: 'हमारा AI इमोजी जनरेटर डिजाइन अनुभव या तकनीकी ज्ञान की परवाह किए बिना सभी के लिए सुलभ होने के लिए डिज़ाइन किया गया है। सहज इंटरफ़ेस आपके इमोजी विचार का वर्णन करना, छवि उत्पन्न करना और तत्काल उपयोग के लिए इसे कॉपी या डाउनलोड करना आसान बनाता है। रचनात्मक उपकरणों का यह लोकतंत्रीकरण उपयोगकर्ताओं को ऑनलाइन नए और रोमांचक तरीकों से खुद को व्यक्त करने के लिए सशक्त बनाता है।',
       
-      paragraph6: 'За пределами личного использования, AI Emoji Generator предлагает ценные приложения для создателей контента, маркетологов, педагогов и предприятий. Персонализированные эмодзи могут укрепить идентичность бренда, улучшить образовательные материалы или добавить визуальный интерес к цифровым контентам.',
+      paragraph6: 'व्यक्तिगत उपयोग से परे, AI इमोजी जनरेटर सामग्री निर्माताओं, विपणन पेशेवरों, शिक्षकों और व्यवसायों के लिए मूल्यवान अनुप्रयोग प्रदान करता है। अनुकूलित इमोजी ब्रांड पहचान को मजबूत कर सकते हैं, शैक्षिक सामग्री को बढ़ा सकते हैं, या डिजिटल सामग्री में दृश्य रुचि जोड़ सकते हैं। संभावनाएं अनंत हैं, जैसे आपकी कल्पना।',
       
-      paragraph7: 'Поскольку технология искусственного интеллекта продолжает развиваться, также будут развиваться возможности нашего AI Emoji Generator. Мы обязуемся включать последние достижения в области исследования искусственного интеллекта, чтобы предоставить вам еще более мощные и многофункциональные инструменты создания эмодзи. Присоединяйтесь к нам на этом захватывающем путешествии на пересечении искусственного интеллекта и творческого выражения.'
+      paragraph7: 'जैसे-जैसे AI प्रौद्योगिकी विकसित होती है, हमारे AI इमोजी जनरेटर की क्षमताएं भी विकसित होंगी। हम आपको और अधिक शक्तिशाली और बहुमुखी इमोजी निर्माण उपकरण प्रदान करने के लिए AI अनुसंधान में नवीनतम प्रगति को शामिल करने के लिए प्रतिबद्ध हैं। AI और रचनात्मक अभिव्यक्ति के इस रोमांचक चौराहे पर हमारे साथ जुड़ें।'
     }
   },
   About: {
@@ -1166,17 +1471,35 @@ const ruMessages = {
       author: 'Команда Emoji'
     },
     backToBlog: 'Вернуться к блогу',
-    post0Title: 'AI表情生成器入门指南',
-    post0Excerpt: '学习如何在不到一分钟的时间内创建您的第一个AI生成的表情符号...',
-    post0Date: '2023年10月15日',
+    post0Title: 'Начало работы с генератором эмодзи на базе ИИ',
+    post0Excerpt: 'Узнайте, как создать свой первый эмодзи с помощью ИИ менее чем за минуту...',
+    post0Date: '15 октября 2023',
     
-    post1Title: '值得一试的10个创意表情想法',
-    post1Excerpt: '寻找灵感？这里有十个我们用户喜爱的创意表情概念...',
-    post1Date: '2023年10月3日',
+    post1Title: 'Топ-10 креативных идей для эмодзи',
+    post1Excerpt: 'Ищете вдохновение? Вот десять креативных концепций эмодзи, которые нравятся нашим пользователям...',
+    post1Date: '3 октября 2023',
     
-    post2Title: 'AI在创意设计中的未来',
-    post2Excerpt: '人工智能如何改变数字创意领域，以及这对设计师意味着什么...',
-    post2Date: '2023年9月28日'
+    post2Title: 'Будущее ИИ в креативном дизайне',
+    post2Excerpt: 'Как искусственный интеллект меняет сферу цифрового творчества и что это значит для дизайнеров...',
+    post2Date: '28 сентября 2023'
+  },
+  EmojiTools: {
+    title: 'Эмодзи',
+    subtitle: 'Инструменты',
+    description: 'Откройте для себя нашу коллекцию инструментов эмодзи с искусственным интеллектом для создания, настройки и развлечения с эмодзи.',
+    tryButton: 'Попробовать Сейчас'
+  },
+  TextToEmoji: {
+    title: 'Эмоджи генератор',
+    subtitle: 'Введите текст, и получите эмоджи. Без текста, только чистая эмоджи-выражение.',
+    inputPlaceholder: 'Введите ваш текст здесь...',
+    sendButton: 'Генерировать'
+  },
+  EmojiChat: {
+    title: 'Эмоджи чат',
+    subtitle: 'Задайте любой вопрос и получите ответы только с помощью эмодзи. Без текста, только чистая эмоджи-выражение.',
+    inputPlaceholder: 'Введите ваш вопрос здесь...',
+    sendButton: 'Отправить'
   }
 };
 
@@ -1186,21 +1509,10 @@ const messages = {
   zh: zhMessages,
   es: esMessages,
   fr: frMessages,
+  ar: arMessages,
   ja: jaMessages,
   de: deMessages,
-  ru: ruMessages,
-  // 其他语言暂时使用英文
-  pt: enMessages,
-  ar: enMessages,
-  hi: enMessages,
-  ko: enMessages,
-  it: enMessages,
-  nl: enMessages,
-  tr: enMessages,
-  pl: enMessages,
-  sv: enMessages,
-  he: enMessages,
-  id: enMessages,
+  hi: hiMessages
 };
 
 // 获取翻译消息 - 根据语言代码返回相应翻译

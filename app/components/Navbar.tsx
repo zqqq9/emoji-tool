@@ -149,6 +149,9 @@ export default function Navbar() {
           <NavLink href={`/${currentLocale}`} $active={isActive('')}>
             {t('home')}
           </NavLink>
+          <NavLink href={`/${currentLocale}/emojitools`} $active={isActive('emojitools')}>
+            {t('emojitools')}
+          </NavLink>
           <NavLink href={`/${currentLocale}/blog`} $active={isActive('blog')}>
             {t('blog')}
           </NavLink>
