@@ -1,16 +1,13 @@
 import {getRequestConfig} from 'next-intl/server';
-import {getMessages} from '../app/i18n';
+import {getMessages, locales} from '../app/i18n';
 
-// 设置支持的语言
-const locales = ['en'];
-
-export default getRequestConfig(async () => {
-  // 获取消息，只有英语
-  const messages = await getMessages();
+export default getRequestConfig(async ({locale}) => {
+  // 获取消息
+  const messages = await getMessages(locale);
   
   return {
-    locale: 'en',
-    messages: messages,
+    locale,
+    messages,
     timeZone: 'Asia/Shanghai'
   };
 });

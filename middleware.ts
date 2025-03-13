@@ -8,8 +8,12 @@ function redirectMiddleware(request: NextRequest) {
   const hostname = request.headers.get('host') || '';
   
   // 检查是否需要重定向
-  if (hostname === 'www.emoji-gen.com' || hostname === 'emoji-gen.com' && !request.nextUrl.protocol.includes('https')) {
-    // 构建新的 URL
+  if (hostname === 'www.emoji-gen.com') {
+    // 只将 www 子域名重定向到主域名
+    const newUrl = new URL(url.pathname + url.search, 'https://emoji-gen.com');
+    return NextResponse.redirect(newUrl);
+  } else if (hostname === 'emoji-gen.com' && !request.nextUrl.protocol.includes('https')) {
+    // 将 HTTP 重定向到 HTTPS
     const newUrl = new URL(url.pathname + url.search, 'https://emoji-gen.com');
     return NextResponse.redirect(newUrl);
   }
