@@ -37,6 +37,7 @@ export default function RootLayout({
       <head>
         <link rel="preload" href="/styles.css" as="style" />
         <link rel="stylesheet" href="/styles.css" />
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4053948353567712" crossOrigin="anonymous"></script>
         <style dangerouslySetInnerHTML={{ 
           __html: `
             :root {
