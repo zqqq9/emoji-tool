@@ -1,6 +1,7 @@
 import './globals.css';
 import StyledComponentsRegistry from './registry';
 import { Metadata } from 'next';
+import { Analytics } from "@vercel/analytics/next"
 
 export const metadata: Metadata = {
   title: 'AI Emoji Generator',
@@ -76,6 +77,7 @@ export default function RootLayout({
         <StyledComponentsRegistry>
           {children}
         </StyledComponentsRegistry>
+        <Analytics />
       </body>
     </html>
   );
