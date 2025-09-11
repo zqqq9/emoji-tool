@@ -2,6 +2,7 @@
 'use client';
 
 import { useState, forwardRef, useImperativeHandle } from 'react';
+import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import styled from 'styled-components';
 
@@ -298,6 +299,44 @@ const ActionButton = styled.button`
   }
 `;
 
+const RecommendSection = styled.div`
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+`;
+
+const RecommendTitle = styled.p`
+  color: #666;
+  font-size: 0.95rem;
+`;
+
+const RecommendButtons = styled.div`
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
+
+const RecommendLink = styled.a`
+  padding: 0.7rem 1.1rem;
+  border-radius: 999px;
+  background: rgba(110, 142, 251, 0.08);
+  color: #4a5bd4;
+  border: 1px solid rgba(110, 142, 251, 0.25);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    background: rgba(110, 142, 251, 0.12);
+    box-shadow: 0 6px 16px rgba(110, 142, 251, 0.2);
+  }
+`;
+
 const ErrorMessage = styled.div`
   margin-top: 1rem;
   padding: 1rem 1.2rem;
@@ -421,6 +460,8 @@ type ArtStyleType = 'cartoon' | 'pixel' | 'watercolor' | 'sketch' | 'threeD' | '
 const EmojiGenerator = forwardRef<EmojiGeneratorRef>((props, ref) => {
   // 使用英语翻译
   const t = useTranslations('EmojiGenerator');
+  const params = useParams();
+  const locale = (params?.locale as string) || 'en';
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
@@ -681,6 +722,37 @@ const EmojiGenerator = forwardRef<EmojiGeneratorRef>((props, ref) => {
               </ActionButton>
             </ActionButtons>
           )}
+
+          {generatedImage && (() => {
+            let recommendTitle = 'Looking for more? Try these 👇';
+            let linkTextToEmoji = 'Text to Emoji';
+            let linkEmojiChat = 'Emoji Chat';
+            let linkImageMerge = 'Image Merge';
+            try {
+              recommendTitle = t('recommend.title');
+              linkTextToEmoji = t('recommend.textToEmoji');
+              linkEmojiChat = t('recommend.emojiChat');
+              linkImageMerge = t('recommend.imageMerge');
+            } catch (e) {
+              const isZh = typeof navigator !== 'undefined' ? /zh/i.test(navigator.language) || /zh/i.test(locale) : /zh/i.test(locale);
+              if (isZh) {
+                recommendTitle = '想玩点不一样的？试试这些 👇';
+                linkTextToEmoji = '文本转Emoji';
+                linkEmojiChat = '表情聊天';
+                linkImageMerge = '两图合成表情';
+              }
+            }
+            return (
+              <RecommendSection>
+                <RecommendTitle>{recommendTitle}</RecommendTitle>
+                <RecommendButtons>
+                  <RecommendLink href={`/${locale}/emojitools/text-to-emoji`}>{linkTextToEmoji}</RecommendLink>
+                  <RecommendLink href={`/${locale}/emojitools/emoji-chat`}>{linkEmojiChat}</RecommendLink>
+                  <RecommendLink href={`/${locale}/emojitools/image-merge`}>{linkImageMerge}</RecommendLink>
+                </RecommendButtons>
+              </RecommendSection>
+            );
+          })()}
         </ResultSection>
       )}
     </Container>

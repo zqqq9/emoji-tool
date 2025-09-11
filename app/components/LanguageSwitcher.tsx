@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import styled from 'styled-components';
-import { locales } from '../i18n';
+import { locales, supportedLocales } from '../i18n';
 
 // 样式组件
 const SwitcherContainer = styled.div`
@@ -200,7 +200,7 @@ export default function LanguageSwitcher() {
         {/* 主要语言组 */}
         <LanguageGroup>
           <GroupTitle>Languages</GroupTitle>
-          {Object.keys(languageMap).map(langCode => (
+          {supportedLocales.map(langCode => (
             <LanguageOption
               key={langCode}
               $isActive={langCode === locale}

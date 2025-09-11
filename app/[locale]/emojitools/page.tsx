@@ -154,6 +154,13 @@ const emojiTools = [
     description: 'Ask any question and get answers using only emojis. AI responds with emoji-only expressions.',
     imageUrl: '/images/emoji-chat-image.png',
     link: '/emojitools/emoji-chat'
+  },
+  {
+    id: 'image-merge',
+    title: 'Image Merge',
+    description: 'Upload two images and merge them into a new emoji-style image.',
+    imageUrl: '/images/emoji-generator.png',
+    link: '/emojitools/image-merge'
   }
 ];
 

@@ -1515,6 +1515,9 @@ const messages = {
   hi: hiMessages
 };
 
+// 实际可用（已提供翻译文案）的语言列表
+export const supportedLocales = Object.keys(messages);
+
 // 获取翻译消息 - 根据语言代码返回相应翻译
 export async function getMessages(locale = 'en') {
   // 如果请求的语言不在支持列表中，则使用英语

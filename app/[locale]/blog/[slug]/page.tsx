@@ -185,7 +185,12 @@ export default function BlogPostPage() {
   const locale = params.locale as string;
   
   // 获取博客文章数据
-  const post = blogPosts[slug];
+  const postRaw = blogPosts[slug];
+  const post = postRaw ? {
+    ...postRaw,
+    title: (locale === 'zh' && postRaw.title_zh) ? postRaw.title_zh : postRaw.title,
+    content: (locale === 'zh' && postRaw.content_zh) ? postRaw.content_zh : postRaw.content,
+  } : undefined;
   
   if (!post) {
     return (

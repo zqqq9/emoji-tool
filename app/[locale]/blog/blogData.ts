@@ -6,6 +6,9 @@ export interface BlogPost {
   readTime: string;
   image: string;
   content: string;
+  // Optional localized fields
+  title_zh?: string;
+  content_zh?: string;
 }
 
 export interface BlogPosts {
@@ -14,6 +17,74 @@ export interface BlogPosts {
 
 // Export the blogPosts object
 export const blogPosts: BlogPosts = {
+  'image-merge-two-images-into-one-emoji': {
+    title: 'Image Merge: Turn Two Images into One Emoji-Style Creation',
+    title_zh: 'Image Merge：两图合成表情，一键生成全新玩法',
+    date: 'September 11, 2025',
+    author: 'AI Emoji Team',
+    readTime: '5 min read',
+    image: 'https://images.unsplash.com/photo-1555685812-4b943f1cb0eb?q=80&w=1200&auto=format&fit=crop',
+    content: `
+      <p><strong>Image Merge</strong> is our latest creative tool that lets you <strong>merge two images into a brand-new emoji-style image</strong>. Whether it's a selfie + pet, logo + icon, or product + mascot, the <strong>two-image merge</strong> feature unlocks fresh possibilities for personal and brand expression.</p>
+      
+      <h2>Why Image Merge?</h2>
+      <p>Traditional emojis are limited. With <strong>Image Merge</strong>, you can blend elements from <strong>two images</strong> and generate a unique, expressive <strong>emoji-style</strong> output that stands out in chats, posts, and marketing materials.</p>
+      
+      <h2>Key Benefits</h2>
+      <ul>
+        <li><strong>Creative Fusion:</strong> Combine faces, objects, and styles into one cohesive emoji-like result.</li>
+        <li><strong>Brand Personalization:</strong> Mix your <strong>logo</strong> with thematic elements for campaign-specific stickers.</li>
+        <li><strong>Effortless Workflow:</strong> Just upload <strong>two images</strong> and click merge—no design skills required.</li>
+      </ul>
+      
+      <h2>How It Works</h2>
+      <ol>
+        <li>Upload <strong>Image A</strong> and <strong>Image B</strong>.</li>
+        <li>Click <strong>Merge</strong> to generate a <strong>new emoji-style image</strong>.</li>
+        <li>Download or share instantly. Try different pairs for surprising results.</li>
+      </ol>
+      
+      <h2>Pro Tips</h2>
+      <ul>
+        <li>Use clean, high-contrast images for better <strong>emoji merge</strong> quality.</li>
+        <li>Faces and strong silhouettes work great for expressive outputs.</li>
+        <li>Match color tones between A/B to achieve a more natural blend.</li>
+      </ul>
+      
+      <h2>Try More Emoji Tools</h2>
+      <p>Love <strong>Image Merge</strong>? Explore <strong>Text to Emoji</strong> and <strong>Emoji Chat</strong> to level up your visual conversations.</p>
+    `,
+    content_zh: `
+      <p><strong>Image Merge（两图合成表情）</strong> 是我们最新上线的创意工具：<strong>上传两张图片</strong>，一键 <strong>合成为全新的表情风格图片</strong>。无论是自拍 + 宠物、品牌 <strong>logo</strong> + 图标，还是产品 + 吉祥物，<strong>两图合成</strong> 都能带来耳目一新的表达方式。</p>
+      
+      <h2>为什么选择 Image Merge？</h2>
+      <p>标准表情有限制。使用 <strong>Image Merge</strong>，你可以把 <strong>两张图片</strong> 的元素融合，生成独一无二、极具表现力的 <strong>表情风格</strong> 作品，在聊天、社媒、营销物料中更显眼。</p>
+      
+      <h2>核心优势</h2>
+      <ul>
+        <li><strong>创意融合：</strong>把人物、物体与风格合为一体，形成统一的 <strong>emoji</strong> 效果。</li>
+        <li><strong>品牌定制：</strong>将 <strong>logo</strong> 与主题元素合成，快速产出活动贴纸与IP素材。</li>
+        <li><strong>零门槛操作：</strong>仅需上传 <strong>两张图</strong> 并点击合成，无需设计基础。</li>
+      </ul>
+      
+      <h2>使用步骤</h2>
+      <ol>
+        <li>上传 <strong>图片A</strong> 与 <strong>图片B</strong>。</li>
+        <li>点击 <strong>合成</strong>，生成 <strong>全新表情风格图片</strong>。</li>
+        <li>即可下载或分享。多尝试不同组合，常有惊喜。</li>
+      </ol>
+      
+      <h2>进阶技巧</h2>
+      <ul>
+        <li>选用干净、对比度高的素材，提升 <strong>两图合成</strong> 效果。</li>
+        <li>人脸与轮廓清晰的图像更利于表达情绪。</li>
+        <li>适当统一A/B色调，让融合更自然。</li>
+      </ul>
+      
+      <h2>延伸玩法</h2>
+      <p>喜欢 <strong>Image Merge</strong>？不妨试试 <strong>文本转Emoji</strong> 与 <strong>表情聊天</strong>，解锁更多表情玩法。</p>
+    `,
+  },
   'emoji-chat-communicate-with-pure-emoji-expressions': {
     title: 'Emoji Chat: Communicate with Pure Emoji Expressions',
     date: 'June 2, 2024',

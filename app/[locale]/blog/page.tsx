@@ -261,7 +261,14 @@ export default function BlogPage() {
   const locale = params.locale as string;
   
   // Get all blog posts except the featured one
-  const otherBlogPosts = Object.entries(blogPosts).filter(([slug]) => slug !== featuredBlogPost.slug);
+  const otherBlogPosts = Object.entries(blogPosts)
+    .filter(([slug]) => slug !== featuredBlogPost.slug)
+    .map(([slug, post]) => {
+      return [slug, {
+        ...post,
+        title: (locale === 'zh' && post.title_zh) ? post.title_zh : post.title
+      } as typeof post];
+    });
   
   return (
     <Container>
