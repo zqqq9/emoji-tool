@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { blogPosts } from './blogData';
+import type { BlogPost } from './blogData';
 
 const Container = styled.main`
   min-height: calc(100vh - 70px);
@@ -261,13 +262,14 @@ export default function BlogPage() {
   const locale = params.locale as string;
   
   // Get all blog posts except the featured one
-  const otherBlogPosts = Object.entries(blogPosts)
+  const otherBlogPosts: Array<[string, BlogPost]> = Object.entries(blogPosts)
     .filter(([slug]) => slug !== featuredBlogPost.slug)
     .map(([slug, post]) => {
-      return [slug, {
+      const localized: BlogPost = {
         ...post,
         title: (locale === 'zh' && post.title_zh) ? post.title_zh : post.title
-      } as typeof post];
+      };
+      return [slug, localized];
     });
   
   return (
