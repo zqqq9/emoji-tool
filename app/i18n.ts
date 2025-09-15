@@ -53,6 +53,12 @@ const enMessages = {
     threeDStyle: '3D',
     realisticStyle: 'Realistic',
     customizeTitle: 'Customize Your Emoji',
+    recommend: {
+      title: 'Looking for more? Try these 👇',
+      textToEmoji: 'Text to Emoji',
+      emojiChat: 'Emoji Chat',
+      imageMerge: 'Image Merge'
+    }
   },
   Home: {
     title: 'AI Emoji Generator',
@@ -189,6 +195,22 @@ const enMessages = {
     subtitle: 'Ask any question and get answers using only emojis. AI responds with emoji-only expressions.',
     inputPlaceholder: 'Type your question here...',
     sendButton: 'Send'
+  },
+  ImageToVideo: {
+    title: 'Image to Video',
+    subtitle: 'Upload a portrait or animal image to animate it and output a short video.',
+    uploadHint: 'Click or drag to upload an image (PNG/JPG)',
+    animateButton: 'Generate Video',
+    resetButton: 'Reset',
+    loading: 'Generating video...'
+  },
+  ImageMerge: {
+    title: 'Image Merge to Emoji',
+    subtitle: 'Upload two images, preview and merge to generate a new emoji-style image.',
+    uploadHintLeft: 'Click or drag to upload Image A (PNG/JPG)',
+    uploadHintRight: 'Click or drag to upload Image B (PNG/JPG)',
+    mergeButton: 'Merge',
+    resetButton: 'Reset'
   }
 };
 
@@ -240,6 +262,12 @@ const zhMessages = {
     threeDStyle: '3D',
     realisticStyle: '写实',
     customizeTitle: '自定义你的表情',
+    recommend: {
+      title: '想玩点不一样的？试试这些 👇',
+      textToEmoji: '文本转Emoji',
+      emojiChat: '表情聊天',
+      imageMerge: '两图合成表情'
+    }
   },
   Home: {
     title: 'AI表情生成器',
@@ -376,6 +404,22 @@ const zhMessages = {
     subtitle: '表情符号提问，AI用表情符号回答。没有文字，只有纯粹的表情符号表达。',
     inputPlaceholder: '在这里输入你的问题...',
     sendButton: '发送'
+  },
+  ImageToVideo: {
+    title: '图片转视频',
+    subtitle: '上传人物或动物图片，让它动起来并输出短视频。',
+    uploadHint: '点击或拖拽上传图片 (PNG/JPG)',
+    animateButton: '开始生成视频',
+    resetButton: '重置',
+    loading: '视频生成中…'
+  },
+  ImageMerge: {
+    title: '两图合成表情',
+    subtitle: '上传两张图片，预览后点击合成，生成一个新的表情风格图。',
+    uploadHintLeft: '点击或拖拽上传图片 A (PNG/JPG)',
+    uploadHintRight: '点击或拖拽上传图片 B (PNG/JPG)',
+    mergeButton: '合成表情',
+    resetButton: '重置'
   }
 };
 
@@ -563,6 +607,13 @@ const esMessages = {
     subtitle: 'Pregunta cualquier cosa y obtén respuestas solo con emojis. AI responde con expresiones puras de emoji.',
     inputPlaceholder: 'Escribe tu pregunta aquí...',
     sendButton: 'Enviar'
+  },
+  ImageToVideo: {
+    title: 'Image to Video',
+    subtitle: 'Upload a portrait or animal image to animate it and output a short video.',
+    uploadHint: 'Click or drag to upload an image (PNG/JPG)',
+    animateButton: 'Generate Video',
+    resetButton: 'Reset',
   }
 };
 
@@ -750,6 +801,13 @@ const frMessages = {
     subtitle: 'Preguntez n\'importe quoi et obtenez des réponses uniquement avec des emojis. AI répond avec des expressions purement emoji.',
     inputPlaceholder: 'Écrivez votre question ici...',
     sendButton: 'Envoyer'
+  },
+  ImageToVideo: {
+    title: 'Image to Video',
+    subtitle: 'Upload a portrait or animal image to animate it and output a short video.',
+    uploadHint: 'Click or drag to upload an image (PNG/JPG)',
+    animateButton: 'Generate Video',
+    resetButton: 'Reset',
   }
 };
 
@@ -938,6 +996,13 @@ const arMessages = {
     subtitle: '表情符号提问，AI用表情符号回答。没有文字，只有纯粹的表情符号表达。',
     inputPlaceholder: '在这里输入你的问题...',
     sendButton: '发送'
+  },
+  ImageToVideo: {
+    title: '图片转视频',
+    subtitle: '上传人物或动物图片，让它动起来并输出短视频。',
+    uploadHint: '点击或拖拽上传图片 (PNG/JPG)',
+    animateButton: '开始生成视频',
+    resetButton: '重置',
   }
 };
 
@@ -1125,6 +1190,13 @@ const jaMessages = {
     subtitle: '表情符号で質問し、AIが表情符号で回答します。テキスト不要、純粋な表情表現のみ。',
     inputPlaceholder: 'ここに質問を入力してください...',
     sendButton: '送信'
+  },
+  ImageToVideo: {
+    title: 'Image to Video',
+    subtitle: 'Upload a portrait or animal image to animate it and output a short video.',
+    uploadHint: 'Click or drag to upload an image (PNG/JPG)',
+    animateButton: 'Generate Video',
+    resetButton: 'Reset',
   }
 };
 
@@ -1312,6 +1384,13 @@ const deMessages = {
     subtitle: 'Stellen Sie jede Frage und erhalten Sie Antworten nur mit Emojis. Kein Text, nur purem Emoji-Ausdruck.',
     inputPlaceholder: 'Geben Sie hier Ihre Frage ein...',
     sendButton: 'Senden'
+  },
+  ImageToVideo: {
+    title: 'Image to Video',
+    subtitle: 'Upload a portrait or animal image to animate it and output a short video.',
+    uploadHint: 'Click or drag to upload an image (PNG/JPG)',
+    animateButton: 'Generate Video',
+    resetButton: 'Reset',
   }
 };
 
@@ -1500,6 +1579,13 @@ const hiMessages = {
     subtitle: 'Задайте любой вопрос и получите ответы только с помощью эмодзи. Без текста, только чистая эмоджи-выражение.',
     inputPlaceholder: 'Введите ваш вопрос здесь...',
     sendButton: 'Отправить'
+  },
+  ImageToVideo: {
+    title: 'Image to Video',
+    subtitle: 'Upload a portrait or animal image to animate it and output a short video.',
+    uploadHint: 'Click or drag to upload an image (PNG/JPG)',
+    animateButton: 'Generate Video',
+    resetButton: 'Reset',
   }
 };
 

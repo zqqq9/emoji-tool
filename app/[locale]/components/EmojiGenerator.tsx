@@ -69,7 +69,7 @@ const StyleSelector = styled.div`
   flex-wrap: wrap;
 `;
 
-const StyleButton = styled.button<{ active: boolean }>`
+const StyleButton = styled.button<{ $active: boolean }>`
   padding: 0.5rem 1.2rem;
   border-radius: 2rem;
   border: none;
@@ -77,9 +77,9 @@ const StyleButton = styled.button<{ active: boolean }>`
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  background: ${props => props.active ? 'linear-gradient(90deg, #6e8efb, #a777e3)' : '#f5f7fa'};
-  color: ${props => props.active ? 'white' : '#333'};
-  box-shadow: ${props => props.active ? '0 4px 12px rgba(167, 119, 227, 0.3)' : 'none'};
+  background: ${props => props.$active ? 'linear-gradient(90deg, #6e8efb, #a777e3)' : '#f5f7fa'};
+  color: ${props => props.$active ? 'white' : '#333'};
+  box-shadow: ${props => props.$active ? '0 4px 12px rgba(167, 119, 227, 0.3)' : 'none'};
   
   &:hover {
     transform: translateY(-2px);
@@ -372,22 +372,22 @@ const OptionGrid = styled.div`
   }
 `;
 
-const ColorOption = styled.button<{ active: boolean; colorPreview: string }>`
+const ColorOption = styled.button<{ $active: boolean; $colorPreview: string }>`
   position: relative;
   height: 48px;
   border-radius: 8px;
-  border: 2px solid ${props => props.active ? '#6e8efb' : 'transparent'};
+  border: 2px solid ${props => props.$active ? '#6e8efb' : 'transparent'};
   cursor: pointer;
   overflow: hidden;
   transition: all 0.2s ease;
-  background: ${props => props.colorPreview};
+  background: ${props => props.$colorPreview};
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${props => props.colorPreview === '#FFFFFF' ? '#333' : props.colorPreview === '#000000' ? '#FFF' : '#FFF'};
+  color: ${props => props.$colorPreview === '#FFFFFF' ? '#333' : props.$colorPreview === '#000000' ? '#FFF' : '#FFF'};
   font-size: 0.8rem;
-  font-weight: ${props => props.active ? '600' : '400'};
-  box-shadow: ${props => props.active ? '0 4px 12px rgba(110, 142, 251, 0.2)' : '0 2px 4px rgba(0, 0, 0, 0.05)'};
+  font-weight: ${props => props.$active ? '600' : '400'};
+  box-shadow: ${props => props.$active ? '0 4px 12px rgba(110, 142, 251, 0.2)' : '0 2px 4px rgba(0, 0, 0, 0.05)'};
   
   &:hover {
     transform: translateY(-2px);
@@ -395,11 +395,11 @@ const ColorOption = styled.button<{ active: boolean; colorPreview: string }>`
   }
 `;
 
-const StyleOption = styled.div<{ active: boolean }>`
+const StyleOption = styled.div<{ $active: boolean }>`
   padding: 0.75rem 0.5rem;
   border-radius: 8px;
-  border: 2px solid ${props => props.active ? '#6e8efb' : '#eaecef'};
-  background: ${props => props.active ? 'rgba(110, 142, 251, 0.05)' : 'white'};
+  border: 2px solid ${props => props.$active ? '#6e8efb' : '#eaecef'};
+  background: ${props => props.$active ? 'rgba(110, 142, 251, 0.05)' : 'white'};
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
@@ -440,10 +440,10 @@ const StyleIcon = styled.div<{ $styleName: string }>`
   background-position: center;
 `;
 
-const StyleText = styled.span<{ active: boolean }>`
+const StyleText = styled.span<{ $active: boolean }>`
   font-size: 0.8rem;
-  color: ${props => props.active ? '#6e8efb' : '#666'};
-  font-weight: ${props => props.active ? '600' : '400'};
+  color: ${props => props.$active ? '#6e8efb' : '#666'};
+  font-weight: ${props => props.$active ? '600' : '400'};
 `;
 
 // 导出接口定义，用于ref
@@ -598,19 +598,19 @@ const EmojiGenerator = forwardRef<EmojiGeneratorRef>((props, ref) => {
       
       <StyleSelector>
         <StyleButton 
-          active={style === 'emoji'} 
+          $active={style === 'emoji'} 
           onClick={() => setStyle('emoji')}
         >
           {t('categoryEmoji')}
         </StyleButton>
         <StyleButton 
-          active={style === 'sticker'} 
+          $active={style === 'sticker'} 
           onClick={() => setStyle('sticker')}
         >
           {t('categorySticker')}
         </StyleButton>
         <StyleButton 
-          active={style === 'icon'} 
+          $active={style === 'icon'} 
           onClick={() => setStyle('icon')}
         >
           {t('categoryIcon')}
@@ -627,8 +627,8 @@ const EmojiGenerator = forwardRef<EmojiGeneratorRef>((props, ref) => {
           {backgroundColors.map((color) => (
             <ColorOption
               key={color.id}
-              active={backgroundColor === color.id as BackgroundColorType}
-              colorPreview={color.preview}
+              $active={backgroundColor === color.id as BackgroundColorType}
+              $colorPreview={color.preview}
               onClick={() => setBackgroundColor(color.id as BackgroundColorType)}
             >
               {color.name}
@@ -642,11 +642,11 @@ const EmojiGenerator = forwardRef<EmojiGeneratorRef>((props, ref) => {
           {artStyles.map((style) => (
             <StyleOption
               key={style.id}
-              active={artStyle === style.id as ArtStyleType}
+              $active={artStyle === style.id as ArtStyleType}
               onClick={() => setArtStyle(style.id as ArtStyleType)}
             >
               <StyleIcon $styleName={style.id} />
-              <StyleText active={artStyle === style.id as ArtStyleType}>
+              <StyleText $active={artStyle === style.id as ArtStyleType}>
                 {style.name}
               </StyleText>
             </StyleOption>

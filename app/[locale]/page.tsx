@@ -8,9 +8,9 @@ import styled from 'styled-components';
 // 样式定义
 const Hero = styled.div`
   background: linear-gradient(135deg, #6e8efb, #a777e3);
-  padding: 4rem 2rem;
+  padding: 2rem 2rem;
   border-radius: 0 0 2rem 2rem;
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
   text-align: center;
   color: white;
   position: relative;
@@ -49,6 +49,33 @@ const HeroSubtitle = styled.p`
   max-width: 700px;
   margin: 0 auto 2rem auto;
   opacity: 0.9;
+`;
+
+const ToolsCTA = styled.div`
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
+
+const ToolBtn = styled.a`
+  display: inline-block;
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.18);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.35);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  backdrop-filter: blur(4px);
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    background: rgba(255,255,255,0.24);
+  }
 `;
 
 const FeatureSection = styled.section`
@@ -265,6 +292,17 @@ const ExplanatoryParagraph = styled.p`
 export default function Home() {
   const t = useTranslations('Home');
   const generatorRef = useRef<EmojiGeneratorRef>(null);
+  // labels (with fallbacks)
+  let labelGenerator = 'Emoji Generator';
+  let labelTextToEmoji = 'Text to Emoji';
+  let labelEmojiChat = 'Emoji Chat';
+  let labelImageMerge = 'Image Merge';
+  let labelImageToVideo = 'Image to Video';
+  try { labelGenerator = useTranslations('EmojiGenerator')('title'); } catch {}
+  try { labelTextToEmoji = useTranslations('TextToEmoji')('title'); } catch {}
+  try { labelEmojiChat = useTranslations('EmojiChat')('title'); } catch {}
+  try { labelImageMerge = useTranslations('ImageMerge')('title'); } catch {}
+  try { labelImageToVideo = useTranslations('ImageToVideo')('title'); } catch {}
   
   const examplePrompts = [
     'Happy cat ',
@@ -298,6 +336,13 @@ export default function Home() {
         <HeroContent>
           <HeroTitle>{t('title')}</HeroTitle>
           <HeroSubtitle>{t('subtitle')}</HeroSubtitle>
+          <ToolsCTA>
+            <ToolBtn href="#emoji-generator">{labelGenerator}</ToolBtn>
+            <ToolBtn href="/zh/emojitools/image-to-video">{labelImageToVideo}</ToolBtn>
+            <ToolBtn href="/zh/emojitools/text-to-emoji">{labelTextToEmoji}</ToolBtn>
+            <ToolBtn href="/zh/emojitools/emoji-chat">{labelEmojiChat}</ToolBtn>
+            <ToolBtn href="/zh/emojitools/image-merge">{labelImageMerge}</ToolBtn>
+          </ToolsCTA>
         </HeroContent>
       </Hero>
 

@@ -161,6 +161,13 @@ const emojiTools = [
     description: 'Upload two images and merge them into a new emoji-style image.',
     imageUrl: '/images/emoji-generator.png',
     link: '/emojitools/image-merge'
+  },
+  {
+    id: 'image-to-video',
+    title: 'Image to Video',
+    description: 'Upload one face (person/animal) and make it move into a short video.',
+    imageUrl: '/images/emoji-generator.png',
+    link: '/emojitools/image-to-video'
   }
 ];
 
