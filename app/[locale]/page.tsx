@@ -56,25 +56,37 @@ const ToolsCTA = styled.div`
   gap: 0.75rem;
   flex-wrap: wrap;
   justify-content: center;
+  margin-bottom: 0.75rem;
 `;
 
 const ToolBtn = styled.a`
   display: inline-block;
-  padding: 0.55rem 1rem;
+  padding: 0.7rem 1.15rem;
   border-radius: 999px;
-  background: rgba(255,255,255,0.18);
-  color: white;
-  border: 1px solid rgba(255,255,255,0.35);
-  font-weight: 600;
-  font-size: 0.95rem;
+  background: linear-gradient(90deg, #ffffff, #f0f0f0);
+  color: #432f8a;
+  border: none;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  font-size: 1rem;
   text-decoration: none;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-  backdrop-filter: blur(4px);
-  
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-    background: rgba(255,255,255,0.24);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.22);
+    filter: brightness(1.03);
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(0.99);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+  }
+
+  &:focus-visible {
+    outline: 3px solid rgba(255,255,255,0.6);
+    outline-offset: 2px;
   }
 `;
 
@@ -334,15 +346,20 @@ export default function Home() {
     <main className="min-h-screen bg-white dark:bg-gray-950">
       <Hero>
         <HeroContent>
-          <HeroTitle>{t('title')}</HeroTitle>
-          <HeroSubtitle>{t('subtitle')}</HeroSubtitle>
-          <ToolsCTA>
+        <ToolsCTA>
             <ToolBtn href="#emoji-generator">{labelGenerator}</ToolBtn>
             <ToolBtn href="/zh/emojitools/image-to-video">{labelImageToVideo}</ToolBtn>
             <ToolBtn href="/zh/emojitools/text-to-emoji">{labelTextToEmoji}</ToolBtn>
             <ToolBtn href="/zh/emojitools/emoji-chat">{labelEmojiChat}</ToolBtn>
             <ToolBtn href="/zh/emojitools/image-merge">{labelImageMerge}</ToolBtn>
           </ToolsCTA>
+          <HeroTitle>{t('title')}</HeroTitle>
+          <HeroSubtitle>{t('subtitle')}</HeroSubtitle>
+          {/* SEO: add H2 with key phrases (visually hidden for accessibility) */}
+          <h2 style={{position:'absolute',left:'-9999px',width:1,height:1,overflow:'hidden'}}>
+            AI Emoji Generator, Text to Emoji, Emoji Chat, Image Merge, Image to Video
+          </h2>
+          
         </HeroContent>
       </Hero>
 
