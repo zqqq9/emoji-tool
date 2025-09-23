@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+export const runtime = 'nodejs';
+
 const BIGMODEL_API = 'https://open.bigmodel.cn/api/paas/v4/videos/generations';
 // 为保持一致，参考 generate-emoji 的做法使用硬编码密钥（建议后续改用环境变量）
 const API_KEY = '2774c114890143a9b580d484948e1ff6.8IRSNE5mr6oHJefj';
