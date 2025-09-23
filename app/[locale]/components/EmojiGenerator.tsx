@@ -395,11 +395,11 @@ const ColorOption = styled.button<{ $active: boolean; $colorPreview: string }>`
   }
 `;
 
-const StyleOption = styled.div<{ $active: boolean }>`
-  padding: 0.75rem 0.5rem;
-  border-radius: 8px;
-  border: 2px solid ${props => props.$active ? '#6e8efb' : '#eaecef'};
-  background: ${props => props.$active ? 'rgba(110, 142, 251, 0.05)' : 'white'};
+const StyleOption = styled.div<{ $active: boolean; $bg: string }>`
+  padding: 0.9rem 0.75rem;
+  border-radius: 10px;
+  border: 2px solid ${props => props.$active ? 'transparent' : '#eaecef'};
+  background: ${props => props.$active ? props.$bg : '#fff'};
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
@@ -409,7 +409,7 @@ const StyleOption = styled.div<{ $active: boolean }>`
   
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
   }
 `;
 
@@ -441,9 +441,9 @@ const StyleIcon = styled.div<{ $styleName: string }>`
 `;
 
 const StyleText = styled.span<{ $active: boolean }>`
-  font-size: 0.8rem;
-  color: ${props => props.$active ? '#6e8efb' : '#666'};
-  font-weight: ${props => props.$active ? '600' : '400'};
+  font-size: 0.9rem;
+  color: ${props => props.$active ? '#fff' : '#666'};
+  font-weight: ${props => props.$active ? '700' : '500'};
 `;
 
 // 导出接口定义，用于ref
@@ -455,7 +455,7 @@ export interface EmojiGeneratorRef {
 type BackgroundColorType = 'transparent' | 'white' | 'black' | 'colorful' | 'gradient';
 
 // 定义艺术风格类型
-type ArtStyleType = 'cartoon' | 'pixel' | 'watercolor' | 'sketch' | 'threeD' | 'realistic';
+type ArtStyleType = 'cartoon' | 'pixel' | 'watercolor' | 'sketch' | 'threeD' | 'realistic' | 'labubu';
 
 const EmojiGenerator = forwardRef<EmojiGeneratorRef>((props, ref) => {
   // 使用英语翻译
@@ -496,6 +496,7 @@ const EmojiGenerator = forwardRef<EmojiGeneratorRef>((props, ref) => {
     { id: 'sketch', name: t('sketchStyle') },
     { id: 'threeD', name: t('threeDStyle') },
     { id: 'realistic', name: t('realisticStyle') },
+    { id: 'labubu', name: t('labubuStyle') },
   ];
   
   const handleGenerate = async () => {
@@ -513,7 +514,8 @@ const EmojiGenerator = forwardRef<EmojiGeneratorRef>((props, ref) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          text: inputText,
+          // Labubu 场景：用户输入作为修饰语，主词由后端模板设为 Labubu
+          text: artStyle === 'labubu' ? inputText : inputText,
           style, // 基本风格：emoji, sticker, icon
           backgroundColor, // 背景颜色
           artStyle, // 艺术风格
@@ -639,18 +641,29 @@ const EmojiGenerator = forwardRef<EmojiGeneratorRef>((props, ref) => {
         {/* 艺术风格选择 */}
         <CustomizeTitle>{t('artStyleTitle')}</CustomizeTitle>
         <OptionGrid>
-          {artStyles.map((style) => (
-            <StyleOption
-              key={style.id}
-              $active={artStyle === style.id as ArtStyleType}
-              onClick={() => setArtStyle(style.id as ArtStyleType)}
-            >
-              <StyleIcon $styleName={style.id} />
-              <StyleText $active={artStyle === style.id as ArtStyleType}>
-                {style.name}
-              </StyleText>
-            </StyleOption>
-          ))}
+          {artStyles.map((style) => {
+            const bgMap: Record<string, string> = {
+              cartoon: 'linear-gradient(135deg, #6e8efb, #a777e3)',
+              pixel: 'linear-gradient(135deg, #FF8A00, #E52E71)',
+              watercolor: 'linear-gradient(135deg, #90F7EC, #32CCBC)',
+              sketch: 'linear-gradient(135deg, #D3CCE3, #E9E4F0)',
+              threeD: 'linear-gradient(135deg, #4158D0, #C850C0)',
+              realistic: 'linear-gradient(135deg, #3EADCF, #ABE9CD)',
+              labubu: 'linear-gradient(135deg, #7F53AC, #647DEE)'
+            };
+            const currentBg = bgMap[style.id] || 'linear-gradient(135deg, #6e8efb, #a777e3)';
+            const active = artStyle === (style.id as ArtStyleType);
+            return (
+              <StyleOption
+                key={style.id}
+                $active={active}
+                $bg={currentBg}
+                onClick={() => setArtStyle(style.id as ArtStyleType)}
+              >
+                <StyleText $active={active}>{style.name}</StyleText>
+              </StyleOption>
+            );
+          })}
         </OptionGrid>
       </CustomizeSection>
       

@@ -52,6 +52,7 @@ const enMessages = {
     sketchStyle: 'Sketch',
     threeDStyle: '3D',
     realisticStyle: 'Realistic',
+    labubuStyle: 'Monster',
     customizeTitle: 'Customize Your Emoji',
     recommend: {
       title: 'Looking for more? Try these 👇',
@@ -261,6 +262,7 @@ const zhMessages = {
     sketchStyle: '素描',
     threeDStyle: '3D',
     realisticStyle: '写实',
+    labubuStyle: '怪兽',
     customizeTitle: '自定义你的表情',
     recommend: {
       title: '想玩点不一样的？试试这些 👇',

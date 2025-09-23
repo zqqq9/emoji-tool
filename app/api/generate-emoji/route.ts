@@ -16,7 +16,7 @@ type StyleType = "emoji" | "sticker" | "icon";
 type BackgroundColorType = 'transparent' | 'white' | 'black' | 'colorful' | 'gradient';
 
 // 艺术风格类型
-type ArtStyleType = 'cartoon' | 'pixel' | 'watercolor' | 'sketch' | 'threeD' | 'realistic';
+type ArtStyleType = 'cartoon' | 'pixel' | 'watercolor' | 'sketch' | 'threeD' | 'realistic' | 'monster';
 
 // 不同样式的提示词模板（英文）
 const promptTemplates = {
@@ -41,7 +41,8 @@ const artStyleDescriptions = {
   watercolor: "in watercolor painting style",
   sketch: "in hand-drawn sketch style",
   threeD: "in 3D rendering style",
-  realistic: "in realistic style"
+  realistic: "in realistic style",
+  monster: "in a Labubu-inspired cute monster style: big expressive eyes, fluffy ears, mischievous, hand-drawn look, soft pastel colors"
 };
 
 /**
@@ -62,10 +63,10 @@ async function generateImage(
     const backgroundDesc = backgroundDescriptions[backgroundColor] || "";
     const artStyleDesc = artStyleDescriptions[artStyle] || "";
     
-    // 组合提示词
+    // 组合提示词（默认）
     let prompt = template.replace('{text}', text);
     
-    // 添加艺术风格描述
+    // 添加艺术风格描述（通用）
     if (artStyleDesc) {
       prompt += ` ${artStyleDesc}`;
     }
@@ -73,6 +74,42 @@ async function generateImage(
     // 添加背景色描述
     if (backgroundColor !== 'transparent' || style !== 'sticker') { // sticker样式默认就是透明背景
       prompt += ` ${backgroundDesc}`;
+    }
+
+    // Labubu 风格强化：当 artStyle=labubu 时，将 Labubu 设为主词，用户文本作为修饰/元素
+    if (artStyle === 'monster') {
+      const safeDescriptor = (text || '').trim();
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || '';
+      const refImg = siteUrl ? `${siteUrl.replace(/\/$/, '')}/images/labubu.png` : '';
+      const labubuTemplate =
+        [
+          // 主体与风格
+          'An emoji-style icon of a 拉布布风格可爱怪物 as the MAIN SUBJECT, centered and iconic',
+          'STYLE ANCHOR: Labubu style, Labubu look, Labubu character cues',
+          'Playful, mischievous, soft pastel palette, clean silhouette, bold readable outlines',
+          // 面部结构细节
+          'HEAD: rounded-teardrop head with a slightly high forehead; face occupies ~70% of head area',
+          'EYES: very large oval eyes, slightly wide-set, glossy multi-point specular highlights, dark pupils, subtle gradient iris, thick black outline',
+          'NOSE: tiny dot or small inverted triangular nose placed low on the face',
+          'MOUTH: small simple line or slight horizontal oval, subtle smile; tiny triangular teeth along the lip line; no detailed lips',
+          'CHEEKS: faint blush on both cheeks to enhance cuteness',
+          'EARS: long upright fluffy bunny-like ears with softly rounded tips; inner ear pale pink',
+          'HAIRLINE: serrated furry edge around the face mask area (iconic Labubu outline)',
+          'EYEBROWS: minimal or none; keep expression focused on eye shape and mouth curve',
+          // 质感与线条
+          'LINEWORK: clean bold contour lines; micro-fur texture only as subtle shading; avoid heavy realism',
+          'PROPORTIONS: head-to-body about 2:1 if body appears; keep body extremely simplified',
+          // 环境与安全约束
+          'BACKGROUND: plain or transparent; avoid complex scenes',
+          'NEGATIVE: avoid realistic humans, complex backgrounds, text, brand logos, and clutter',
+          (safeDescriptor ? `ADJECTIVES / ACCESSORIES (secondary only): ${safeDescriptor}` : ''),
+          (refImg ? `STYLE REFERENCE IMAGE: ${refImg}` : '')
+        ].filter(Boolean).join('. ') + '.';
+
+      prompt = labubuTemplate;
+      // 叠加艺术风格与背景说明
+      if (artStyleDesc) prompt += ` ${artStyleDesc}`;
+      if (backgroundColor !== 'transparent' || style !== 'sticker') prompt += ` ${backgroundDesc}`;
     }
 
     console.log("Generating image with enhanced prompt:", prompt);
